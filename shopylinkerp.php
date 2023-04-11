@@ -1,5 +1,7 @@
 <?php
 
+use PrestaShopBundle\Entity\Repository\TabRepository;
+
 class shopylinkerp extends Module
 {
     public function __construct()
@@ -20,11 +22,7 @@ class shopylinkerp extends Module
     {
 
         // Call install parent method
-        if (!parent::install()) {
-            return false;
-        }
-
-        if (!$this->installTab()) {
+        if (!parent::install() && !$this->installTab()) {
             return false;
         }
 
@@ -37,11 +35,7 @@ class shopylinkerp extends Module
     public function uninstall()
     {
         // Call uninstall parent method
-        if (!parent::uninstall()) {
-            return false;
-        }
-
-        if (!$this->uninstall()) {
+        if (!parent::uninstall() && !$this->uninstallTab()) {
             return false;
         }
 
@@ -60,7 +54,7 @@ class shopylinkerp extends Module
         foreach (Language::getLanguages(true) as $lang) {
             $tab->name[$lang['id_lang']] = 'Shopylinker';
         }
-        //todofredy usar el metodo que no esta deprecado, si entras a la funcion te lo dice
+
         $tab->id_parent = (int) Tab::getIdFromClassName('CONFIGURE');
         $tab->module = $this->name;
 
@@ -69,7 +63,6 @@ class shopylinkerp extends Module
 
     private function uninstallTab()
     {
-        //todofredy usar el metodo que no esta deprecado, si entras a la funcion te lo dice
         $tabId = (int) Tab::getIdFromClassName('AdminShopylinkerpManager');
         $tab = new Tab($tabId);
 
