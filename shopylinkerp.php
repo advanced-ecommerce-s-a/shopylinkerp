@@ -8,7 +8,7 @@ class shopylinkerp extends Module
     {
         $this->name = 'shopylinkerp';
         $this->nameExt = 'shopylinkerp';
-        $this->version = '1.0.0';
+        $this->version = '1.0.1';
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
         parent::__construct();
@@ -20,13 +20,16 @@ class shopylinkerp extends Module
 
     public function install()
     {
+        $this->multishop_context = Shop::CONTEXT_ALL;
 
         // Call install parent method
-        if (!parent::install() && !$this->installTab()) {
+        if (!parent::install()) {
             return false;
         }
 
-       $this->createConfig();
+        $this->installTab();
+
+        $this->createConfig();
 
         // All went well!
         return true;
@@ -35,9 +38,11 @@ class shopylinkerp extends Module
     public function uninstall()
     {
         // Call uninstall parent method
-        if (!parent::uninstall() && !$this->uninstallTab()) {
+        if (!parent::uninstall()) {
             return false;
         }
+
+        $this->uninstallTab();
 
         //TODO ver si cuando se desintala se elimina la configuracion
         $this->removeConfig();
@@ -45,46 +50,64 @@ class shopylinkerp extends Module
         return true;
     }
 
-    private function installTab()
+    public function installTab()
     {
+        //tab main
         $tab = new Tab();
+        $tab->id_parent = 0;
         $tab->active = 1;
-        $tab->class_name = 'AdminShopylinkerpManager';
         $tab->name = array();
+        $tab->icon = 'track_changes';
+        $tab->class_name = 'AdminShopylinkerp';
+        $tab->module = $this->name;
         foreach (Language::getLanguages(true) as $lang) {
             $tab->name[$lang['id_lang']] = 'Shopylinker';
         }
+        $tab->add();
 
-        $tab->id_parent = (int) Tab::getIdFromClassName('CONFIGURE');
+        //tab manager
+        $tab = new Tab();
+        $tab->id_parent = (int)Tab::getIdFromClassName('AdminShopylinkerp');
+        $tab->active = 1;
+        $tab->name = array();
+        $tab->icon = 'track_changes';
+        $tab->class_name = 'AdminShopylinkerpManager';
         $tab->module = $this->name;
+        foreach (Language::getLanguages(true) as $lang) {
+            $tab->name[$lang['id_lang']] = 'Manager';
+        }
+        $tab->add();
 
-        return $tab->add();
     }
 
-    private function uninstallTab()
+    public function uninstallTab()
     {
-        $tabId = (int) Tab::getIdFromClassName('AdminShopylinkerpManager');
-        $tab = new Tab($tabId);
+        // Retrieve Tab ID
+        $id_tab = (int)Tab::getIdFromClassName('AdminShopylinkerp');
 
+        // Load tab
+        $tab = new Tab((int)$id_tab);
+
+        // Delete it
         return $tab->delete();
     }
 
-    private function createConfig()
+    public function createConfig()
     {
         //TODO ver si hay que pregunta si ya existe la configuracion
         $config['user'] = [
             'id' => 0,
             'username' => '',
             'pass' => '',
-            'nombre' => '',
-            'apellidos' => '',
+            'name' => '',
+            'lastname' => '',
             'status' => 0,
         ];
 
-        Configuration::updateValue('SHOPYLINKER_UDATA', $config);
+        Configuration::updateValue('SHOPYLINKER_UDATA', json_encode($config));
     }
 
-    private function removeConfig(){
+    public function removeConfig(){
 
     }
 
