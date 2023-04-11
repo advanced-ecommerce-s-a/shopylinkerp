@@ -74,8 +74,9 @@ class shopylinkerp extends Module
         return $tab->delete();
     }
 
-    private function createConfig(){
-
+    private function createConfig()
+    {
+        //TODO ver si hay que pregunta si ya existe la configuracion
         $config['user'] = [
             'id' => 0,
             'username' => '',

@@ -14,6 +14,18 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $this->meta_title[] = $this->l('Shopylinker');
 
         $this->toolbar_title[] = $this->meta_title;
+
+        $action = Tools::getValue('action');
+
+        switch ($action){
+            case 'processLogin':{
+                $this->processLogin();
+                break;
+            }
+            default:{
+                $this->renderLogin();
+            }
+        }
     }
 
     public function renderForm()
@@ -63,20 +75,18 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         return $tpl;
     }
-    public function postProcessLogin()
+    public function processLogin()
     {
-        if (Tools::isSubmit('username') && Tools::isSubmit('password')) {
+        if (Tools::isSubmit('username') && Tools::isSubmit('password'))
+        {
             $username = Tools::getValue('username');
             $password = Tools::getValue('password');
-
-
             $user_created = true;
 
-
             if ($user_created) {
-                $this->confirmations[] = '';
+                $this->confirmations[] = 'OK';
             } else {
-                $this->errors[] = '';
+                $this->errors[] = 'KO';
             }
         }
     }
