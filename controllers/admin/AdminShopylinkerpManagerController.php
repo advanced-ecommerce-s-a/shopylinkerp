@@ -20,10 +20,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     {
         $config = Configuration::get('SHOPYLINKER_UDATA');
 
-        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/login.tpl');
+        $tpl = $this->renderLogin();
 
         if($config['user']['id'] != 0){
-            $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/dashboard.tpl');
+            $tpl = $this->renderDashboard();
         }
 
         return $tpl->fetch();
@@ -53,13 +53,15 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     #region Login
     private function renderLogin()
     {
+//        $token = Tools::getAdminTokenLite('AdminSmtImportSupplier');
+//        $tpl->assign('token', $token);
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/login.tpl');
 
-        $token = Tools::getAdminTokenLite('AdminSmtImportSupplier');
+        $form_action =  $this->context->link->getAdminLink('AdminShopylinkerpManager');
 
-        $tpl->assign('token', $token);
+        $tpl->assign('form_action', $form_action);
 
-        //return $tpl->fetch();
+        return $tpl;
     }
     public function postProcessLogin()
     {
@@ -80,7 +82,20 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     }
     #endregion
 
+    #region Dashboard
+    private function renderDashboard()
+    {
+        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/login.tpl');
 
+        $url =  $this->context->link->getAdminLink('AdminShopylinkerpManager');
 
+        $token = Tools::getAdminTokenLite('AdminSmtImportSupplier');
+
+        $tpl->assign('token', $token);
+        $tpl->assign('url', $url);
+
+        return $tpl;
+    }
+    #endregion
 }
 
