@@ -11,6 +11,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $this->context->controller = $this;
 
         // Define meta and toolbar title
+        //todofredy usar el metodo que no esta deprecado, si entras a la funcion te lo dice
         $this->meta_title[] = $this->l('Shopylinker');
 
         $this->toolbar_title[] = $this->meta_title;
