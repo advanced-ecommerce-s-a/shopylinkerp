@@ -1,68 +1,95 @@
 <?php
+
 class shopylinkerp extends Module
 {
     public function __construct()
     {
         $this->name = 'shopylinkerp';
-        $this->tab = 'administration';
+        $this->nameExt = 'shopylinkerp';
         $this->version = '1.0.0';
-        $this->author = 'Your Name';
-        $this->need_instance = 0;
-        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => '1.7.99.99');
+        $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
-
         parent::__construct();
+        $this->displayName = $this->l('Shopylinker – Prestashop');
+        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => '1.7.99.99');
 
-        $this->displayName = $this->l('My Custom Registration');
-        $this->description = $this->l('Adds a custom registration controller and link in the configuration menu.');
-
-        $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
+        $this->description = $this->l('Shopylinker – Prestashop');
     }
 
     public function install()
     {
-        return parent::install() &&
-            $this->installTab();
+
+        // Call install parent method
+        if (!parent::install()) {
+            return false;
+        }
+
+        if (!$this->installTab()) {
+            return false;
+        }
+
+       $this->createConfig();
+
+        // All went well!
+        return true;
     }
 
     public function uninstall()
     {
-        return parent::uninstall() &&
-            $this->uninstallTab();
+        // Call uninstall parent method
+        if (!parent::uninstall()) {
+            return false;
+        }
+
+        if (!$this->uninstall()) {
+            return false;
+        }
+
+        //TODO ver si cuando se desintala se elimina la configuracion
+        $this->removeConfig();
+
+        return true;
     }
 
-    public function installTab()
+    private function installTab()
     {
         $tab = new Tab();
         $tab->active = 1;
-        $tab->class_name = 'AdminShopylinkerpRegistration';
+        $tab->class_name = 'AdminShopylinkerpManager';
         $tab->name = array();
         foreach (Language::getLanguages(true) as $lang) {
-            $tab->name[$lang['id_lang']] = 'My Custom Registration';
+            $tab->name[$lang['id_lang']] = 'Shopylinker';
         }
-        $tab->id_parent = (int) Tab::getIdFromClassName('AdminParentModulesSf');
+        $tab->id_parent = (int) Tab::getIdFromClassName('CONFIGURE');
         $tab->module = $this->name;
 
         return $tab->add();
     }
 
-    public function uninstallTab()
+    private function uninstallTab()
     {
-        $tabId = (int) Tab::getIdFromClassName('AdminShopylinkerpRegistration');
+        $tabId = (int) Tab::getIdFromClassName('AdminShopylinkerpManager');
         $tab = new Tab($tabId);
 
         return $tab->delete();
     }
 
     private function createConfig(){
-        $arrayconfig["CONFIG_LIST"]["MAESTRO"]=array(
-            "nombre" => "MAESTRO",
-            "id" => "MAESTRO",
-            "descripcion" => "Master structure",
-            "participeAleatorio" => 0
-        );
 
-        $configmaestro = json_encode($configmaestro);
-        Configuration::updateValue('CROSSALES_CONFIG_MAESTRO', $configmaestro);
+        $config['user'] = [
+            'id' => 0,
+            'username' => '',
+            'pass' => '',
+            'nombre' => '',
+            'apellidos' => '',
+            'status' => 0,
+        ];
+
+        Configuration::updateValue('SHOPYLINKER_UDATA', $config);
     }
+
+    private function removeConfig(){
+
+    }
+
 }
