@@ -12,10 +12,10 @@ class shopylinkerp extends Module
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
         parent::__construct();
-        $this->displayName = $this->l('Shopylinker – Prestashop');
+        $this->displayName = $this->trans('Shopylinker – Prestashop');
         $this->ps_versions_compliancy = array('min' => '1.7', 'max' => '1.7.99.99');
 
-        $this->description = $this->l('Shopylinker – Prestashop');
+        $this->description = $this->trans('Shopylinker – Prestashop');
     }
 
     public function install()

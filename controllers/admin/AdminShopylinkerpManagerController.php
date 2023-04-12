@@ -104,12 +104,12 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $username = Tools::getValue('username');
         $password = Tools::getValue('password');
 
-        $apiResult = $this->callShopylinkerApi('externalLogin', [
-            'username' => $username,
-            'password' => $password,
+        $apiResult = $this->callShopylinkerApi('login', [
+            'user' => $username,
+            'pass' => $password,
         ]);
 
-        if (isset($apiResult['id']))
+        if (isset($apiResult['success']) && $apiResult['success'])
         {
             $user = new User();
             $user->setId($apiResult['id']);
@@ -119,8 +119,28 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
             $result = $this->showDashboard();
         } else {
-            //TODO procesar los codigo de respuesta de error
-            $this->errors[] = 'user not exist';
+            $error = 'There is no connection with the API.';
+            if(isset($apiResult['error'])){
+                switch ($apiResult['error']){
+                    case 2:{
+                        $error = $this->trans('The user does not exist or the password is incorrect.');
+                        break;
+                    }
+                    case 3:{
+                        $error = 'The user is not active.';
+                        break;
+                    }
+                    case 4:{
+                        $error = 'The user is locked.';
+                        break;
+                    }
+                    case 5:{
+                        $error = 'Empty parameters.';
+                        break;
+                    }
+                }
+            }
+            $this->errors[] = $error;
             $result = $this->showLogin();
         }
 
@@ -159,14 +179,14 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $email = Tools::getValue('email');
         $password = Tools::getValue('password');
 
-        $apiResult = $this->callShopylinkerApi('externalRegister', [
-            'name' => $name,
-            'lastname' => $lastname,
+        $apiResult = $this->callShopylinkerApi('register', [
             'email' => $email,
-            'password' => $password,
+            'pass' => $password,
+            'name' => $name,
+            'apel' => $lastname
         ]);
 
-        if (isset($apiResult['id']))
+        if (isset($apiResult['success ']) && $apiResult['success '])
         {
             $user = new User();
             $user->setId($apiResult['id']);
@@ -180,8 +200,18 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             $result = $this->showDashboard();
         } else
         {
-            //TODO procesar los codigo de respuesta de error
-            $this->errors[] = 'no register';
+            $error = 'There is no connection with the API.';
+            if(isset($apiResult['error']))
+            {
+                switch ($apiResult['error'])
+                {
+                    case 2:{
+                        $error = $this->trans("The user's email already exists.");
+                        break;
+                    }
+                }
+            }
+            $this->errors[] = $error;
             $result = $this->showRegister();
         }
 
@@ -192,27 +222,44 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     {
         $code = Tools::getValue('code');
 
-        $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
-        $idUser = $config['user']['id'];
+        $user = new User();
+        $idUser = $user->getId();
 
         $apiResult = $this->callShopylinkerApi('uservalidation', [
-            'idUser' => $idUser,
+            'iduser' => $idUser,
             'code' => $code,
         ]);
 
-        if (isset($apiResult['valid']))
+        if (isset($apiResult['success']) && $apiResult['success'])
         {
             $user = new User();
             $user->setStatus(1);
             $user->update();
 
-            //TODO procesar los codigo de respuesta
-            $this->confirmations[] = 'User validated successfully';
+            $this->confirmations[] = $this->trans('User validated successfully');
 
         } else
         {
-            //TODO procesar los codigo de respuesta de error
-            $this->errors[] = 'The verification code is wrong';
+            $error = 'There is no connection with the API.';
+            if(isset($apiResult['error']))
+            {
+                switch ($apiResult['error'])
+                {
+                    case 2:{
+                        $error = $this->trans("The code does not match.");
+                        break;
+                    }
+                    case 3:{
+                        $error = $this->trans("The user is already active.");
+                        break;
+                    }
+                    case 4:{
+                        $error = $this->trans("The user does not exist.");
+                        break;
+                    }
+                }
+            }
+            $this->errors[] = $error;
         }
 
         //redirect to dashboard
@@ -226,18 +273,32 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $user = new User();
 
         $apiResult = $this->callShopylinkerApi('resendvalidacion', [
-            'idUser' => $user->getId(),
+            'iduser' => $user->getId(),
+            'pass' => $user->getPass(),
         ]);
 
-        if ($apiResult)
+        if (isset($apiResult['success']) && $apiResult['success'])
         {
-            //TODO procesar los codigo de respuesta
             $this->confirmations[] = 'An email has been sent with the verification code';
 
         } else
         {
-            //TODO procesar los codigo de respuesta de error
-            $this->errors[] = 'An error occurred while sending the verification code';
+            $error = 'There is no connection with the API.';
+            if(isset($apiResult['error']))
+            {
+                switch ($apiResult['error'])
+                {
+                    case 2:{
+                        $error = $this->trans("The user does not exist.");
+                        break;
+                    }
+                    case 3:{
+                        $error = $this->trans("The user is already active");
+                        break;
+                    }
+                }
+            }
+            $this->errors[] = $error;
         }
 
         //redirect to dashboard
@@ -384,37 +445,29 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     //TODO ver si esto lo pongo en una clase aparte
     private function callShopylinkerApi($action, $parameters)
     {
+        $url = 'https://shopylinker.com/api/'.$action;
+
+        $strparams = '';
+        if(is_array($parameters))
+        {
+            $separator = '&';
+            foreach ($parameters as $key => $value) {
+                $strparams .= $separator. $key . '=' . $value;
+            }
+        }
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $strparams);
+        $apiResult = curl_exec($ch);
+        curl_close($ch);
+
         $result = null;
-
-//        $url = 'https://shopylinker.com/api?'.$action;
-//        $apiKey = '';
-//
-//        // Initialize cURL session
-//        $ch = curl_init();
-//
-//        // Set cURL options
-//        curl_setopt($ch, CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-//            "Authorization: Bearer " . $apiKey,
-//            "Content-Type: application/json"
-//        ));
-//
-//        // Execute cURL session and get the response
-//        $response = curl_exec($ch);
-//
-//        // Check for errors
-//        if (curl_errno($ch)) {
-//            echo "Error: " . curl_error($ch);
-//        } else {
-//            // Decode the JSON response
-//            $result = json_decode($response, true);
-//        }
-//
-//        // Close cURL session
-//        curl_close($ch);
-
+        if($apiResult){
+            $result = json_decode($apiResult, true);
+        }
 
         return $result;
     }
@@ -429,7 +482,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         return $shop_name;
     }
-    
+
     public function getShopUrl()
     {
         $context = Context::getContext();
