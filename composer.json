@@ -1,0 +1,12 @@
+{
+  "name": "shopylinker/prestashop",
+  "description": "",
+  "autoload": {
+    "psr-4": {
+      "PrestaShop\\Module\\shopylinkerp\\": "src/"
+    },
+    "classmap": [],
+    "exclude-from-classmap": []
+  },
+  "type": "prestashop-module"
+}

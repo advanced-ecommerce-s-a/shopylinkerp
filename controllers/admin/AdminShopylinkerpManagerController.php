@@ -1,4 +1,5 @@
 <?php
+
 class AdminShopylinkerpManagerController extends ModuleAdminController
 {
     public function __construct()
@@ -445,7 +446,8 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     //TODO ver si esto lo pongo en una clase aparte
     private function callShopylinkerApi($action, $parameters)
     {
-        $url = 'https://shopylinker.com/api/'.$action;
+        //TODO ver si la url de la api se pone directo
+        $url = 'https://devp.shopylinker.com/web/app_dev.php/es/api/'.$action;
 
         $strparams = '';
         if(is_array($parameters))

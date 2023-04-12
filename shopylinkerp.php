@@ -1,6 +1,9 @@
 <?php
 
-use PrestaShopBundle\Entity\Repository\TabRepository;
+$autoloadPath = __DIR__ . '/vendor/autoload.php';
+if (file_exists($autoloadPath)) {
+    require_once $autoloadPath;
+}
 
 class shopylinkerp extends Module
 {
@@ -8,7 +11,7 @@ class shopylinkerp extends Module
     {
         $this->name = 'shopylinkerp';
         $this->nameExt = 'shopylinkerp';
-        $this->version = '1.0.1';
+        $this->version = '1.0.0';
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
         parent::__construct();
