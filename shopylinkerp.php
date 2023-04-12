@@ -97,6 +97,7 @@ class shopylinkerp extends Module
         return $tab->delete();
     }
 
+    //todo esto pasarlo a la clase general tuya
     public function createConfig()
     {
         //TODO ver si hay que pregunta si ya existe la configuracion
