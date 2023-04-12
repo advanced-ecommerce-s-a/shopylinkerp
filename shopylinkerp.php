@@ -65,6 +65,7 @@ class shopylinkerp extends Module
         }
         $tab->add();
 
+        //TODO cambiar getIdFromClassName esta deprecate
         //tab manager
         $tab = new Tab();
         $tab->id_parent = (int)Tab::getIdFromClassName('AdminShopylinkerp');
@@ -82,6 +83,7 @@ class shopylinkerp extends Module
 
     public function uninstallTab()
     {
+        //TODO cambiar getIdFromClassName esta deprecate
         // Retrieve Tab ID
         $id_tab = (int)Tab::getIdFromClassName('AdminShopylinkerp');
 
@@ -102,6 +104,30 @@ class shopylinkerp extends Module
             'name' => '',
             'lastname' => '',
             'status' => 0,
+        ];
+
+        $config['instance'] = [
+            'status' => 1,
+            'id_instance' => 0,
+            'prefix' => '',
+            'url_front' => '',
+            'url_admin' => '',
+            'user_admin' => '',
+            'pass_admin' => '',
+            'connection_mode' => '',
+            'server' => '',
+            'name_bd' => '',
+            'user_bd' => '',
+            'pass_bd' => '',
+            'ftp_user' => '',
+            'ftp_pass' => '',
+            'ftp_server' => '',
+            'ftp_port' => '',
+            'ftp_ssl' => '',
+            'ftp_root' => '',
+            'connection_key' => '',
+            'date_add' => '',
+
         ];
 
         Configuration::updateValue('SHOPYLINKER_UDATA', json_encode($config));

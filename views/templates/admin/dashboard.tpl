@@ -39,6 +39,32 @@
         </div>
     </div>
     <div class="col-6">
+        {if $instanceData == 3}
+            <div class="row">
+                <div class="col-12">
+                    <label>{l s='Linking date' mod='shopylinkerp'}: {$instanceData['date_add']}</label>
+                </div>
+                <div class="col-12">
+                    <label>{l s='Connection mode' mod='shopylinkerp'}: {$instanceData['connection_mode']}</label>
+                </div>
+            </div>
+        {else}
+            <div class="row">
+                <div class="col-12">
+                    <form method="post" action="{$link->getAdminLink('AdminShopylinkerpManager')}">
+                        <div class="form-group">
+                            {if $instanceData == 1}
+                                <label>{l s='You must link the store to start working with Shopylinker.' mod='shopylinkerp'}</label>
+                            {else}
+                                <label>{l s='You must complete the store linking process.' mod='shopylinkerp'}</label>
+                            {/if}
+                            <input type="hidden" name="action" value="showAssociateStore">
+                            <button type="submit">{l s='Associate store' mod='shopylinkerp'}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
+        {/if}
     </div>
 </div>

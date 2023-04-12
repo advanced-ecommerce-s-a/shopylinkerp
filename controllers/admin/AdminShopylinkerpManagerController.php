@@ -48,6 +48,14 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 $tpl = $this->processResendValidateUser();
                 break;
             }
+            case 'showAssociateStore':{
+                $tpl = $this->showAssociateStore();
+                break;
+            }
+            case 'processAssociateStore':{
+                $tpl = $this->processAssociateStore();
+                break;
+            }
             default:{
                 $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
 
@@ -71,9 +79,13 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         $userData = $config['user'];
 
+        $instanceData = $config['instance'];
+
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/dashboard.tpl');
 
         $tpl->assign('userData', $userData);
+
+        $tpl->assign('instanceData', $instanceData);
 
         return $tpl;
     }
@@ -82,7 +94,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     #region Login
     private function showLogin()
     {
-        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/login.tpl');
+        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/user/login.tpl');
 
         return $tpl;
     }
@@ -146,7 +158,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     #region Register
     private function showRegister()
     {
-        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/register.tpl');
+        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/user/register.tpl');
 
         return $tpl;
     }
@@ -262,6 +274,137 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     }
     #endregion
 
+    #region Instance
+    private function showAssociateStore()
+    {
+
+        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/instance/wizard.tpl');
+
+        return $tpl;
+    }
+
+    private function processAssociateStore()
+    {
+        $step = Tools::getValue('step');
+
+        switch ($step)
+        {
+            case 1: //Step 1 - Administrator information
+            {
+                //TODO ver si la contraseña se encripta
+                $useradmin = Tools::getValue('useradmin');
+                $passadmin = Tools::getValue('passadmin');
+
+                $result = $this->callShopylinkerApi('', [
+                    'iduser' => $this->getUserConfig('id'),
+                    'nombre' => $this->getShopName(),
+                    'prefijo' => _DB_PREFIX_,
+                    'urlfront' => $this->getShopUrl(),
+                    'urladmin' => $this->getAdminUrl(),
+                    'useradmin' => $useradmin,
+                    'passadmin' => $passadmin,
+                ]);
+
+                if($result)
+                {
+                    $intance = new Instance();
+                    $intance->setIdInstance($result['id_instance']);
+                    $intance->setPrefix(_DB_PREFIX_);
+                    $intance->setUrlFront($this->getShopUrl());
+                    $intance->setUrlAdmin($this->getAdminUrl());
+                    $intance->setUserAdmin($useradmin);
+                    $intance->setPassAdmin($passadmin);
+                    $intance->update();
+                }else{
+                    $this->errors[] = 'The verification is wrong';
+                }
+
+                break;
+            }
+            case 2: //Step 2 - ShopyLinker connection data.
+            {
+                $connection_mode = Tools::getValue('connection_mode');
+
+                switch ($connection_mode){
+                    case 1://Proxy
+                    {
+                        $connection_key = Tools::getValue('connection_key');
+
+                        $result = $this->callShopylinkerApi('editstore', [
+                            'connection_mode' => $connection_mode,
+                            'connection_key' => $connection_key,
+                        ]);
+
+                        if($result)
+                        {
+                            $intance = new Instance();
+                            $intance->setConnectionMode($connection_mode);
+                            $intance->setConnectionKey($connection_key);
+                            $intance->setStatus(3);
+                            $intance->update();
+                        }else{
+                            $this->errors[] = 'The verification is wrong';
+                        }
+                        break;
+                    }
+                    case 2://Direct
+                    {
+                        $server = _DB_SERVER_;
+                        $name_bd = _DB_NAME_;
+                        $user_bd = _DB_USER_;
+                        $pass_bd = _DB_PASSWD_;
+
+                        $ftp_user = Tools::getValue('ftp_user');
+                        $ftp_pass = Tools::getValue('ftp_pass');
+                        $ftp_server = Tools::getValue('ftp_server');
+                        $ftp_port = Tools::getValue('ftp_port');
+                        $ftp_ssl = Tools::getValue('ftp_ssl');
+                        $ftp_root = Tools::getValue('ftp_root');
+
+                        $result = $this->callShopylinkerApi('editstore', [
+                            'connection_mode' => $connection_mode,
+                            'server' => $server,
+                            'name_bd' => $name_bd,
+                            'user_bd' => $user_bd,
+                            'pass_bd' => $pass_bd,
+                            'ftp_user' => $ftp_user,
+                            'ftp_pass' => $ftp_pass,
+                            'ftp_server' => $ftp_server,
+                            'ftp_port' => $ftp_port,
+                            'ftp_ssl' => $ftp_ssl,
+                            'ftp_root' => $ftp_root,
+                        ]);
+
+                        if($result)
+                        {
+                            $intance = new Instance();
+                            $intance->setConnectionMode($connection_mode);
+                            $intance->setServer($server);
+                            $intance->setNameBd($name_bd);
+                            $intance->setUserBd($user_bd);
+                            $intance->setPassBd($pass_bd);
+                            $intance->setFtpUser($ftp_user);
+                            $intance->setFtpPass($ftp_pass);
+                            $intance->setFtpServer($ftp_server);
+                            $intance->setFtpPort($ftp_port);
+                            $intance->setFtpSsl($ftp_ssl);
+                            $intance->setFtpRoot($ftp_root);
+                            $intance->setStatus(3);
+                            $intance->update();
+                        }else{
+                            $this->errors[] = 'The verification is wrong';
+                        }
+                        break;
+                    }
+                }
+
+                break;
+            }
+        }
+    }
+
+    #endregion
+
     #region generic
     //TODO ver si esto lo pongo en una clase aparte
     private function callShopylinkerApi($action, $parameters)
@@ -300,6 +443,54 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         return $result;
     }
+
+    private function getUserConfig($field = null)
+    {
+        $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
+
+        $result = $config['user'];
+        if($field && isset($config['user'][$field])){
+            $result = $config['user'][$field];
+        }
+
+        return $result;
+    }
+
+    public function getShopName()
+    {
+        $context = Context::getContext();
+
+        $shop = new Shop($context->shop->id);
+
+        $shop_name = $shop->name;
+
+        return $shop_name;
+    }
+
+
+    public function getShopUrl()
+    {
+        $context = Context::getContext();
+
+        $shop = new Shop($context->shop->id);
+
+        $shop_url = $shop->getBaseURL();
+
+        return $shop_url;
+    }
+
+    public function getAdminUrl()
+    {
+        $shop_url = $this->getShopUrl();
+
+        $admin_folder = _PS_ADMIN_DIR_;
+        $admin_folder = basename($admin_folder);
+        $admin_url = $shop_url . $admin_folder . '/';
+
+        return $admin_url;
+    }
+
+
     #endregion
 }
 
