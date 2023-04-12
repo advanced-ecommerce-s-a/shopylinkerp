@@ -77,9 +77,9 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     {
         $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
 
-        $userData = $config['user'];
+        $userData = new User();
 
-        $instanceData = $config['instance'];
+        $instanceData = new Instance();
 
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/dashboard.tpl');
 
@@ -104,27 +104,21 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $username = Tools::getValue('username');
         $password = Tools::getValue('password');
 
-        $user = $this->callShopylinkerApi('externalLogin', [
+        $apiResult = $this->callShopylinkerApi('externalLogin', [
             'username' => $username,
             'password' => $password,
         ]);
 
-        //$user = null;
-        $user['id'] = 5;
-
-        if (isset($user['id']))
+        if (isset($apiResult['id']))
         {
-            //TODO ver si para actualizar la configuracion tengo que cargarla
-            $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
-            $config['user']['id'] = $user['id'];
+            $user = new User();
+            $user->setId($apiResult['id']);
+            $user->setUsername($username);
+            $user->setPass($password);
+            $user->update();
 
-            //update SHOPYLINKER_UDATA config
-            Configuration::updateValue('SHOPYLINKER_UDATA', json_encode($config));
-
-            //redirect to dashboard
             $result = $this->showDashboard();
-        } else
-        {
+        } else {
             //TODO procesar los codigo de respuesta de error
             $this->errors[] = 'user not exist';
             $result = $this->showLogin();
@@ -135,19 +129,14 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
     public function processLogout()
     {
-        //TODO ver si para actualizar la configuracion tengo que cargarla
-        $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
-
-        $config['user'] = [
-            'id' => 0,
-            'username' => '',
-            'pass' => '',
-            'name' => '',
-            'lastname' => '',
-            'status' => 0,
-        ];
-
-        Configuration::updateValue('SHOPYLINKER_UDATA', json_encode($config));
+        $user = new User();
+        $user->setId(0);
+        $user->setUsername('');
+        $user->setPass('');
+        $user->setName('');
+        $user->setLastname('');
+        $user->setStatus(0);
+        $user->update();
 
         $result = $this->showLogin();
 
@@ -170,31 +159,24 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $email = Tools::getValue('email');
         $password = Tools::getValue('password');
 
-        $user = $this->callShopylinkerApi('externalRegister', [
+        $apiResult = $this->callShopylinkerApi('externalRegister', [
             'name' => $name,
             'lastname' => $lastname,
             'email' => $email,
             'password' => $password,
         ]);
 
-        //$user = null;
-        $user['id'] = 5;
-
-        if (isset($user['id']))
+        if (isset($apiResult['id']))
         {
-            $config['user'] = [
-                'id' => $user['id'],
-                'username' => $email,
-                'pass' => $password,
-                'name' => $name,
-                'lastname' => $lastname,
-                'status' => 0,
-            ];
+            $user = new User();
+            $user->setId($apiResult['id']);
+            $user->setUsername($email);
+            $user->setPass($password);
+            $user->setName($name);
+            $user->setLastname($lastname);
+            $user->setStatus(0);
+            $user->update();
 
-            //update SHOPYLINKER_UDATA config
-            Configuration::updateValue('SHOPYLINKER_UDATA', json_encode($config));
-
-            //redirect to dashboard
             $result = $this->showDashboard();
         } else
         {
@@ -213,21 +195,16 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
         $idUser = $config['user']['id'];
 
-        $user = $this->callShopylinkerApi('uservalidation', [
+        $apiResult = $this->callShopylinkerApi('uservalidation', [
             'idUser' => $idUser,
             'code' => $code,
         ]);
 
-        $user['valid'] = 0;
-
-        if (isset($user['valid']))
+        if (isset($apiResult['valid']))
         {
-            //TODO ver si para actualizar la configuracion tengo que cargarla
-            $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
-            $config['user']['status'] = 1;
-
-            //update SHOPYLINKER_UDATA config
-            Configuration::updateValue('SHOPYLINKER_UDATA', json_encode($config));
+            $user = new User();
+            $user->setStatus(1);
+            $user->update();
 
             //TODO procesar los codigo de respuesta
             $this->confirmations[] = 'User validated successfully';
@@ -246,18 +223,14 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
     private function processResendValidateUser()
     {
-        $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
-        $idUser = $config['user']['id'];
+        $user = new User();
 
-        $resend = $this->callShopylinkerApi('resendvalidacion', [
-            'idUser' => $idUser,
+        $apiResult = $this->callShopylinkerApi('resendvalidacion', [
+            'idUser' => $user->getId(),
         ]);
 
-        $resend = false;
-
-        if ($resend)
+        if ($apiResult)
         {
-
             //TODO procesar los codigo de respuesta
             $this->confirmations[] = 'An email has been sent with the verification code';
 
@@ -291,12 +264,14 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         {
             case 1: //Step 1 - Administrator information
             {
+                $user = new User();
+
                 //TODO ver si la contraseña se encripta
                 $useradmin = Tools::getValue('useradmin');
                 $passadmin = Tools::getValue('passadmin');
 
                 $result = $this->callShopylinkerApi('', [
-                    'iduser' => $this->getUserConfig('id'),
+                    'iduser' => $user->getId(),
                     'nombre' => $this->getShopName(),
                     'prefijo' => _DB_PREFIX_,
                     'urlfront' => $this->getShopUrl(),
@@ -444,18 +419,6 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         return $result;
     }
 
-    private function getUserConfig($field = null)
-    {
-        $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
-
-        $result = $config['user'];
-        if($field && isset($config['user'][$field])){
-            $result = $config['user'][$field];
-        }
-
-        return $result;
-    }
-
     public function getShopName()
     {
         $context = Context::getContext();
@@ -466,8 +429,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         return $shop_name;
     }
-
-
+    
     public function getShopUrl()
     {
         $context = Context::getContext();
