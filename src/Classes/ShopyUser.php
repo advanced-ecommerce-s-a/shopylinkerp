@@ -1,5 +1,10 @@
 <?php
-class User
+
+namespace PrestaShop\Module\shopylinkerp\Classes;
+
+use PrestaShop\Module\shopylinkerp\Classes\ShopyManager;
+
+class ShopyUser
 {
     private $status;
     private $id;
@@ -10,10 +15,7 @@ class User
 
     public function __construct()
     {
-        $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
-
-        $user = $config['user'];
-
+        $user = ShopyManager::getShopyUser();
         $this->setStatus($user['status']);
         $this->setId($user['id']);
         $this->setUsername($user['username']);
@@ -120,18 +122,13 @@ class User
 
     public function update()
     {
-        $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
-
-        $config['user'] = [
+        ShopyManager::setShopyUser([
             'status' => $this->getStatus(),
             'id' => $this->getId(),
             'username' => $this->getUsername(),
             'pass' => $this->getPass(),
             'name' => $this->getName(),
             'lastname' => $this->getLastname(),
-        ];
-
-        Configuration::updateValue('SHOPYLINKER_UDATA', json_encode($config));
-
+        ]);
     }
 }

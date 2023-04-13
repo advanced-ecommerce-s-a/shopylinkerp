@@ -1,6 +1,9 @@
 <?php
 
-class Instance
+namespace PrestaShop\Module\shopylinkerp\Classes;
+
+use PrestaShop\Module\shopylinkerp\Classes\ShopyManager;
+class ShopyInstance
 {
     private $status;
     private $id_instance;
@@ -25,9 +28,7 @@ class Instance
 
     public function __construct()
     {
-        $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
-
-        $instance = $config['instance'];
+        $instance = ShopyManager::getShopyInstance();
 
         $this->setStatus($instance['status']);
         $this->setIdInstance($instance['id_instance']);
@@ -339,8 +340,6 @@ class Instance
         $this->ftp_root = $ftp_root;
     }
 
-
-
     /**
      * @return mixed
      */
@@ -375,9 +374,7 @@ class Instance
 
     public function update()
     {
-        $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
-
-        $config['instance'] = [
+        ShopyManager::setShopyInstance([
             'status' => $this->getStatus(),
             'id_instance' => $this->getIdInstance(),
             'prefix' => $this->getPrefix(),
@@ -398,9 +395,6 @@ class Instance
             'ftp_root' => $this->getFtpRoot(),
             'connection_key' => $this->getConnectionKey(),
             'date_add' => $this->getDateAdd(),
-        ];
-
-        Configuration::updateValue('SHOPYLINKER_UDATA', json_encode($config));
-
+        ]);
     }
 }

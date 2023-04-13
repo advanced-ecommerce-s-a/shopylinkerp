@@ -1,5 +1,7 @@
 <?php
-
+use PrestaShop\Module\shopylinkerp\Classes\ShopyUser;
+use PrestaShop\Module\shopylinkerp\Classes\ShopyInstance;
+use PrestaShop\Module\shopylinkerp\Classes\ShopyManager;
 class AdminShopylinkerpManagerController extends ModuleAdminController
 {
     public function __construct()
@@ -7,8 +9,11 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         // Call of the parent constructor method
         parent::__construct();
 
+        $this->bootstrap = true;
+
         // Set fields form for form view
         $this->context = Context::getContext();
+
         $this->context->controller = $this;
 
         // Define meta and toolbar title
@@ -18,53 +23,33 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
     }
 
+//    public function initContent()
+//    {
+//        parent::initContent();
+//
+//        $link = new Link();
+//
+//        $this->context->smarty->assign('link', $link);
+//
+//        $this->setTemplate('module:shopylinkerp/views/templates/admin/user/login.tpl');
+//    }
+
     public function renderList()
     {
-        $tpl = $this->showLogin();
 
-        $action = Tools::getValue('action');
+        $module_action = Tools::getValue('action');
 
-        switch ($action){
-            case 'processLogin':{
-                $tpl = $this->processLogin();
-                break;
-            }
-            case 'processLogout':{
-                $tpl = $this->processLogout();
-                break;
-            }
-            case 'showRegister':{
-                $tpl = $this->showRegister();
-                break;
-            }
-            case 'processRegister':{
-                $tpl = $this->processRegister();
-                break;
-            }
-            case 'processValidateUser':{
-                $tpl = $this->processValidateUser();
-                break;
-            }
-            case 'processResendValidateUser':{
-                $tpl = $this->processResendValidateUser();
-                break;
-            }
-            case 'showAssociateStore':{
-                $tpl = $this->showAssociateStore();
-                break;
-            }
-            case 'processAssociateStore':{
-                $tpl = $this->processAssociateStore();
-                break;
-            }
-            default:{
-                $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
+        if (!isset($module_action) || $module_action == '')
+        {
+            $module_action = 'displayLogin';
 
-                if(isset($config['user']['id']) && $config['user']['id'] != 0){
-                    $tpl = $this->showDashboard();
-                }
+            $user = ShopyManager::getShopyUser();
+            if(isset($user['id']) && $user['id'] != 0){
+                $module_action = 'displayDashboard';
             }
         }
+
+        $tpl = $this->$module_action();
 
         $link = new Link();
 
@@ -74,13 +59,11 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     }
 
     #region Dashboard
-    private function showDashboard()
+    private function displayDashboard()
     {
-        $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
+        $userData = ShopyManager::getShopyUser();
 
-        $userData = new User();
-
-        $instanceData = new Instance();
+        $instanceData = ShopyManager::getShopyInstance();
 
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/dashboard.tpl');
 
@@ -93,7 +76,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     #endregion
 
     #region Login
-    private function showLogin()
+    private function displayLogin()
     {
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/user/login.tpl');
 
@@ -105,20 +88,20 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $username = Tools::getValue('username');
         $password = Tools::getValue('password');
 
-        $apiResult = $this->callShopylinkerApi('login', [
+        $apiResult = ShopyManager::callShopyApi('login', [
             'user' => $username,
             'pass' => $password,
         ]);
 
         if (isset($apiResult['success']) && $apiResult['success'])
         {
-            $user = new User();
+            $user = new ShopyUser();
             $user->setId($apiResult['id']);
             $user->setUsername($username);
             $user->setPass($password);
             $user->update();
 
-            $result = $this->showDashboard();
+            $result = $this->displayDashboard();
         } else {
             $error = 'There is no connection with the API.';
             if(isset($apiResult['error'])){
@@ -128,21 +111,21 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                         break;
                     }
                     case 3:{
-                        $error = 'The user is not active.';
+                        $error = $this->trans('The user is not active.');
                         break;
                     }
                     case 4:{
-                        $error = 'The user is locked.';
+                        $error = $this->trans('The user is locked.');
                         break;
                     }
                     case 5:{
-                        $error = 'Empty parameters.';
+                        $error = $this->trans('Empty parameters.');
                         break;
                     }
                 }
             }
             $this->errors[] = $error;
-            $result = $this->showLogin();
+            $result = $this->displayLogin();
         }
 
         return $result;
@@ -150,23 +133,18 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
     public function processLogout()
     {
-        $user = new User();
+        $user = new ShopyUser();
         $user->setId(0);
-        $user->setUsername('');
-        $user->setPass('');
-        $user->setName('');
-        $user->setLastname('');
-        $user->setStatus(0);
         $user->update();
 
-        $result = $this->showLogin();
+        $result = $this->displayLogin();
 
         return $result;
     }
     #endregion
 
     #region Register
-    private function showRegister()
+    private function displayRegister()
     {
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/user/register.tpl');
 
@@ -180,16 +158,16 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $email = Tools::getValue('email');
         $password = Tools::getValue('password');
 
-        $apiResult = $this->callShopylinkerApi('register', [
+        $apiResult = ShopyManager::callShopyApi('register', [
             'email' => $email,
             'pass' => $password,
             'name' => $name,
             'apel' => $lastname
         ]);
 
-        if (isset($apiResult['success ']) && $apiResult['success '])
+        if (isset($apiResult['success']) && $apiResult['success'])
         {
-            $user = new User();
+            $user = new ShopyUser();
             $user->setId($apiResult['id']);
             $user->setUsername($email);
             $user->setPass($password);
@@ -198,7 +176,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             $user->setStatus(0);
             $user->update();
 
-            $result = $this->showDashboard();
+            $result = $this->displayDashboard();
         } else
         {
             $error = 'There is no connection with the API.';
@@ -213,7 +191,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 }
             }
             $this->errors[] = $error;
-            $result = $this->showRegister();
+            $result = $this->displayRegister();
         }
 
         return $result;
@@ -223,17 +201,17 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     {
         $code = Tools::getValue('code');
 
-        $user = new User();
+        $user = new ShopyUser();
         $idUser = $user->getId();
 
-        $apiResult = $this->callShopylinkerApi('uservalidation', [
+        $apiResult = ShopyManager::callShopyApi('uservalidation', [
             'iduser' => $idUser,
             'code' => $code,
         ]);
 
         if (isset($apiResult['success']) && $apiResult['success'])
         {
-            $user = new User();
+            $user = new ShopyUser();
             $user->setStatus(1);
             $user->update();
 
@@ -264,16 +242,16 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         }
 
         //redirect to dashboard
-        $result = $this->showDashboard();
+        $result = $this->displayDashboard();
 
         return $result;
     }
 
     private function processResendValidateUser()
     {
-        $user = new User();
+        $user = new ShopyUser();
 
-        $apiResult = $this->callShopylinkerApi('resendvalidacion', [
+        $apiResult = ShopyManager::callShopyApi('resendvalidacion', [
             'iduser' => $user->getId(),
             'pass' => $user->getPass(),
         ]);
@@ -303,14 +281,14 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         }
 
         //redirect to dashboard
-        $result = $this->showDashboard();
+        $result = $this->displayDashboard();
 
         return $result;
     }
     #endregion
 
     #region Instance
-    private function showAssociateStore()
+    private function displayAssociateStore()
     {
 
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/instance/wizard.tpl');
@@ -326,13 +304,13 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         {
             case 1: //Step 1 - Administrator information
             {
-                $user = new User();
+                $user = new ShopyUser();
 
                 //TODO ver si la contraseña se encripta
                 $useradmin = Tools::getValue('useradmin');
                 $passadmin = Tools::getValue('passadmin');
 
-                $result = $this->callShopylinkerApi('', [
+                $result = ShopyManager::callShopyApi('', [
                     'iduser' => $user->getId(),
                     'nombre' => $this->getShopName(),
                     'prefijo' => _DB_PREFIX_,
@@ -344,7 +322,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
                 if($result)
                 {
-                    $intance = new Instance();
+                    $intance = new ShopyInstance();
                     $intance->setIdInstance($result['id_instance']);
                     $intance->setPrefix(_DB_PREFIX_);
                     $intance->setUrlFront($this->getShopUrl());
@@ -367,14 +345,14 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                     {
                         $connection_key = Tools::getValue('connection_key');
 
-                        $result = $this->callShopylinkerApi('editstore', [
+                        $result = ShopyManager::callShopyApi('editstore', [
                             'connection_mode' => $connection_mode,
                             'connection_key' => $connection_key,
                         ]);
 
                         if($result)
                         {
-                            $intance = new Instance();
+                            $intance = new ShopyInstance();
                             $intance->setConnectionMode($connection_mode);
                             $intance->setConnectionKey($connection_key);
                             $intance->setStatus(3);
@@ -398,7 +376,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                         $ftp_ssl = Tools::getValue('ftp_ssl');
                         $ftp_root = Tools::getValue('ftp_root');
 
-                        $result = $this->callShopylinkerApi('editstore', [
+                        $result = ShopyManager::callShopyApi('editstore', [
                             'connection_mode' => $connection_mode,
                             'server' => $server,
                             'name_bd' => $name_bd,
@@ -414,7 +392,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
                         if($result)
                         {
-                            $intance = new Instance();
+                            $intance = new ShopyInstance();
                             $intance->setConnectionMode($connection_mode);
                             $intance->setServer($server);
                             $intance->setNameBd($name_bd);
@@ -443,36 +421,6 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     #endregion
 
     #region generic
-    //TODO ver si esto lo pongo en una clase aparte
-    private function callShopylinkerApi($action, $parameters)
-    {
-        //TODO ver si la url de la api se pone directo
-        $url = 'https://devp.shopylinker.com/web/app_dev.php/es/api/'.$action;
-
-        $strparams = '';
-        if(is_array($parameters))
-        {
-            $separator = '&';
-            foreach ($parameters as $key => $value) {
-                $strparams .= $separator. $key . '=' . $value;
-            }
-        }
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $strparams);
-        $apiResult = curl_exec($ch);
-        curl_close($ch);
-
-        $result = null;
-        if($apiResult){
-            $result = json_decode($apiResult, true);
-        }
-
-        return $result;
-    }
 
     public function getShopName()
     {
