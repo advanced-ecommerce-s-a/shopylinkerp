@@ -7,11 +7,11 @@
         <form method="post" action="{$link->getAdminLink('AdminShopylinkerpManager')}">
             <div class="form-group">
                 <label>{l s='User name' mod='shopylinkerp'}</label>
-                <input class="form-control" name="useradmin" required value="{$useradmin}">
+                <input type="text" class="form-control" name="useradmin" required="required" value="{$useradmin}">
             </div>
             <div class="form-group">
                 <label>{l s='Password' mod='shopylinkerp'}</label>
-                <input class="form-control" name="passadmin" required value="{$passadmin}">
+                <input type="password" class="form-control" name="passadmin" required="required" value="{$passadmin}">
             </div>
             <div class="form-group">
                 <input type="hidden" name="action" value="processAssociateStore">

@@ -333,7 +333,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 $useradmin = Tools::getValue('useradmin');
                 $passadmin = Tools::getValue('passadmin');
 
-                $result = ShopyManager::callShopyApi('', [
+                $result = ShopyManager::callShopyApi('addstore', [
                     'iduser' => $user->getId(),
                     'nombre' => $this->getShopName(),
                     'prefijo' => _DB_PREFIX_,
@@ -346,13 +346,15 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 if($result)
                 {
                     $intance = new ShopyInstance();
-                    $intance->setIdInstance($result['id_instance']);
+                    $intance->setIdInstance($result['idinstance']);
                     $intance->setPrefix(_DB_PREFIX_);
                     $intance->setUrlFront($this->getShopUrl());
                     $intance->setUrlAdmin($this->getAdminUrl());
                     $intance->setUserAdmin($useradmin);
                     $intance->setPassAdmin($passadmin);
                     $intance->update();
+
+                    $this->confirmations[] = $this->trans('Step 1 OK');
                 }else{
                     $this->errors[] = 'The verification is wrong';
                 }
@@ -380,6 +382,8 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                             $intance->setConnectionKey($connection_key);
                             $intance->setStatus(3);
                             $intance->update();
+
+                            $this->confirmations[] = $this->trans('Step 2 OK');
                         }else{
                             $this->errors[] = 'The verification is wrong';
                         }
@@ -429,6 +433,8 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                             $intance->setFtpRoot($ftp_root);
                             $intance->setStatus(3);
                             $intance->update();
+
+                            $this->confirmations[] = $this->trans('Step 2 OK');
                         }else{
                             $this->errors[] = 'The verification is wrong';
                         }
@@ -439,6 +445,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 break;
             }
         }
+
+        $result = $this->displayAssociateStore();
+
+        return $result;
     }
 
     #endregion
