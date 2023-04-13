@@ -1,15 +1,17 @@
 <div class="row">
     {*Step 1 - Administrator information*}
     <div class="col-md-4">
-        <label>{l s='Administrator information' mod='shopylinkerp'}</label>
+        <div class="form-group">
+            <label>{l s='Administrator information' mod='shopylinkerp'}</label>
+        </div>
         <form method="post" action="{$link->getAdminLink('AdminShopylinkerpManager')}">
             <div class="form-group">
                 <label>{l s='User name' mod='shopylinkerp'}</label>
-                <input class="form-control" name="useradmin" required>
+                <input class="form-control" name="useradmin" required value="{$useradmin}">
             </div>
             <div class="form-group">
                 <label>{l s='Password' mod='shopylinkerp'}</label>
-                <input class="form-control" name="passadmin" required>
+                <input class="form-control" name="passadmin" required value="{$passadmin}">
             </div>
             <div class="form-group">
                 <input type="hidden" name="action" value="processAssociateStore">
@@ -21,7 +23,9 @@
     <div class="col-md-12"></div>
     {*Step 2 - ShopyLinker connection data.*}
     <div class="col-md-4">
-        <label>{l s='ShopyLinker connection data' mod='shopylinkerp'}</label>
+        <div class="form-group">
+            <label>{l s='ShopyLinker connection data' mod='shopylinkerp'}</label>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
@@ -43,13 +47,11 @@
                 {* Proxy *}
                 <div id="container_proxy" class="row">
                     <div class="col-md-12">
+                        <div class="form-group">
+                            <label>{l s='Proxy Mode Integration Configuration.' mod='shopylinkerp'}</label>
+                        </div>
                         <form method="post" action="{$link->getAdminLink('AdminShopylinkerpManager')}">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>{l s='Proxy Mode Integration Configuration.' mod='shopylinkerp'}</label>
-                                    </div>
-                                </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>{l s='Connection key' mod='shopylinkerp'}</label>
@@ -74,12 +76,16 @@
                 {* Direct *}
                 <div id="container_direct" class="row" style="display: none">
                     <div class="col-md-12">
-                        <form method="post" action="{$link->getAdminLink('AdminShopylinkerpManager')}">
+                        <div class="form-group">
                             <label>{l s='Direct Mode Integration Configuration.' mod='shopylinkerp'}</label>
+                        </div>
+                        <form method="post" action="{$link->getAdminLink('AdminShopylinkerpManager')}">
                             <div class="row">
                                 {* Database connection data. *}
                                 <div class="col-md-6">
-                                    <label>{l s='Database connection data.' mod='shopylinkerp'}</label>
+                                    <div class="form-group">
+                                        <label>{l s='Database connection data.' mod='shopylinkerp'}</label>
+                                    </div>
                                     <div class="form-group">
                                         <label>{l s='Server' mod='shopylinkerp'}</label>
                                         <input class="form-control" name="server" required value="{$server}">
@@ -99,7 +105,9 @@
                                 </div>
                                 {* Ftp connection data. *}
                                 <div class="col-md-6">
-                                    <label>{l s='Ftp connection data' mod='shopylinkerp'}</label>
+                                    <div class="form-group">
+                                        <label>{l s='Ftp connection data' mod='shopylinkerp'}</label>
+                                    </div>
                                     <div class="form-group">
                                         <label>{l s='User' mod='shopylinkerp'}</label>
                                         <input class="form-control" name="ftp_user" required>
@@ -112,9 +120,9 @@
                                         <label>{l s='Server' mod='shopylinkerp'}</label>
                                         <input class="form-control" name="ftp_server" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label>{l s='Ssl' mod='shopylinkerp'}</label>
-                                        <input type="checkbox" name="ftp_ssl">
+                                    <div class="form-group row">
+                                        <label class="col-md-12">{l s='Ssl' mod='shopylinkerp'}</label>
+                                        <input type="checkbox" class="col-md-12" name="ftp_ssl">
                                     </div>
                                     <div class="form-group">
                                         <label>{l s='Root' mod='shopylinkerp'}</label>

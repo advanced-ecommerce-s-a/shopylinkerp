@@ -297,12 +297,24 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     #region Instance
     private function displayAssociateStore()
     {
+        $instancia = new ShopyInstance();
+        $useradmin = $instancia->getUserAdmin();
+        $passadmin = $instancia->getPassAdmin();
+
+        $server = $instancia->getServer()?:_DB_SERVER_;
+        $name_bd = $instancia->getNameBd()?:_DB_NAME_;
+        $user_bd = $instancia->getUserBd()?:_DB_USER_;
+        $pass_bd = $instancia->getPassBd()?:_DB_PASSWD_;
+
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/instance/wizard.tpl');
 
-        $tpl->assign('server', _DB_SERVER_);
-        $tpl->assign('name_bd', _DB_USER_);
-        $tpl->assign('user_bd', _DB_USER_);
-        $tpl->assign('pass_bd', _DB_PASSWD_);
+        $tpl->assign('useradmin', $useradmin);
+        $tpl->assign('passadmin', $passadmin);
+
+        $tpl->assign('server', $server);
+        $tpl->assign('name_bd', $name_bd);
+        $tpl->assign('user_bd', $user_bd);
+        $tpl->assign('pass_bd', $pass_bd);
 
         return $tpl;
     }
