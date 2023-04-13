@@ -43,7 +43,6 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
     public function renderList()
     {
-
         $module_action = Tools::getValue('action');
 
         if (!isset($module_action) || $module_action == '')
@@ -78,6 +77,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         $tpl->assign('instanceData', $instanceData);
 
+        $token = Tools::getAdminTokenLite('AdminShopylinkerpManager');
+
+        $tpl->assign('token', $token);
+
         return $tpl;
     }
     #endregion
@@ -102,10 +105,14 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         if (isset($apiResult['success']) && $apiResult['success'])
         {
+            $uData = $apiResult['uData'];
             $user = new ShopyUser();
             $user->setId($apiResult['id']);
             $user->setUsername($username);
             $user->setPass($password);
+            $user->setName($uData['name']);
+            $user->setLastname($uData['lastname']);
+            $user->setStatus($uData['status']);
             $user->update();
 
             $result = $this->displayDashboard();
@@ -193,6 +200,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 {
                     case 2:{
                         $error = $this->trans("The user's email already exists.");
+                        break;
+                    }
+                    case 3:{
+                        $error = $this->trans("The email already exists.");
                         break;
                     }
                 }
@@ -295,7 +306,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     #endregion
 
     #region Instance
-    private function displayAssociateStore()
+    public function ajaxProcessDisplayAssociateStore()
     {
         $instancia = new ShopyInstance();
         $useradmin = $instancia->getUserAdmin();
@@ -316,25 +327,42 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $tpl->assign('user_bd', $user_bd);
         $tpl->assign('pass_bd', $pass_bd);
 
-        return $tpl;
+        $link = new Link();
+
+        $tpl->assign('link', $link);
+
+        $response = $tpl->fetch();
+
+        die($response);
     }
 
-    private function processAssociateStore()
+    public function ajaxProcessRegisterAssociateStore()
     {
         $step = Tools::getValue('step');
 
+        $response = [
+            'status' => 0,
+            'step' => $step,
+            'error' => '',
+        ];
+
+        $intance = new ShopyInstance();
+
+        $user = new ShopyUser();
+
+        //TODO ver si esto lo paso al shopymanager
         switch ($step)
         {
             case 1: //Step 1 - Administrator information
             {
-                $user = new ShopyUser();
-
                 //TODO ver si la contraseña se encripta
                 $useradmin = Tools::getValue('useradmin');
                 $passadmin = Tools::getValue('passadmin');
 
-                $result = ShopyManager::callShopyApi('addstore', [
+                $apiResult = ShopyManager::callShopyApi('addstore', [
+                    'idinstancia' => $intance->getIdInstance(),
                     'iduser' => $user->getId(),
+                    'pass' => $user->getPass(),
                     'nombre' => $this->getShopName(),
                     'prefijo' => _DB_PREFIX_,
                     'urlfront' => $this->getShopUrl(),
@@ -343,22 +371,46 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                     'passadmin' => $passadmin,
                 ]);
 
-                if($result)
+                if (isset($apiResult['success']) && $apiResult['success'])
                 {
-                    $intance = new ShopyInstance();
-                    $intance->setIdInstance($result['idinstance']);
+                    $intance->setIdInstance($apiResult['idinstance']);
                     $intance->setPrefix(_DB_PREFIX_);
                     $intance->setUrlFront($this->getShopUrl());
                     $intance->setUrlAdmin($this->getAdminUrl());
                     $intance->setUserAdmin($useradmin);
                     $intance->setPassAdmin($passadmin);
                     $intance->update();
-
-                    $this->confirmations[] = $this->trans('Step 1 OK');
-                }else{
-                    $this->errors[] = 'The verification is wrong';
+                } else {
+                    $error = 'There is no connection with the API.';
+                    if(isset($apiResult['error']))
+                    {
+                        switch ($apiResult['error'])
+                        {
+                            case 2:{
+                                $error = $this->trans('There is already an instance with that front URL in another user.');
+                                break;
+                            }
+                            case 3:{
+                                $error = $this->trans('The instance is already registered by this user');
+                                break;
+                            }
+                            case 4:{
+                                $error = $this->trans('A parameter is missing.');
+                                break;
+                            }
+                            case 5:{
+                                $error = $this->trans('The user does not exist');
+                                break;
+                            }
+                            case 6:{
+                                $error = $this->trans('Unknown error.');
+                                break;
+                            }
+                        }
+                    }
+                    $response['error'] = $error;
+                    $response['status'] = 1;
                 }
-
                 break;
             }
             case 2: //Step 2 - ShopyLinker connection data.
@@ -370,22 +422,43 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                     {
                         $connection_key = Tools::getValue('connection_key');
 
-                        $result = ShopyManager::callShopyApi('editstore', [
+                        $apiResult = ShopyManager::callShopyApi('editstore', [
+                            'idinstancia' => $intance->getIdInstance(),
+                            'iduser' => $user->getId(),
+                            'pass' => $user->getPass(),
                             'connection_mode' => $connection_mode,
                             'connection_key' => $connection_key,
                         ]);
 
-                        if($result)
+                        if (isset($apiResult['success']) && $apiResult['success'])
                         {
                             $intance = new ShopyInstance();
                             $intance->setConnectionMode($connection_mode);
                             $intance->setConnectionKey($connection_key);
                             $intance->setStatus(3);
                             $intance->update();
-
-                            $this->confirmations[] = $this->trans('Step 2 OK');
-                        }else{
-                            $this->errors[] = 'The verification is wrong';
+                        } else {
+                            $error = 'There is no connection with the API.';
+                            if(isset($apiResult['error']))
+                            {
+                                switch ($apiResult['error'])
+                                {
+                                    case 2:{
+                                        $error = $this->trans('The instance to edit cannot be found.');
+                                        break;
+                                    }
+                                    case 3:{
+                                        $error = $this->trans('The user does not exist or the password is incorrect.');
+                                        break;
+                                    }
+                                    case 4:{
+                                        $error = $this->trans('Data error.');
+                                        break;
+                                    }
+                                }
+                            }
+                            $response['error'] = $error;
+                            $response['status'] = 1;
                         }
                         break;
                     }
@@ -403,7 +476,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                         $ftp_ssl = Tools::getValue('ftp_ssl');
                         $ftp_root = Tools::getValue('ftp_root');
 
-                        $result = ShopyManager::callShopyApi('editstore', [
+                        $apiResult = ShopyManager::callShopyApi('editstore', [
+                            'idinstancia' => $intance->getIdInstance(),
+                            'iduser' => $user->getId(),
+                            'pass' => $user->getPass(),
                             'connection_mode' => $connection_mode,
                             'server' => $server,
                             'name_bd' => $name_bd,
@@ -417,7 +493,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                             'ftp_root' => $ftp_root,
                         ]);
 
-                        if($result)
+                        if (isset($apiResult['success']) && $apiResult['success'])
                         {
                             $intance = new ShopyInstance();
                             $intance->setConnectionMode($connection_mode);
@@ -434,21 +510,37 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                             $intance->setStatus(3);
                             $intance->update();
 
-                            $this->confirmations[] = $this->trans('Step 2 OK');
-                        }else{
-                            $this->errors[] = 'The verification is wrong';
+                        } else {
+                            $error = 'There is no connection with the API.';
+                            if(isset($apiResult['error']))
+                            {
+                                switch ($apiResult['error'])
+                                {
+                                    case 2:{
+                                        $error = $this->trans('The instance to edit cannot be found.');
+                                        break;
+                                    }
+                                    case 3:{
+                                        $error = $this->trans('The user does not exist or the password is incorrect.');
+                                        break;
+                                    }
+                                    case 4:{
+                                        $error = $this->trans('Data error.');
+                                        break;
+                                    }
+                                }
+                            }
+                            $response['error'] = $error;
+                            $response['status'] = 1;
                         }
                         break;
                     }
                 }
-
                 break;
             }
         }
 
-        $result = $this->displayAssociateStore();
-
-        return $result;
+        die(json_encode($response));
     }
 
     #endregion
