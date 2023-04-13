@@ -11,25 +11,25 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="password">{l s='Password' mod='shopylinkerp'}:</label>
-                    <input type="password" class="form-control" name="password" required>
+                    <input type="password" class="form-control" name="password" required="required">
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="password">{l s='Confirm Password' mod='shopylinkerp'}:</label>
-                    <input type="password" class="form-control" required>
+                    <input type="password" class="form-control" equalTo="password" required="required">
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label>{l s='Name' mod='shopylinkerp'}:</label>
-                    <input type="text" class="form-control" name="name" required>
+                    <input type="text" class="form-control" name="name" required="required">
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label>{l s='Last name' mod='shopylinkerp'}:</label>
-                    <input type="text" class="form-control" name="lastname" required>
+                    <input type="text" class="form-control" name="lastname" required="required">
                 </div>
             </div>
             <div class="col-md-12 text-center">

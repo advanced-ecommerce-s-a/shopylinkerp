@@ -10,6 +10,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         parent::__construct();
 
         $this->bootstrap = true;
+        //$this->display = 'view';
 
         // Set fields form for form view
         $this->context = Context::getContext();
@@ -21,6 +22,12 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         $this->toolbar_title[] = $this->meta_title;
 
+    }
+    public function setMedia($isNewTheme = false)
+    {
+        parent::setMedia($isNewTheme);
+
+        $this->addJS(_MODULE_DIR_.$this->module->name.'/views/js/admin/shopy-manager.js');
     }
 
 //    public function initContent()
@@ -290,8 +297,12 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     #region Instance
     private function displayAssociateStore()
     {
-
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/instance/wizard.tpl');
+
+        $tpl->assign('server', _DB_SERVER_);
+        $tpl->assign('name_bd', _DB_USER_);
+        $tpl->assign('user_bd', _DB_USER_);
+        $tpl->assign('pass_bd', _DB_PASSWD_);
 
         return $tpl;
     }
