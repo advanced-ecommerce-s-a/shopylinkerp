@@ -5,8 +5,7 @@ var ShopyManager = {
         this._initEvents();
     },
 
-    _initEvents: function()
-    {
+    _initEvents: function(){
         //region User
         $('[data-action="displayLogin"]').off('click').on('click', function () {
             ShopyManager.displayLogin();
@@ -14,6 +13,10 @@ var ShopyManager = {
 
         $('[data-action="processLogin"]').off('click').on('click', function () {
             ShopyManager.processLogin();
+        });
+
+        $('[data-action="processLogout"]').off('click').on('click', function () {
+            ShopyManager.processLogout();
         });
         //endregion
 
@@ -24,6 +27,10 @@ var ShopyManager = {
 
         $('[data-action="processRegister"]').off('click').on('click', function () {
             ShopyManager.processRegister();
+        });
+
+        $('[data-action="processValidateUser"]').off('click').on('click', function () {
+            ShopyManager.processValidateUser();
         });
         //endregion
 
@@ -117,6 +124,32 @@ var ShopyManager = {
             });
         }
     },
+
+    processLogout: function () {
+        form = new FormData();
+        form.append('controller', 'AdminShopylinkerpManager');
+        form.append('token', ShopyManager.token);
+        form.append('action', 'logout');
+
+        $.ajax({
+            url: 'ajax-tab.php',
+            data: form,
+            method: 'POST',
+            processData: false,
+            cache: false,
+            contentType: false,
+            beforeSend: function () {
+                //TODO block
+            },
+            success: function (response) {
+                $('#container_shopylinkerp').html(response);
+                ShopyManager._initEvents();
+            },
+            complete: function () {
+                //TODO unblock
+            }
+        });
+    },
     //endregion
 
     //region Register
@@ -165,6 +198,47 @@ var ShopyManager = {
             form.append('controller', 'AdminShopylinkerpManager');
             form.append('token', ShopyManager.token);
             form.append('action', 'register');
+
+            $.ajax({
+                url: 'ajax-tab.php',
+                data: form,
+                method: 'POST',
+                processData:false,
+                cache: false,
+                contentType: false,
+                beforeSend: function () {
+                    //TODO block
+                },
+                success: function (response) {
+                    var response = JSON.parse(response);
+                    switch (response.status){
+                        case 0:{
+                            $('#container_shopylinkerp').html(response.html);
+                            break;
+                        }
+                        case 1:{
+                            $('#div_message').html(response.error);
+                            $('#div_message').show();
+                        }
+                    }
+                    ShopyManager._initEvents();
+                },
+                complete: function () {
+                    //TODO unblock
+                }
+            });
+        }
+
+    },
+
+    processValidateUser: function () {
+        var form = $('#form_validate_user');
+        if(form.valid()) {
+            form = document.getElementById('form_validate_user');
+            form = new FormData(form);
+            form.append('controller', 'AdminShopylinkerpManager');
+            form.append('token', ShopyManager.token);
+            form.append('action', 'validateUser');
 
             $.ajax({
                 url: 'ajax-tab.php',

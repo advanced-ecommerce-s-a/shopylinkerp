@@ -172,15 +172,13 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         die(json_encode($response));
     }
 
-    public function processLogout()
+    public function ajaxProcessLogout()
     {
         $user = new ShopyUser();
         $user->setId(0);
         $user->update();
 
-        $result = $this->displayLogin();
-
-        return $result;
+        $this->ajaxProcessDisplayLogin();
     }
     #endregion
 
@@ -261,10 +259,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             $user->setStatus(1);
             $user->update();
 
-            $this->confirmations[] = $this->trans('User validated successfully');
+            $response['html'] = $this->displayDashboard()->fetch();
+            $response['status'] = 0;
 
-        } else
-        {
+        } else {
             $error = 'There is no connection with the API.';
             if(isset($apiResult['error']))
             {
@@ -284,13 +282,11 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                     }
                 }
             }
-            $this->errors[] = $error;
+            $response['status'] = 1;
+            $response['error'] = $error;
         }
 
-        //redirect to dashboard
-        $result = $this->displayDashboard();
-
-        return $result;
+        die(json_encode($response));
     }
 
     public function processResendValidateUser()

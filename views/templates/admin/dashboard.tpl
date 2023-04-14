@@ -1,62 +1,73 @@
 <div class="row">
     <div class="col-md-6">
         <div class="panel">
-            <div class="panel-heading">{l s='User' mod='shopylinkerp'}</div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>{l s='Id' mod='shopylinkerp'}: {$userData['id']}</label>
+            <div class="panel-heading">
+                {l s='User Information' mod='shopylinkerp'}
+                <span class="panel-heading-action" style="width: 10%">
+                    <a href="javascript:void(0)" class="list-toolbar-btn" data-action="processLogout" style="width: 100%; text-align: center">
+                        <span><i class="fa fa-power-off"></i>{l s='Sign Out' mod='shopylinkerp'}</span>
+                    </a>
+                </span>
+            </div>
+            <div class="row" style="margin-bottom: 25px">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <label>{l s='Id' mod='shopylinkerp'}</label>
+                    </div>
+                    <div class="text-center">
+                        <span>{$userData['id']}</span>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>{l s='Name' mod='shopylinkerp'}: {$userData['name']}</label>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <label>{l s='Name' mod='shopylinkerp'}</label>
+                    </div>
+                    <div class="text-center">
+                        <span>{$userData['name']} {$userData['lastname']}</span>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>{l s='Last name' mod='shopylinkerp'}: {$userData['lastname']}</label>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <label>{l s='Email' mod='shopylinkerp'}</label>
                     </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>{l s='Email' mod='shopylinkerp'}: {$userData['username']}</label>
+                    <div class="text-center">
+                        <span>{$userData['username']}</span>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    {if $userData['status'] == 0}
-                        <form method="post" action="">
-                            <div class="form-group">
+            {if $userData['status'] == 0}
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 row">
+                        <div class="col-md-12">
+                            <div id="div_message" class="alert alert-danger">{l s='You must check your email to obtain the validation code and enter it here' mod='shopylinkerp'}</div>
+                        </div>
+                        <div class="col-md-12">
+                            <form id="form_validate_user">
                                 <div class="row">
-                                    <div class="col-md-1">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-2 text-right">
                                         <label>{l s='Code' mod='shopylinkerp'}</label>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-4">
                                         <input class="form-control" name="code" required="required">
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="hidden" name="action" value="processValidateUser">
-                                        <button type="submit" class="btn btn-primary">{l s='Validate' mod='shopylinkerp'}</button>
+                                        <button type="button" class="btn btn-primary" data-action="processValidateUser">{l s='Validate' mod='shopylinkerp'}</button>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
-                    {else}
-                        <div class="form-group">
-                            <label style="color: green">{l s='verified user' mod='shopylinkerp'}</label>
+                            </form>
                         </div>
-                    {/if}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <a href="{$link->getAdminLink('AdminShopylinkerpManager', true, [], ['action' => 'processLogout'])}">{l s="Log off" mod='shopylinkerp'}</a>
                     </div>
                 </div>
-            </div>
+            {else}
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 text-center">
+                        <div class="alert alert-success">{l s='Verified user' mod='shopylinkerp'}</div>
+                    </div>
+                </div>
+            {/if}
         </div>
     </div>
     <div class="col-md-6">
@@ -101,9 +112,3 @@
         </div>
     </div>
 </div>
-<div id="modal_container"></div>
-<script>
-    $(document).ready(function(){
-        ShopyManager.init('{$token|escape:'htmlall':'UTF-8'}');
-    });
-</script>
