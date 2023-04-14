@@ -5,7 +5,7 @@ if (file_exists($autoloadPath)) {
     require_once $autoloadPath;
 }
 use PrestaShop\Module\shopylinkerp\Classes\ShopyManager;
-class shopylinkerp extends Module
+class Shopylinkerp extends Module
 {
     public function __construct()
     {
@@ -15,6 +15,9 @@ class shopylinkerp extends Module
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
         parent::__construct();
+
+        //recordar poner el numero del modulo
+
         $this->displayName = $this->trans('Shopylinker – Prestashop');
         $this->ps_versions_compliancy = array('min' => '1.7', 'max' => '1.7.99.99');
 
@@ -68,7 +71,7 @@ class shopylinkerp extends Module
         }
         $tab->add();
 
-        //TODO cambiar getIdFromClassName esta deprecate
+        //TODO cambiar getIdFromClassName esta deprecate (mira en la ayuda de prestashop ahi explican como se hace esto)
         //tab manager
         $tab = new Tab();
         $tab->id_parent = (int)Tab::getIdFromClassName('AdminShopylinkerp');
