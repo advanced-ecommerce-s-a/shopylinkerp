@@ -3,8 +3,11 @@
 namespace PrestaShop\Module\shopylinkerp\Classes;
 
 use Configuration;
+
 class ShopyManager
 {
+    const API_URL = 'https://devp.shopylinker.com/web/app_dev.php/es/api/';
+
     static function init()
     {
         $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
@@ -86,9 +89,12 @@ class ShopyManager
     static function callShopyApi($action, $parameters)
     {
         //TODO ver si la url de la api se pone directo
-        $url = 'https://devp.shopylinker.com/web/app_dev.php/es/api/'.$action;
-
+        $url = static::API_URL.$action;
+        
         $strparams = '';
+
+        //todo esto es mas seguro haciendolo de otra forma. preguntarme
+        // $postfields = http_build_query($postfields,'','&');
         if(is_array($parameters))
         {
             $separator = '&';
@@ -103,8 +109,8 @@ class ShopyManager
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $strparams);
         $apiResult = curl_exec($ch);
-        curl_close($ch);
 
+        curl_close($ch);
         $result = null;
         if($apiResult){
             $result = json_decode($apiResult, true);
