@@ -106,7 +106,6 @@ var ShopyManager = {
                     //TODO block
                 },
                 success: function (response) {
-                    alert(response);
                     var response = JSON.parse(response);
                     console.log(response);
                     switch (response.status) {
