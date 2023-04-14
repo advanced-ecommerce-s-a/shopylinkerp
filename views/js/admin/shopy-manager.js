@@ -90,75 +90,7 @@ var ShopyManager = {
             $('#container_shopylinkerp').html(response);
             ShopyManager._initEvents();
         });
-
-
-        /*
-        form.append('controller', 'AdminShopylinkerpManager');
-        form.append('token', ShopyManager.token);
-        form.append('action', 'displayLogin');
-
-
-        $.ajax({
-            //url: 'ajax-tab.php',
-            url: 'ajax-tab.php',
-            data: form,
-            method: 'POST',
-            processData: false,
-            cache: false,
-            contentType: false,
-            beforeSend: function () {
-                //TODO block
-            },
-            success: function (response) {
-                $('#container_shopylinkerp').html(response);
-                ShopyManager._initEvents();
-            },
-            complete: function () {
-                //TODO unblock
-            }
-        });*/
     },
-
-    /*processLogin: function () {
-        var form = $('#form_login');
-        if (form.valid()) {
-            form = document.getElementById('form_login');
-            form = new FormData(form);
-            form.append('controller', 'AdminShopylinkerpManager');
-            form.append('token', ShopyManager.token);
-            form.append('action', 'login');
-
-            $.ajax({
-                url: 'ajax-tab.php',
-                data: form,
-                method: 'POST',
-                processData: false,
-                cache: false,
-                contentType: false,
-                beforeSend: function () {
-                    //TODO block
-                },
-                success: function (response) {
-                    var response = JSON.parse(response);
-                    console.log(response);
-                    switch (response.status) {
-                        case 0: {
-                            $('#container_shopylinkerp').html(response.html);
-                            break;
-                        }
-                        case 1: {
-                            $('#div_message').html(response.error);
-                            $('#div_message').show();
-                        }
-                    }
-                    ShopyManager._initEvents();
-                },
-                complete: function () {
-                    //TODO unblock
-                }
-            });
-        }
-    },*/
 
     processLogin: function () {
         var form = $('#form_login');
@@ -186,27 +118,11 @@ var ShopyManager = {
 
     processLogout: function () {
         form = new FormData();
-        form.append('controller', 'AdminShopylinkerpManager');
-        form.append('token', ShopyManager.token);
-        form.append('action', 'logout');
 
-        $.ajax({
-            url: 'ajax-tab.php',
-            data: form,
-            method: 'POST',
-            processData: false,
-            cache: false,
-            contentType: false,
-            beforeSend: function () {
-                //TODO block
-            },
-            success: function (response) {
-                $('#container_shopylinkerp').html(response);
-                ShopyManager._initEvents();
-            },
-            complete: function () {
-                //TODO unblock
-            }
+        this._ajaxCall(form,'logout',function (response)
+        {
+            $('#container_shopylinkerp').html(response);
+            ShopyManager._initEvents();
         });
     },
     //endregion
@@ -214,27 +130,11 @@ var ShopyManager = {
     //region Register
     displayRegister: function () {
         var form = new FormData();
-        form.append('controller', 'AdminShopylinkerpManager');
-        form.append('token', ShopyManager.token);
-        form.append('action', 'displayRegister');
 
-        $.ajax({
-            url: 'ajax-tab.php',
-            data: form,
-            method: 'POST',
-            processData: false,
-            cache: false,
-            contentType: false,
-            beforeSend: function () {
-                //TODO block
-            },
-            success: function (response) {
-                $('#container_shopylinkerp').html(response);
-                ShopyManager._initEvents();
-            },
-            complete: function () {
-                //TODO unblock
-            }
+        this._ajaxCall(form,'displayRegister',function (response)
+        {
+            $('#container_shopylinkerp').html(response);
+            ShopyManager._initEvents();
         });
     },
 
@@ -254,40 +154,23 @@ var ShopyManager = {
         if (form.valid()) {
             form = document.getElementById('form_register');
             form = new FormData(form);
-            form.append('controller', 'AdminShopylinkerpManager');
-            form.append('token', ShopyManager.token);
-            form.append('action', 'register');
 
-            $.ajax({
-                url: 'ajax-tab.php',
-                data: form,
-                method: 'POST',
-                processData: false,
-                cache: false,
-                contentType: false,
-                beforeSend: function () {
-                    //TODO block
-                },
-                success: function (response) {
-                    var response = JSON.parse(response);
-                    switch (response.status) {
-                        case 0: {
-                            $('#container_shopylinkerp').html(response.html);
-                            break;
-                        }
-                        case 1: {
-                            $('#div_message').html(response.error);
-                            $('#div_message').show();
-                        }
+            this._ajaxCall(form,'register',function (response)
+            {
+                var response = JSON.parse(response);
+                switch (response.status) {
+                    case 0: {
+                        $('#container_shopylinkerp').html(response.html);
+                        break;
                     }
-                    ShopyManager._initEvents();
-                },
-                complete: function () {
-                    //TODO unblock
+                    case 1: {
+                        $('#div_message').html(response.error);
+                        $('#div_message').show();
+                    }
                 }
+                ShopyManager._initEvents();
             });
         }
-
     },
 
     processValidateUser: function () {
@@ -295,115 +178,64 @@ var ShopyManager = {
         if (form.valid()) {
             form = document.getElementById('form_validate_user');
             form = new FormData(form);
-            form.append('controller', 'AdminShopylinkerpManager');
-            form.append('token', ShopyManager.token);
-            form.append('action', 'validateUser');
 
-            $.ajax({
-                url: 'ajax-tab.php',
-                data: form,
-                method: 'POST',
-                processData: false,
-                cache: false,
-                contentType: false,
-                beforeSend: function () {
-                    //TODO block
-                },
-                success: function (response) {
-                    var response = JSON.parse(response);
-                    switch (response.status) {
-                        case 0: {
-                            $('#container_shopylinkerp').html(response.html);
-                            break;
-                        }
-                        case 1: {
-                            $('#div_message').html(response.error);
-                            $('#div_message').show();
-                        }
+            this._ajaxCall(form,'validateUser',function (response)
+            {
+                var response = JSON.parse(response);
+                switch (response.status) {
+                    case 0: {
+                        $('#container_shopylinkerp').html(response.html);
+                        break;
                     }
-                    ShopyManager._initEvents();
-                },
-                complete: function () {
-                    //TODO unblock
+                    case 1: {
+                        $('#div_message').html(response.error);
+                        $('#div_message').show();
+                    }
                 }
+                ShopyManager._initEvents();
             });
         }
-
     },
     //endregion
 
     //region Instance
     displayAssociateStore: function () {
         var form = new FormData();
-        form.append('controller', 'AdminShopylinkerpManager');
-        form.append('token', ShopyManager.token);
-        form.append('action', 'displayAssociateStore');
-
-        $.ajax({
-            url: 'ajax-tab.php',
-            data: form,
-            method: 'POST',
-            processData: false,
-            cache: false,
-            contentType: false,
-            beforeSend: function () {
-                //TODO block
-            },
-            success: function (response) {
-                $('#modal_container').html(response);
-                $('#modal_instance').modal('show');
-                ShopyManager._initEvents();
-            },
-            complete: function () {
-                //TODO unblock
-            }
+        this._ajaxCall(form,'displayAssociateStore',function (response)
+        {
+            $('#modal_container').html(response);
+            $('#modal_instance').modal('show');
+            ShopyManager._initEvents();
         });
     },
 
     processAssociateStore: function (idform) {
         var form = document.getElementById(idform);
         form = new FormData(form);
-        form.append('controller', 'AdminShopylinkerpManager');
-        form.append('token', ShopyManager.token);
-        form.append('action', 'registerAssociateStore');
-
-        $.ajax({
-            url: 'ajax-tab.php',
-            data: form,
-            method: 'POST',
-            processData: false,
-            cache: false,
-            contentType: false,
-            beforeSend: function () {
-                //TODO block
-            },
-            success: function (response) {
-                var response = JSON.parse(response);
-                switch (response.step) {
-                    case '1': {
-                        if (response.status == 0) {
-                            //TODO next step
-                            alert('OK');
-                        } else {
-                            //TODO show error
-                            alert(resp.error);
-                        }
-                        break;
+        this._ajaxCall(form,'registerAssociateStore',function (response)
+        {
+            var response = JSON.parse(response);
+            switch (response.step) {
+                case '1': {
+                    if (response.status == 0) {
+                        //TODO next step
+                        alert('OK');
+                    } else {
+                        //TODO show error
+                        alert(resp.error);
                     }
-                    case '2': {
-                        if (response.status == 0) {
-                            //TODO close de wizard
-                            alert('OK');
-                        } else {
-                            //TODO show error
-                            alert(resp.error);
-                        }
-                        break;
-                    }
+                    break;
                 }
-            },
-            complete: function () {
-                //TODO unblock
+                case '2': {
+                    if (response.status == 0) {
+                        //TODO close de wizard
+                        alert('OK');
+                    } else {
+                        //TODO show error
+                        alert(resp.error);
+                    }
+                    break;
+                }
             }
         });
     },
