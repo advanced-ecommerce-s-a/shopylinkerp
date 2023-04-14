@@ -374,65 +374,18 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $user = new ShopyUser();
 
         //TODO ver si esto lo paso al shopymanager
-        switch ($step)
-        {
+        switch ($step) {
             case 1: //Step 1 - Administrator information
             {
                 //TODO ver si la contraseña se encripta
                 $useradmin = Tools::getValue('useradmin');
                 $passadmin = Tools::getValue('passadmin');
 
-                $apiResult = ShopyManager::callShopyApi('addstore', [
-                    'idinstancia' => $intance->getIdInstance(),
-                    'iduser' => $user->getId(),
-                    'pass' => $user->getPass(),
-                    'nombre' => $this->getShopName(),
-                    'prefijo' => _DB_PREFIX_,
-                    'urlfront' => $this->getShopUrl(),
-                    'urladmin' => $this->getAdminUrl(),
-                    'useradmin' => $useradmin,
-                    'passadmin' => $passadmin,
-                ]);
+                $error = $this->checkAndRegisteStore($useradmin, $passadmin, $intance, $user);
 
-                if (isset($apiResult['success']) && $apiResult['success'])
-                {
-                    $intance->setIdInstance($apiResult['idinstance']);
-                    $intance->setPrefix(_DB_PREFIX_);
-                    $intance->setUrlFront($this->getShopUrl());
-                    $intance->setUrlAdmin($this->getAdminUrl());
-                    $intance->setUserAdmin($useradmin);
-                    $intance->setPassAdmin($passadmin);
-                    $intance->update();
-                } else {
-                    $error = 'There is no connection with the API.';
-                    if(isset($apiResult['error']))
-                    {
-                        switch ($apiResult['error'])
-                        {
-                            case 2:{
-                                $error = $this->trans('There is already an instance with that front URL in another user.');
-                                break;
-                            }
-                            case 3:{
-                                $error = $this->trans('The instance is already registered by this user');
-                                break;
-                            }
-                            case 4:{
-                                $error = $this->trans('A parameter is missing.');
-                                break;
-                            }
-                            case 5:{
-                                $error = $this->trans('The user does not exist');
-                                break;
-                            }
-                            case 6:{
-                                $error = $this->trans('Unknown error.');
-                                break;
-                            }
-                        }
-                    }
-                    $response['error'] = $error;
+                if($error){
                     $response['status'] = 1;
+                    $response['error'] = $error;
                 }
                 break;
             }
@@ -440,6 +393,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             {
                 $connection_mode = Tools::getValue('connection_mode');
 
+                $error = null;
                 switch ($connection_mode){
                     case 1://Proxy
                     {
@@ -480,90 +434,289 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                                     }
                                 }
                             }
-                            $response['error'] = $error;
-                            $response['status'] = 1;
                         }
                         break;
                     }
                     case 2://Direct
                     {
+                        //check bd
                         $server = _DB_SERVER_;
                         $name_bd = _DB_NAME_;
                         $user_bd = _DB_USER_;
                         $pass_bd = _DB_PASSWD_;
+                        $prefix_bd = _DB_PREFIX_;
 
-                        $ftp_user = Tools::getValue('ftp_user');
-                        $ftp_pass = Tools::getValue('ftp_pass');
-                        $ftp_server = Tools::getValue('ftp_server');
-                        $ftp_port = Tools::getValue('ftp_port');
-                        $ftp_ssl = Tools::getValue('ftp_ssl');
-                        $ftp_root = Tools::getValue('ftp_root');
-
-                        $apiResult = ShopyManager::callShopyApi('editstore', [
-                            'idinstancia' => $intance->getIdInstance(),
-                            'iduser' => $user->getId(),
-                            'pass' => $user->getPass(),
-                            'connection_mode' => $connection_mode,
-                            'server' => $server,
-                            'name_bd' => $name_bd,
-                            'user_bd' => $user_bd,
-                            'pass_bd' => $pass_bd,
-                            'ftp_user' => $ftp_user,
-                            'ftp_pass' => $ftp_pass,
-                            'ftp_server' => $ftp_server,
-                            'ftp_port' => $ftp_port,
-                            'ftp_ssl' => $ftp_ssl,
-                            'ftp_root' => $ftp_root,
-                        ]);
-
-                        if (isset($apiResult['success']) && $apiResult['success'])
+                        $error = $this->checkBdDataStore($server, $name_bd, $user_bd, $pass_bd, $prefix_bd);
+                        if(!$error)
                         {
-                            $intance = new ShopyInstance();
-                            $intance->setConnectionMode($connection_mode);
-                            $intance->setServer($server);
-                            $intance->setNameBd($name_bd);
-                            $intance->setUserBd($user_bd);
-                            $intance->setPassBd($pass_bd);
-                            $intance->setFtpUser($ftp_user);
-                            $intance->setFtpPass($ftp_pass);
-                            $intance->setFtpServer($ftp_server);
-                            $intance->setFtpPort($ftp_port);
-                            $intance->setFtpSsl($ftp_ssl);
-                            $intance->setFtpRoot($ftp_root);
-                            $intance->setStatus(3);
-                            $intance->update();
+                            $ftp_user = Tools::getValue('ftp_user');
+                            $ftp_pass = Tools::getValue('ftp_pass');
+                            $ftp_server = Tools::getValue('ftp_server');
+                            $ftp_port = Tools::getValue('ftp_port');
+                            $ftp_ssl = Tools::getValue('ftp_ssl');
+                            $ftp_root = Tools::getValue('ftp_root');
 
-                        } else {
-                            $error = 'There is no connection with the API.';
-                            if(isset($apiResult['error']))
+                            $error = $this->checkFtpDataStore($ftp_user, $ftp_pass, $ftp_server, $ftp_port, $ftp_ssl, $ftp_root);
+
+                            if(!$error)
                             {
-                                switch ($apiResult['error'])
-                                {
-                                    case 2:{
-                                        $error = $this->trans('The instance to edit cannot be found.');
-                                        break;
-                                    }
-                                    case 3:{
-                                        $error = $this->trans('The user does not exist or the password is incorrect.');
-                                        break;
-                                    }
-                                    case 4:{
-                                        $error = $this->trans('Data error.');
-                                        break;
-                                    }
-                                }
+                                $error = $this->registerDataBdAndFtpStore($server, $name_bd, $user_bd, $pass_bd, $prefix_bd, $ftp_user, $ftp_pass,
+                                    $ftp_server, $ftp_port, $ftp_ssl, $ftp_root, $intance, $user, $connection_mode);
                             }
-                            $response['error'] = $error;
-                            $response['status'] = 1;
                         }
                         break;
                     }
+                }
+
+                if($error){
+                    $response['status'] = 1;
+                    $response['error'] = $error;
                 }
                 break;
             }
         }
 
         die(json_encode($response));
+    }
+
+    private function checkAndRegisteStore($useradmin, $passadmin, $intance, $user)
+    {
+        $error = null;
+
+        //check access store
+        $apiResult = ShopyManager::callShopyApi('checkaccessstore', [
+            'urlfront' => $this->getShopUrl(),
+            'urladmin' => $this->getAdminUrl(),
+            'useradmin' => $useradmin,
+            'passadmin' => $passadmin,
+            'tipotienda' => '',
+        ]);
+
+        dump($apiResult);
+
+        if (isset($apiResult['success']) && $apiResult['success'])
+        {
+            //register store
+            $apiResult = ShopyManager::callShopyApi('addstore', [
+                'idinstancia' => $intance->getIdInstance(),
+                'iduser' => $user->getId(),
+                'pass' => $user->getPass(),
+                'nombre' => $this->getShopName(),
+                'prefijo' => _DB_PREFIX_,
+                'urlfront' => $this->getShopUrl(),
+                'urladmin' => $this->getAdminUrl(),
+                'useradmin' => $useradmin,
+                'passadmin' => $passadmin,
+            ]);
+
+            if (isset($apiResult['success']) && $apiResult['success'])
+            {
+                $intance->setIdInstance($apiResult['idinstance']);
+                $intance->setPrefix(_DB_PREFIX_);
+                $intance->setUrlFront($this->getShopUrl());
+                $intance->setUrlAdmin($this->getAdminUrl());
+                $intance->setUserAdmin($useradmin);
+                $intance->setPassAdmin($passadmin);
+                $intance->update();
+            } else {
+                $error = 'There is no connection with the API.';
+                if(isset($apiResult['error']))
+                {
+                    switch ($apiResult['error'])
+                    {
+                        case 2:{
+                            $error = $this->trans('There is already an instance with that front URL in another user.');
+                            break;
+                        }
+                        case 3:{
+                            $error = $this->trans('The instance is already registered by this user');
+                            break;
+                        }
+                        case 4:{
+                            $error = $this->trans('A parameter is missing.');
+                            break;
+                        }
+                        case 5:{
+                            $error = $this->trans('The user does not exist');
+                            break;
+                        }
+                        case 6:{
+                            $error = $this->trans('Unknown error.');
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            $error = 'There is no connection with the API.';
+            if(isset($apiResult['error']))
+            {
+                switch ($apiResult['error'])
+                {
+                    case 2:{
+                        $error = $this->trans('No access to the store front.');
+                        break;
+                    }
+                    case 3:{
+                        $error = $this->trans('No access to the store admin.');
+                        break;
+                    }
+                    case 4:{
+                        $error = $this->trans('Cannot log in to the admin.');
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $error;
+    }
+
+    private function checkBdDataStore($server, $name_bd, $user_bd, $pass_bd, $prefix_bd)
+    {
+        $error = null;
+
+        $apiResult = ShopyManager::callShopyApi('checkaccessdb', [
+            'server' => $server,
+            'name_bd' => $name_bd,
+            'user_bd' => $user_bd,
+            'pass_bd' => $pass_bd,
+            'prefix_bd' => $prefix_bd,
+            'tipotienda' => '',
+        ]);
+
+        if (!isset($apiResult['success']) || !$apiResult['success'])
+        {
+            $error = 'There is no connection with the API.';
+            if(isset($apiResult['error']))
+            {
+                switch ($apiResult['error'])
+                {
+                    case 2:{
+                        $error = $this->trans('Cannot access with those credentials.');
+                        break;
+                    }
+                    case 3:{
+                        $error = $this->trans('The server cannot be found.');
+                        break;
+                    }
+                    case 4:{
+                        $error = $this->trans('No se encuentra la base de datos');
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $error;
+    }
+
+    private function checkFtpDataStore($ftp_user, $ftp_pass, $ftp_server, $ftp_port, $ftp_ssl, $ftp_root)
+    {
+        $error = null;
+
+        $apiResult = ShopyManager::callShopyApi('checkaccessftp', [
+            'ftp_user' => $ftp_user,
+            'ftp_pass' => $ftp_pass,
+            'ftp_server' => $ftp_server,
+            'ftp_port' => $ftp_port,
+            'ftp_ssl' => $ftp_ssl,
+            'ftp_root' => $ftp_root,
+            'tipotienda' => '',
+        ]);
+
+        if (!isset($apiResult['success']) || !$apiResult['success'])
+        {
+            $error = 'There is no connection with the API.';
+            if(isset($apiResult['error']))
+            {
+                switch ($apiResult['error'])
+                {
+                    case 2:{
+                        $error = $this->trans('No write permissions.');
+                        break;
+                    }
+                    case 3:{
+                        $error = $this->trans('The store folder is not valid.');
+                        break;
+                    }
+                    case 4:{
+                        $error = $this->trans('Unknown error.');
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $error;
+    }
+
+    private function registerDataBdAndFtpStore($server, $name_bd, $user_bd, $pass_bd, $prefix_bd, $ftp_user, $ftp_pass, $ftp_server, $ftp_port, $ftp_ssl, $ftp_root, $intance, $user, $connection_mode)
+    {
+        $response = [
+            'status' => '',
+            'error' => '',
+        ];
+
+        $apiResult = ShopyManager::callShopyApi('editstore', [
+            'idinstancia' => $intance->getIdInstance(),
+            'iduser' => $user->getId(),
+            'pass' => $user->getPass(),
+            'connection_mode' => $connection_mode,
+            'server' => $server,
+            'name_bd' => $name_bd,
+            'user_bd' => $user_bd,
+            'pass_bd' => $pass_bd,
+            'ftp_user' => $ftp_user,
+            'ftp_pass' => $ftp_pass,
+            'ftp_server' => $ftp_server,
+            'ftp_port' => $ftp_port,
+            'ftp_ssl' => $ftp_ssl,
+            'ftp_root' => $ftp_root,
+        ]);
+
+        if (isset($apiResult['success']) && $apiResult['success'])
+        {
+            $intance = new ShopyInstance();
+            $intance->setConnectionMode($connection_mode);
+            $intance->setServer($server);
+            $intance->setNameBd($name_bd);
+            $intance->setUserBd($user_bd);
+            $intance->setPassBd($pass_bd);
+            $intance->setFtpUser($ftp_user);
+            $intance->setFtpPass($ftp_pass);
+            $intance->setFtpServer($ftp_server);
+            $intance->setFtpPort($ftp_port);
+            $intance->setFtpSsl($ftp_ssl);
+            $intance->setFtpRoot($ftp_root);
+            $intance->setStatus(3);
+            $intance->update();
+
+        } else {
+            $error = 'There is no connection with the API.';
+            if(isset($apiResult['error']))
+            {
+                switch ($apiResult['error'])
+                {
+                    case 2:{
+                        $error = $this->trans('The instance to edit cannot be found.');
+                        break;
+                    }
+                    case 3:{
+                        $error = $this->trans('The user does not exist or the password is incorrect.');
+                        break;
+                    }
+                    case 4:{
+                        $error = $this->trans('Data error.');
+                        break;
+                    }
+                }
+            }
+            $response['error'] = $error;
+            $response['status'] = 1;
+        }
+
+        return $response;
     }
 
     #endregion
