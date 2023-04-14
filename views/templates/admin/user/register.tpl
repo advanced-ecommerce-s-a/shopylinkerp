@@ -62,7 +62,7 @@
                     </div>
                     <div class="col-md-12 text-center mt-2">
                         <div class="form-group">
-                            <button type="button" class="btn btn-primary" data-action="processRegister">{l s="Register" mod='shopylinkerp'}</button>
+                            <button type="button" class="btn btn-primary" data-action="processRegister">{l s="Sign up in Shopylinker" mod='shopylinkerp'}</button>
                         </div>
                     </div>
                     <div class="col-md-12 text-center mt-2">
