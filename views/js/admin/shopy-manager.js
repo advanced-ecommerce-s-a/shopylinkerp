@@ -1,11 +1,35 @@
 var ShopyManager = {
     token: null,
-    init: function(token){
+    init: function (token) {
         this.token = token;
         this._initEvents();
     },
 
-    _initEvents: function(){
+    _ajaxCall(form, action, callback) {
+
+        form.append('controller', 'AdminShopylinkerpManager');
+        form.append('token', ShopyManager.token);
+        form.append('action', action);
+
+        $.ajax({
+            url: 'ajax-tab.php',
+            data: form,
+            method: 'POST',
+            processData: false,
+            cache: false,
+            contentType: false,
+            beforeSend: function () {
+                //TODO block
+            },
+            success: function (response) {
+                callback(response);
+            },
+            complete: function () {
+                //TODO unblock
+            }
+        });
+    },
+    _initEvents: function () {
         //region User
         $('[data-action="displayLogin"]').off('click').on('click', function () {
             ShopyManager.displayLogin();
@@ -37,10 +61,10 @@ var ShopyManager = {
         //region Instance
         $('[data-action="selectConnectionMode"]').off('change').on('change', function () {
             var opciones = $(this).val();
-            if(opciones == 1){
+            if (opciones == 1) {
                 $('#container_proxy').show();
                 $('#container_direct').hide();
-            }else{
+            } else {
                 $('#container_proxy').hide();
                 $('#container_direct').show();
             }
@@ -60,6 +84,15 @@ var ShopyManager = {
     //region User
     displayLogin: function () {
         var form = new FormData();
+
+        this._ajaxCall(form,'displayLogin',function (response)
+        {
+            $('#container_shopylinkerp').html(response);
+            ShopyManager._initEvents();
+        });
+
+
+        /*
         form.append('controller', 'AdminShopylinkerpManager');
         form.append('token', ShopyManager.token);
         form.append('action', 'displayLogin');
@@ -70,7 +103,7 @@ var ShopyManager = {
             url: 'ajax-tab.php',
             data: form,
             method: 'POST',
-            processData:false,
+            processData: false,
             cache: false,
             contentType: false,
             beforeSend: function () {
@@ -83,12 +116,12 @@ var ShopyManager = {
             complete: function () {
                 //TODO unblock
             }
-        });
+        });*/
     },
 
-    processLogin: function () {
+    /*processLogin: function () {
         var form = $('#form_login');
-        if(form.valid()) {
+        if (form.valid()) {
             form = document.getElementById('form_login');
             form = new FormData(form);
             form.append('controller', 'AdminShopylinkerpManager');
@@ -123,6 +156,30 @@ var ShopyManager = {
                 complete: function () {
                     //TODO unblock
                 }
+            });
+        }
+    },*/
+
+    processLogin: function () {
+        var form = $('#form_login');
+        if (form.valid()) {
+            form = document.getElementById('form_login');
+            form = new FormData(form);
+
+            this._ajaxCall(form,'login',function (response) {
+                var response = JSON.parse(response);
+                console.log(response);
+                switch (response.status) {
+                    case 0: {
+                        $('#container_shopylinkerp').html(response.html);
+                        break;
+                    }
+                    case 1: {
+                        $('#div_message').html(response.error);
+                        $('#div_message').show();
+                    }
+                }
+                ShopyManager._initEvents();
             });
         }
     },
@@ -165,7 +222,7 @@ var ShopyManager = {
             url: 'ajax-tab.php',
             data: form,
             method: 'POST',
-            processData:false,
+            processData: false,
             cache: false,
             contentType: false,
             beforeSend: function () {
@@ -194,7 +251,7 @@ var ShopyManager = {
                 },
             }
         });
-        if(form.valid()) {
+        if (form.valid()) {
             form = document.getElementById('form_register');
             form = new FormData(form);
             form.append('controller', 'AdminShopylinkerpManager');
@@ -205,7 +262,7 @@ var ShopyManager = {
                 url: 'ajax-tab.php',
                 data: form,
                 method: 'POST',
-                processData:false,
+                processData: false,
                 cache: false,
                 contentType: false,
                 beforeSend: function () {
@@ -213,12 +270,12 @@ var ShopyManager = {
                 },
                 success: function (response) {
                     var response = JSON.parse(response);
-                    switch (response.status){
-                        case 0:{
+                    switch (response.status) {
+                        case 0: {
                             $('#container_shopylinkerp').html(response.html);
                             break;
                         }
-                        case 1:{
+                        case 1: {
                             $('#div_message').html(response.error);
                             $('#div_message').show();
                         }
@@ -235,7 +292,7 @@ var ShopyManager = {
 
     processValidateUser: function () {
         var form = $('#form_validate_user');
-        if(form.valid()) {
+        if (form.valid()) {
             form = document.getElementById('form_validate_user');
             form = new FormData(form);
             form.append('controller', 'AdminShopylinkerpManager');
@@ -246,7 +303,7 @@ var ShopyManager = {
                 url: 'ajax-tab.php',
                 data: form,
                 method: 'POST',
-                processData:false,
+                processData: false,
                 cache: false,
                 contentType: false,
                 beforeSend: function () {
@@ -254,12 +311,12 @@ var ShopyManager = {
                 },
                 success: function (response) {
                     var response = JSON.parse(response);
-                    switch (response.status){
-                        case 0:{
+                    switch (response.status) {
+                        case 0: {
                             $('#container_shopylinkerp').html(response.html);
                             break;
                         }
-                        case 1:{
+                        case 1: {
                             $('#div_message').html(response.error);
                             $('#div_message').show();
                         }
@@ -286,7 +343,7 @@ var ShopyManager = {
             url: 'ajax-tab.php',
             data: form,
             method: 'POST',
-            processData:false,
+            processData: false,
             cache: false,
             contentType: false,
             beforeSend: function () {
@@ -314,7 +371,7 @@ var ShopyManager = {
             url: 'ajax-tab.php',
             data: form,
             method: 'POST',
-            processData:false,
+            processData: false,
             cache: false,
             contentType: false,
             beforeSend: function () {
@@ -322,22 +379,22 @@ var ShopyManager = {
             },
             success: function (response) {
                 var response = JSON.parse(response);
-                switch (response.step){
-                    case '1':{
-                        if(response.status == 0){
+                switch (response.step) {
+                    case '1': {
+                        if (response.status == 0) {
                             //TODO next step
                             alert('OK');
-                        }else{
+                        } else {
                             //TODO show error
                             alert(resp.error);
                         }
                         break;
                     }
-                    case '2':{
-                        if(response.status == 0){
+                    case '2': {
+                        if (response.status == 0) {
                             //TODO close de wizard
                             alert('OK');
-                        }else{
+                        } else {
                             //TODO show error
                             alert(resp.error);
                         }
