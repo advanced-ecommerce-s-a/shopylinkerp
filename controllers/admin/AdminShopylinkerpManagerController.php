@@ -240,7 +240,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         die(json_encode($response));
     }
 
-    public function processValidateUser()
+    public function ajaxProcessValidateUser()
     {
         $code = Tools::getValue('code');
 

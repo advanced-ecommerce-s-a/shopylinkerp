@@ -39,7 +39,7 @@
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-8 row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 text-center">
                             <div id="div_message" class="alert alert-danger">{l s='You must check your email to obtain the validation code and enter it here' mod='shopylinkerp'}</div>
                         </div>
                         <div class="col-md-12">
@@ -47,7 +47,7 @@
                                 <div class="row">
                                     <div class="col-md-2"></div>
                                     <div class="col-md-2 text-right">
-                                        <label>{l s='Code' mod='shopylinkerp'}</label>
+                                        <label style="margin-top: 5px">{l s='Code' mod='shopylinkerp'}</label>
                                     </div>
                                     <div class="col-md-4">
                                         <input class="form-control" name="code" required="required">
