@@ -89,8 +89,8 @@ class ShopyManager
     static function callShopyApi($action, $parameters)
     {
         //TODO ver si la url de la api se pone directo
-        $url = static::API_URL.$action;
-        
+        $url = static::API_URL.$action."?rand=".rand(0,100000);
+
         $strparams = '';
 
         //todo esto es mas seguro haciendolo de otra forma. preguntarme

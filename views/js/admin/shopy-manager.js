@@ -64,7 +64,9 @@ var ShopyManager = {
         form.append('token', ShopyManager.token);
         form.append('action', 'displayLogin');
 
+
         $.ajax({
+            //url: 'ajax-tab.php',
             url: 'ajax-tab.php',
             data: form,
             method: 'POST',
@@ -104,6 +106,7 @@ var ShopyManager = {
                     //TODO block
                 },
                 success: function (response) {
+                    alert(response);
                     var response = JSON.parse(response);
                     console.log(response);
                     switch (response.status) {
