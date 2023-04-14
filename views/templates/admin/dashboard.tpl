@@ -72,7 +72,7 @@
     </div>
     <div class="col-md-6">
         <div class="panel">
-            <div class="panel-heading">{l s='Instance' mod='shopylinkerp'}</div>
+            <div class="panel-heading">{l s='Store asociation' mod='shopylinkerp'}</div>
             {if $instanceData == 3}
                 <div class="row">
                     <div class="col-md-12">
@@ -93,15 +93,14 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     {if $instanceData == 1}
-                                        <label>{l s='You must link the store to start working with Shopylinker.' mod='shopylinkerp'}</label>
+                                        <div class="alert alert-danger">{l s='You must link the store to start working with Shopylinker.' mod='shopylinkerp'}</div>
                                     {else}
-                                        <label>{l s='You must complete the store linking process.' mod='shopylinkerp'}</label>
+                                        <div class="alert alert-warning">{l s='You must complete the store linking process.' mod='shopylinkerp'}</div>
                                     {/if}
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <input type="hidden" name="action" value="displayAssociateStore">
+                                <div class="form-group text-center">
                                     <button type="button" class="btn btn-primary" data-action="displayAssociateStore">{l s='Associate store' mod='shopylinkerp'}</button>
                                 </div>
                             </div>
