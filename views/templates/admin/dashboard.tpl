@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-md-12">
                     {if $userData['status'] == 0}
-                        <form method="post" action="{$link->getAdminLink('AdminShopylinkerpManager')}">
+                        <form method="post" action="">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-1">

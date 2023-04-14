@@ -27,6 +27,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     {
         parent::setMedia($isNewTheme);
 
+        $this->addJS(_MODULE_DIR_.$this->module->name.'/views/js/plugin/jquery/jquery.blockUI.js');
+        $this->addJS(_MODULE_DIR_.$this->module->name.'/views/js/plugin/jquery/jquery.form.min.js');
+        $this->addJS(_MODULE_DIR_.$this->module->name.'/views/js/plugin/jquery/jquery.validate.js');
+
         $this->addJS(_MODULE_DIR_.$this->module->name.'/views/js/admin/shopy-manager.js');
     }
 
@@ -43,23 +47,45 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
     public function renderList()
     {
-        $module_action = Tools::getValue('action');
+//        $module_action = Tools::getValue('action');
+//
+//        if (!isset($module_action) || $module_action == '')
+//        {
+//            $module_action = 'displayLogin';
+//
+//            $user = ShopyManager::getShopyUser();
+//            if(isset($user['id']) && $user['id'] != 0){
+//                $module_action = 'displayDashboard';
+//            }
+//        }
+//
+//        $tpl = $this->$module_action();
+//
+//        $link = new Link();
+//
+//        $tpl->assign('link', $link);
 
-        if (!isset($module_action) || $module_action == '')
+
+        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/index.tpl');
+
+        $user = ShopyManager::getShopyUser();
+        $include_tpl = 'module:shopylinkerp/views/templates/admin/user/login.tpl';
+        if(isset($user['id']) && $user['id'] != 0)
         {
-            $module_action = 'displayLogin';
+            $userData = ShopyManager::getShopyUser();
+            $tpl->assign('userData', $userData);
 
-            $user = ShopyManager::getShopyUser();
-            if(isset($user['id']) && $user['id'] != 0){
-                $module_action = 'displayDashboard';
-            }
+            $instanceData = ShopyManager::getShopyInstance();
+            $tpl->assign('instanceData', $instanceData);
+
+            $include_tpl = 'module:shopylinkerp/views/templates/admin/dashboard.tpl';
         }
 
-        $tpl = $this->$module_action();
+        $tpl->assign('include_tpl', $include_tpl);
 
-        $link = new Link();
+        $token = Tools::getAdminTokenLite('AdminShopylinkerpManager');
 
-        $tpl->assign('link', $link);
+        $tpl->assign('token', $token);
 
         return $tpl->fetch();
     }
@@ -77,23 +103,19 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         $tpl->assign('instanceData', $instanceData);
 
-        $token = Tools::getAdminTokenLite('AdminShopylinkerpManager');
-
-        $tpl->assign('token', $token);
-
         return $tpl;
     }
     #endregion
 
     #region Login
-    private function displayLogin()
+    public function ajaxProcessDisplayLogin()
     {
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/user/login.tpl');
 
-        return $tpl;
+        die($tpl->fetch());
     }
 
-    public function processLogin()
+    public function ajaxProcessLogin()
     {
         $username = Tools::getValue('username');
         $password = Tools::getValue('password');
@@ -102,6 +124,11 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             'user' => $username,
             'pass' => $password,
         ]);
+
+        $response = [
+            'status' => 0,
+            'error' => '',
+        ];
 
         if (isset($apiResult['success']) && $apiResult['success'])
         {
@@ -115,7 +142,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             $user->setStatus($uData['status']);
             $user->update();
 
-            $result = $this->displayDashboard();
+            $response['html'] = $this->displayDashboard()->fetch();
         } else {
             $error = 'There is no connection with the API.';
             if(isset($apiResult['error'])){
@@ -138,11 +165,11 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                     }
                 }
             }
-            $this->errors[] = $error;
-            $result = $this->displayLogin();
+            $response['error'] = $error;
+            $response['status'] = 1;
         }
 
-        return $result;
+        die(json_encode($response));
     }
 
     public function processLogout()
@@ -158,14 +185,14 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     #endregion
 
     #region Register
-    private function displayRegister()
+    public function ajaxProcessDisplayRegister()
     {
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/user/register.tpl');
 
-        return $tpl;
+        die($tpl->fetch());
     }
 
-    private function processRegister()
+    public function ajaxProcessRegister()
     {
         $name = Tools::getValue('name');
         $lastname = Tools::getValue('lastname');
@@ -190,7 +217,8 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             $user->setStatus(0);
             $user->update();
 
-            $result = $this->displayDashboard();
+            $response['html'] = $this->displayDashboard()->fetch();
+            $response['status'] = 0;
         } else
         {
             $error = 'There is no connection with the API.';
@@ -208,14 +236,14 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                     }
                 }
             }
-            $this->errors[] = $error;
-            $result = $this->displayRegister();
+            $response['status'] = 1;
+            $response['error'] = $error;
         }
 
-        return $result;
+        die(json_encode($response));
     }
 
-    private function processValidateUser()
+    public function processValidateUser()
     {
         $code = Tools::getValue('code');
 
@@ -265,7 +293,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         return $result;
     }
 
-    private function processResendValidateUser()
+    public function processResendValidateUser()
     {
         $user = new ShopyUser();
 

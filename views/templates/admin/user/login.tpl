@@ -3,12 +3,17 @@
     <div class="col-lg-4">
         <div class="panel">
             <div class="panel-heading">{l s='Sign in to Shopylinker' mod='shopylinkerp'}</div>
-            <form method="post" action="{$link->getAdminLink('AdminShopylinkerpManager')}">
+            <form id="form_login" method="post">
+                <div class="row">
+                    <div class="col-12">
+                        <div id="div_message" class="alert alert-danger" style="display: none"></div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group row">
                             <div class="col-md-3 text-right">
-                                <label style="margin-top: 5px">{l s='User name' mod='shopylinkerp'}: </label>
+                                <label style="margin-top: 5px">{l s='Username' mod='shopylinkerp'}: </label>
                             </div>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="username" required="required">
@@ -27,13 +32,12 @@
                     </div>
                     <div class="col-md-12 text-center">
                         <div class="form-group">
-                            <input type="hidden" name="action" value="processLogin">
-                            <button type="submit" class="btn btn-primary">{l s="Sign in" mod='shopylinkerp'}</button>
+                            <button type="button" class="btn btn-primary" data-action="processLogin">{l s="Sign in" mod='shopylinkerp'}</button>
                         </div>
                     </div>
                     <div class="col-md-12 text-center mt-2">
                         <div class="form-group">
-                            <a href="{$link->getAdminLink('AdminShopylinkerpManager', true, [], ['action' => 'displayRegister'])}">{l s="Don't have an account? Sign up" mod='shopylinkerp'}</a>
+                            <a href="javascript:void(0)" data-action="displayRegister">{l s="Don't have an account? Sign up" mod='shopylinkerp'}</a>
                         </div>
                     </div>
                 </div>

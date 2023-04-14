@@ -2,8 +2,13 @@
     <div class="col-md-3"></div>
     <div class="col-lg-6">
         <div class="panel">
-            <div class="panel-heading">{l s='Register in Shopylinker' mod='shopylinkerp'}</div>
-            <form id="form_registration" method="post" action="{$link->getAdminLink('AdminShopylinkerpManager')}">
+            <div class="panel-heading">{l s='Sign up in Shopylinker' mod='shopylinkerp'}</div>
+            <form id="form_register" method="post">
+                <div class="row">
+                    <div class="col-12">
+                        <div id="div_message" class="alert alert-danger" style="display: none"></div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group row">
@@ -31,7 +36,7 @@
                                 <label style="margin-top: 5px">{l s='Confirm Password' mod='shopylinkerp'}:</label>
                             </div>
                             <div class="col-md-6">
-                                <input type="password" class="form-control" required="required">
+                                <input type="password" class="form-control" name="rpassword" required="required">
                             </div>
                         </div>
                     </div>
@@ -57,13 +62,12 @@
                     </div>
                     <div class="col-md-12 text-center mt-2">
                         <div class="form-group">
-                            <input type="hidden" name="action" value="processRegister">
-                            <button type="submit" class="btn btn-primary">{l s="Register" mod='shopylinkerp'}</button>
+                            <button type="button" class="btn btn-primary" data-action="processRegister">{l s="Register" mod='shopylinkerp'}</button>
                         </div>
                     </div>
                     <div class="col-md-12 text-center mt-2">
                         <div class="form-group">
-                            <a href="{$link->getAdminLink('AdminShopylinkerpManager', true, [], ['action' => 'displayLogin'])}">{l s="Go to login" mod='shopylinkerp'}</a>
+                            <a href="javascript:void(0)" data-action="displayLogin">{l s="Go to login" mod='shopylinkerp'}</a>
                         </div>
                     </div>
                 </div>
@@ -71,10 +75,3 @@
         </div>
     </div>
 </div>
-<script>
-    // $(document).ready(function() {
-    //     $("#form_registration").on('submit', function(event) {
-    //         event.preventDefault();
-    //     });
-    // });
-</script>
