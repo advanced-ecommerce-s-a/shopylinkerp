@@ -53,7 +53,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <a href="{$link->getAdminLink('AdminShopylinkerpManager', true, [], ['action' => 'processLogout'])}">{l s="Log off" mod='shopylinkerp'}</a>
+{*                        <a href="{$link->getAdminLink('AdminShopylinkerpManager', true, [], ['action' => 'processLogout'])}">{l s="Log off" mod='shopylinkerp'}</a>*}
                     </div>
                 </div>
             </div>

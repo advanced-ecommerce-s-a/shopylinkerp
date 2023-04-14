@@ -100,7 +100,6 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/dashboard.tpl');
 
         $tpl->assign('userData', $userData);
-
         $tpl->assign('instanceData', $instanceData);
 
         return $tpl;
