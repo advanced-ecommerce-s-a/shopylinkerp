@@ -56,6 +56,7 @@ var ShopyManager = {
         $('[data-action="processValidateUser"]').off('click').on('click', function () {
             ShopyManager.processValidateUser();
         });
+
         //endregion
 
         //region Instance
@@ -77,6 +78,18 @@ var ShopyManager = {
         $('[data-action="processAssociateStore"]').off('click').on('click', function () {
             var idform = $(this).data('idform')
             ShopyManager.processAssociateStore(idform);
+        });
+
+        $('[data-action="finishAssociateStore"]').off('click').on('click', function () {
+            ShopyManager.finishAssociateStore();
+        });
+
+        $('.chaneg_associate_store').off('change').on('change', function () {
+            $('#btn_step_finish').prop('disabled', true);
+        });
+        $('.chaneg_associate_user').off('change').on('change', function () {
+            $('#btn_next_step_1').prop('disabled', true);
+            $('#btn_step_finish').prop('disabled', true);
         });
         //endregion
     },
@@ -215,6 +228,7 @@ var ShopyManager = {
 
     processAssociateStore: function (idform) {
         $('#div_message_step2').hide();
+        $('#div_message').hide();
         var form = document.getElementById(idform);
         form = new FormData(form);
         this._ajaxCall(form,'registerAssociateStore',function (response)
@@ -225,15 +239,14 @@ var ShopyManager = {
                     if (response.status == 0) {
                         $('#btn_step_1').prop('disabled', false);
                     } else {
-                        $('#div_message_step2').html(response.error);
-                        $('#div_message_step2').show();
+                        $('#div_message').html(response.error);
+                        $('#div_message').show();
                     }
                     break;
                 }
                 case '2': {
                     if (response.status == 0) {
-                        $('#modal_instance').modal('hide');
-                        //ShopyManager.displayDasboard()
+                        $('#btn_step_finish').prop('disabled', false);
                     } else {
                         $('#div_message_step2').html(response.error);
                         $('#div_message_step2').show();
@@ -242,6 +255,11 @@ var ShopyManager = {
                 }
             }
         });
+    },
+
+    finishAssociateStore: function () {
+        $('#modal_instance').modal('hide');
+        //ShopyManager.displayDasboard()
     },
 
     initWizard: function (){
