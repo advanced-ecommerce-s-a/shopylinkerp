@@ -104,7 +104,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <div class="alert alert-warning">{l s='Description.....' mod='shopylinkerp'}</div>
+                                                            <div class="alert alert-warning">{l s='Shopylinker will connect directly to your database and file system. For that it is necessary to provide the accesses. Note that in some cases we propose the accesses that are already configured in the store, but you can change them for the ones you want' mod='shopylinkerp'}</div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
