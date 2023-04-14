@@ -93,6 +93,7 @@ var ShopyManager = {
     },
 
     processLogin: function () {
+        $('#div_message').hide();
         var form = $('#form_login');
         if (form.valid()) {
             form = document.getElementById('form_login');
@@ -139,6 +140,7 @@ var ShopyManager = {
     },
 
     processRegister: function () {
+        $('#div_message').hide();
         var form = $('#form_register');
         form.validate({
             rules: {
@@ -196,6 +198,7 @@ var ShopyManager = {
             });
         }
     },
+
     //endregion
 
     //region Instance
@@ -205,11 +208,13 @@ var ShopyManager = {
         {
             $('#modal_container').html(response);
             $('#modal_instance').modal('show');
+            ShopyManager.initWizard();
             ShopyManager._initEvents();
         });
     },
 
     processAssociateStore: function (idform) {
+        $('#div_message_step2').hide();
         var form = document.getElementById(idform);
         form = new FormData(form);
         this._ajaxCall(form,'registerAssociateStore',function (response)
@@ -218,26 +223,36 @@ var ShopyManager = {
             switch (response.step) {
                 case '1': {
                     if (response.status == 0) {
-                        //TODO next step
-                        alert('OK');
+                        $('#btn_step_1').prop('disabled', false);
                     } else {
-                        //TODO show error
-                        alert(resp.error);
+                        $('#div_message_step2').html(response.error);
+                        $('#div_message_step2').show();
                     }
                     break;
                 }
                 case '2': {
                     if (response.status == 0) {
-                        //TODO close de wizard
-                        alert('OK');
+                        $('#modal_instance').modal('hide');
+                        //ShopyManager.displayDasboard()
                     } else {
-                        //TODO show error
-                        alert(resp.error);
+                        $('#div_message_step2').html(response.error);
+                        $('#div_message_step2').show();
                     }
                     break;
                 }
             }
         });
     },
+
+    initWizard: function (){
+        $("#tab_step1").tab("show");
+        $('#btn_next_step_1').on('click', function (){
+            $("#tab_step2").tab("show");
+        });
+        $('#btn_back_step_1').on('click', function (){
+            $("#tab_step1").tab("show");
+        });
+    },
     //endregion
+
 };
