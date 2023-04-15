@@ -1,5 +1,7 @@
 var ShopyManager = {
     token: null,
+
+    //region General
     init: function (token) {
         this.token = token;
         this._initEvents();
@@ -46,9 +48,53 @@ var ShopyManager = {
             var idform = $(this).data('idform')
             ShopyManager.processAssociateStore(idform);
         });
+        $('[data-action="selectConnectionMode"]').off('change').on('change', function () {
+            var opciones = $(this).val();
+            if (opciones == 2) {
+                $('#container_proxy').show();
+                $('#container_direct').hide();
+            } else {
+                $('#container_proxy').hide();
+                $('#container_direct').show();
+            }
+
+            //desaparesco los mensajes
+            $('#div_message_step2').hide();
+            $('#btn_step_finish').prop('disabled', true);
+        });
+
+        $('.chaneg_associate_store').off('change').on('change', function () {
+            $('#btn_step_finish').prop('disabled', true);
+        });
+        $('.chaneg_associate_user').off('change').on('change', function () {
+            $('#btn_next_step_1').prop('disabled', true);
+            $('#btn_step_finish').prop('disabled', true);
+        });
+
+        //pestañas
+        $("#tab_step1").tab("show");
+        $('#btn_next_step_1').on('click', function (){
+            $("#tab_step2").tab("show");
+        });
+        $('#btn_back_step_1').on('click', function (){
+            $("#tab_step1").tab("show");
+        });
+
+        $('[data-action="finishAssociateStore"]').off('click').on('click', function () {
+            ShopyManager.finishAssociateStore();
+        });
+
+        $('[data-action="processCheckDb"]').off('click').on('click', function () {
+            ShopyManager.proccessCheckDb();
+        });
+
+        $('[data-action="proccessCheckFTP"]').off('click').on('click', function () {
+            ShopyManager.proccessCheckFTP();
+        });
+
     },
     _initEvents: function () {
-        //region User
+
         $('[data-action="displayLogin"]').off('click').on('click', function () {
             ShopyManager.displayLogin();
         });
@@ -60,9 +106,8 @@ var ShopyManager = {
         $('[data-action="processLogout"]').off('click').on('click', function () {
             ShopyManager.processLogout();
         });
-        //endregion
 
-        //region Register
+
         $('[data-action="displayRegister"]').off('click').on('click', function () {
             ShopyManager.displayRegister();
         });
@@ -75,37 +120,15 @@ var ShopyManager = {
             ShopyManager.processValidateUser();
         });
 
-        //endregion
 
-        //region Instance
-        $('[data-action="selectConnectionMode"]').off('change').on('change', function () {
-            var opciones = $(this).val();
-            if (opciones == 1) {
-                $('#container_proxy').show();
-                $('#container_direct').hide();
-            } else {
-                $('#container_proxy').hide();
-                $('#container_direct').show();
-            }
-        });
 
         $('[data-action="displayAssociateStore"]').off('click').on('click', function () {
             ShopyManager.displayAssociateStore();
         });
-
-        $('[data-action="finishAssociateStore"]').off('click').on('click', function () {
-            ShopyManager.finishAssociateStore();
-        });
-
-        $('.chaneg_associate_store').off('change').on('change', function () {
-            $('#btn_step_finish').prop('disabled', true);
-        });
-        $('.chaneg_associate_user').off('change').on('change', function () {
-            $('#btn_next_step_1').prop('disabled', true);
-            $('#btn_step_finish').prop('disabled', true);
-        });
-        //endregion
     },
+
+    //endregion
+
 
     //region User
     displayLogin: function () {
@@ -234,7 +257,6 @@ var ShopyManager = {
         {
             $('#modal_container').html(response);
             $('#modal_instance').modal('show');
-            ShopyManager.initWizard();
         });
     },
 
@@ -251,19 +273,27 @@ var ShopyManager = {
                 var response = JSON.parse(response);
                 switch (response.step) {
                     case '1': {
-                        if (response.status == 0) {
-                            $('#btn_step_1').prop('disabled', false);
+                        if (response.status) {
+                            $('#btn_next_step_1').prop('disabled', false);
+                            $('#div_message').removeClass('alert-danger').addClass('alert-success');
+                            $('#div_message').html(response.text);
+                            $('#div_message').show();
                         } else {
                             $('#div_message').html(response.error);
+                            $('#div_message').removeClass('alert-success').addClass('alert-danger');
                             $('#div_message').show();
                         }
                         break;
                     }
                     case '2': {
-                        if (response.status == 0) {
+                        if (response.status) {
+                            $('#div_message_step2').removeClass('alert-danger').addClass('alert-success');
+                            $('#div_message_step2').html(response.text);
+                            $('#div_message_step2').show();
                             $('#btn_step_finish').prop('disabled', false);
                         } else {
                             $('#div_message_step2').html(response.error);
+                            $('#div_message_step2').removeClass('alert-success').addClass('alert-danger');
                             $('#div_message_step2').show();
                         }
                         break;
@@ -273,20 +303,78 @@ var ShopyManager = {
         }
     },
 
-    finishAssociateStore: function () {
-        $('#modal_instance').modal('hide');
-        //ShopyManager.displayDasboard()
+    proccessCheckDb: function () {
+        var form = $('#form_instance_direct_db');
+        var formdata = document.getElementById('form_instance_direct_db');
+        formdata = new FormData(formdata);
+        if(form.valid())
+        {
+            this._ajaxCall(formdata, 'checkAndRegisterdb', function (response) {
+                console.log(response);
+                var response = JSON.parse(response);
+                if(response.status)
+                {
+                    //ok con la bd, tengo el mensaje y debo poner el hidden en true
+                    $('#divdbmsg').html(response.text);
+                    $('#divdbmsg').removeClass('alert-danger').addClass('alert-success');
+                    $('#divdbmsg').show();
+
+                } else
+                {
+                    $('#divdbmsg').html(response.error);
+                    $('#divdbmsg').removeClass('alert-success').addClass('alert-danger');
+                    $('#divdbmsg').show();
+                }
+            });
+        }
     },
 
-    initWizard: function (){
-        $("#tab_step1").tab("show");
-        $('#btn_next_step_1').on('click', function (){
-            $("#tab_step2").tab("show");
-        });
-        $('#btn_back_step_1').on('click', function (){
-            $("#tab_step1").tab("show");
-        });
+    proccessCheckFTP: function () {
+        var form = $('#form_instance_direct_ftp');
+        var formdata = document.getElementById('form_instance_direct_ftp');
+        formdata = new FormData(formdata);
+        if(form.valid())
+        {
+            this._ajaxCall(formdata, 'checkAndRegisterFtp', function (response) {
+                console.log(response);
+                var response = JSON.parse(response);
+                if(response.status)
+                {
+                    //ok con la bd, tengo el mensaje y debo poner el hidden en true
+                    $('#divftpmsg').html(response.text);
+                    $('#divftpmsg').removeClass('alert-danger').addClass('alert-success');
+                    $('#divftpmsg').show();
+
+                } else
+                {
+                    $('#divftpmsg').html(response.error);
+                    $('#divftpmsg').removeClass('alert-success').addClass('alert-danger');
+                    $('#divftpmsg').show();
+                }
+            });
+        }
     },
+
+    finishAssociateStore: function () {
+        var form = new FormData();
+        this._ajaxCall(form, 'FinishteStore', function (response) {
+            var response = JSON.parse(response);
+            if(response.status)
+            {
+                $('#modal_instance').modal('hide');
+                ShopyManager.displayDasboard();
+            } else
+            {
+                $('#div_message_step2').html('error');
+                $('#div_message_step2').removeClass('alert-success').addClass('alert-danger');
+                $('#div_message_step2').show();
+            }
+        });
+
+
+    },
+
+
     //endregion
 
 };

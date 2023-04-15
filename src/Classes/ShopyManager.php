@@ -6,7 +6,8 @@ use Configuration;
 
 class ShopyManager
 {
-    const API_URL = 'https://devp.shopylinker.com/web/app_dev.php/es/api/';
+    //const API_URL = 'https://devp.shopylinker.com/web/app_dev.php/es/api/';
+    const API_URL = 'https://localhost/sassympresta/web/app_dev.php/es/api/';
 
     static function init()
     {
@@ -25,14 +26,14 @@ class ShopyManager
             ];
 
             $config['instance'] = [
-                'status' => 1,
+                'status' => InstanceStatus::UNREGISTER,
                 'id_instance' => 0,
                 'prefix' => '',
                 'url_front' => '',
                 'url_admin' => '',
                 'user_admin' => '',
                 'pass_admin' => '',
-                'connection_mode' => '',
+                'connection_mode' => 2,
                 'server' => '',
                 'name_bd' => '',
                 'user_bd' => '',
@@ -93,22 +94,32 @@ class ShopyManager
 
         $strparams = '';
 
-        //todo esto es mas seguro haciendolo de otra forma. preguntarme
-        // $postfields = http_build_query($postfields,'','&');
-        if(is_array($parameters))
-        {
-            $separator = '&';
-            foreach ($parameters as $key => $value) {
-                $strparams .= $separator. $key . '=' . $value;
-            }
-        }
+        $strparams = http_build_query($parameters,'','&');
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $strparams);
+        //solo para localhost
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        //--------------
         $apiResult = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        if(curl_exec($ch) === false)
+        {
+            echo 'Curl error: ' . curl_error($ch);
+            print_r($info);
+        }
+        if($info['http_code']!=200)
+        {
+            $info = curl_getinfo($ch);
+            echo $strparams;
+            print_r($info);
+        }
+        /*echo $apiResult;
+        echo $strparams;
+        print_r($info);*/
 
         curl_close($ch);
         $result = null;

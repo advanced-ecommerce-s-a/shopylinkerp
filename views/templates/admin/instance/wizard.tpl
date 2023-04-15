@@ -10,11 +10,11 @@
                     <div class="col-md-12">
                         <ul class="nav nav-pills nav-justified mb-4" id="wizardTabs" role="tablist">
                             <li class="nav-item">
-                                <a id="tab_step1" class="nav-link active" data-toggle="pill" href="#tab_admin_acces"
+                                <a id="tab_step1" class="nav-link active" href="#tab_admin_acces"
                                    role="tab">{l s='Prestashop Backoffice Access' mod='shopylinkerp'}</a>
                             </li>
                             <li class="nav-item">
-                                <a id="tab_step2" class="nav-link" data-toggle="pill" href="#tab_connection_data"
+                                <a id="tab_step2" class="nav-link disabled" href="#tab_connection_data"
                                    role="tab">{l s='ShopyLinker connection data' mod='shopylinkerp'}</a>
                             </li>
                         </ul>
@@ -26,7 +26,8 @@
                                     </div>
                                     <div class="col-md-12">
                                         <form id="form_user_data" method="post">
-                                            <input type="hidden" id="validastoreccess" name="validastoreccess" value="0">
+                                            <input type="hidden" id="validastoreccess" name="validastoreccess"
+                                                   value="0">
                                             <div class="form-group row">
                                                 <div class="col-md-3 text-right">
                                                     <label style="margin-top: 5px">{l s='Username' mod='shopylinkerp'}*
@@ -76,8 +77,9 @@
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <div class="col-md-12">
-                                                        <input type="radio" name="checked_connection_mode" value="1"
-                                                               checked="checked" data-action="selectConnectionMode">
+                                                        <input type="radio" name="checked_connection_mode" value="2"
+                                                                {if $conectionmode == 2} checked="checked" {/if}
+                                                               data-action="selectConnectionMode">
                                                         <label>{l s='Proxy Mode Integration Configuration.' mod='shopylinkerp'}</label>
                                                     </div>
                                                 </div>
@@ -85,14 +87,15 @@
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <div class="col-md-12">
-                                                        <input type="radio" name="checked_connection_mode" value="2"
+                                                        <input type="radio" {if $conectionmode == 1} checked="checked" {/if}
+                                                               name="checked_connection_mode" value="1"
                                                                data-action="selectConnectionMode">
                                                         <label>{l s='Direct Mode Integration Configuration.' mod='shopylinkerp'}</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="container_proxy" class="row">
+                                        <div id="container_proxy" class="row" {if $conectionmode == 1} style="display: none" {/if}>
                                             <form id="form_instance_proxy" method="post">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
@@ -103,20 +106,20 @@
                                                     <div class="form-group">
                                                         <label style="margin-top: 5px">{l s='Connection key' mod='shopylinkerp'}</label>
                                                         <input class="form-control chaneg_associate_store"
-                                                               name="connection_key" required>
+                                                               name="connection_key" value="{{$conectionKey}}" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 text-center" style="margin-top: 25px">
                                                     <input type="hidden" name="step" value="2">
-                                                    <input type="hidden" name="connection_mode" value="1">
+                                                    <input type="hidden" name="connection_mode" value="2">
                                                     <button type="button" class="btn btn-success"
                                                             data-action="processAssociateStore"
                                                             data-idform="form_instance_proxy">{l s='Validate' mod='shopylinkerp'}</button>
                                                 </div>
                                             </form>
                                         </div>
-                                        <div id="container_direct" class="row" style="display: none">
-                                            <form id="form_instance_direct" method="post">
+                                        <div id="container_direct" class="row"  {if $conectionmode == 2} style="display: none" {/if}>
+                                            <form id="form_instance_direct_db" method="post">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
@@ -125,18 +128,21 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <fieldset>
-                                                            <legend>{l s='Database connection data.' mod='shopylinkerp'}</legend>
+                                                            <legend>{l s='Database connection data' mod='shopylinkerp'}</legend>
+                                                            <div class="row">
+                                                                <div id="divdbmsg" class="alert alert-danger" style="display: none"></div>
+                                                            </div>
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <label>{l s='Server' mod='shopylinkerp'}</label>
+                                                                        <label>{l s='Server' mod='shopylinkerp'}*</label>
                                                                         <input class="form-control chaneg_associate_store"
                                                                                name="server" required value="{$server}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <label>{l s='Data base' mod='shopylinkerp'}</label>
+                                                                        <label>{l s='Database' mod='shopylinkerp'}*</label>
                                                                         <input class="form-control chaneg_associate_store"
                                                                                name="name_bd" required
                                                                                value="{$name_bd}">
@@ -144,7 +150,7 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <label>{l s='User' mod='shopylinkerp'}</label>
+                                                                        <label>{l s='User' mod='shopylinkerp'}*</label>
                                                                         <input class="form-control chaneg_associate_store"
                                                                                name="user_bd" required
                                                                                value="{$user_bd}">
@@ -154,18 +160,27 @@
                                                                     <div class="form-group">
                                                                         <label>{l s='Password' mod='shopylinkerp'}</label>
                                                                         <input class="form-control chaneg_associate_store"
-                                                                               name="pass_bd" required
+                                                                               name="pass_bd"
                                                                                value="{$pass_bd}">
                                                                     </div>
+                                                                </div>
+                                                                <div class="col-md-12 text-center">
+                                                                    <button type="button" class="btn btn-success"
+                                                                            data-action="processCheckDb">{l s='Validate' mod='shopylinkerp'}</button>
                                                                 </div>
                                                             </div>
                                                         </fieldset>
                                                     </div>
                                                 </div>
+                                            </form>
+                                            <form id="form_instance_direct_ftp" method="post">
                                                 <div class="row">
                                                     <div class="col-md-12" style="margin-top: 25px">
                                                         <fieldset>
                                                             <legend>{l s='Ftp connection data' mod='shopylinkerp'}</legend>
+                                                            <div class="row">
+                                                                <div id="divftpmsg" class="alert alert-danger" style="display: none"></div>
+                                                            </div>
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
@@ -186,6 +201,13 @@
                                                                         <label>{l s='Server' mod='shopylinkerp'}</label>
                                                                         <input class="form-control chaneg_associate_store"
                                                                                name="ftp_server" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>{l s='Port' mod='shopylinkerp'}</label>
+                                                                        <input class="form-control chaneg_associate_store"
+                                                                               name="ftp_port" required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-5">
@@ -210,10 +232,10 @@
                                                 <div class="row">
                                                     <div class="col-md-12 text-center" style="margin-top: 25px">
                                                         <input type="hidden" name="step" value="2">
-                                                        <input type="hidden" name="connection_mode" value="2">
+                                                        <input type="hidden" name="connection_mode" value="1">
                                                         <button type="button" class="btn btn-success"
-                                                                data-action="processAssociateStore"
-                                                                data-idform="form_instance_direct">{l s='Validate' mod='shopylinkerp'}</button>
+                                                                data-action="proccessCheckFTP"
+                                                                >{l s='Validate' mod='shopylinkerp'}</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -241,7 +263,7 @@
 </div>
 
 <script type="text/javascript">
-    $(function() { // <-- add this
+    $(function () { // <-- add this
         ShopyManager._initWizard();
     });
 </script>
