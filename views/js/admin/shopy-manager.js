@@ -19,14 +19,32 @@ var ShopyManager = {
             cache: false,
             contentType: false,
             beforeSend: function () {
-                //TODO block
+                //TODO poner multilingue el mensaje
+                $.blockUI({ message:'Please wait...',
+                    css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    } });
             },
             success: function (response) {
                 callback(response);
             },
             complete: function () {
-                //TODO unblock
+                $.unblockUI();
             }
+        });
+    },
+
+    _initWizard: function()
+    {
+        $('[data-action="processAssociateStore"]').off('click').on('click', function () {
+            var idform = $(this).data('idform')
+            ShopyManager.processAssociateStore(idform);
         });
     },
     _initEvents: function () {
@@ -73,11 +91,6 @@ var ShopyManager = {
 
         $('[data-action="displayAssociateStore"]').off('click').on('click', function () {
             ShopyManager.displayAssociateStore();
-        });
-
-        $('[data-action="processAssociateStore"]').off('click').on('click', function () {
-            var idform = $(this).data('idform')
-            ShopyManager.processAssociateStore(idform);
         });
 
         $('[data-action="finishAssociateStore"]').off('click').on('click', function () {
@@ -222,39 +235,42 @@ var ShopyManager = {
             $('#modal_container').html(response);
             $('#modal_instance').modal('show');
             ShopyManager.initWizard();
-            ShopyManager._initEvents();
         });
     },
 
     processAssociateStore: function (idform) {
         $('#div_message_step2').hide();
         $('#div_message').hide();
+
+        var formtoValidate = $('#'+idform);
+
         var form = document.getElementById(idform);
-        form = new FormData(form);
-        this._ajaxCall(form,'registerAssociateStore',function (response)
-        {
-            var response = JSON.parse(response);
-            switch (response.step) {
-                case '1': {
-                    if (response.status == 0) {
-                        $('#btn_step_1').prop('disabled', false);
-                    } else {
-                        $('#div_message').html(response.error);
-                        $('#div_message').show();
+        if (formtoValidate.valid()) {
+            form = new FormData(form);
+            this._ajaxCall(form, 'registerAssociateStore', function (response) {
+                var response = JSON.parse(response);
+                switch (response.step) {
+                    case '1': {
+                        if (response.status == 0) {
+                            $('#btn_step_1').prop('disabled', false);
+                        } else {
+                            $('#div_message').html(response.error);
+                            $('#div_message').show();
+                        }
+                        break;
                     }
-                    break;
-                }
-                case '2': {
-                    if (response.status == 0) {
-                        $('#btn_step_finish').prop('disabled', false);
-                    } else {
-                        $('#div_message_step2').html(response.error);
-                        $('#div_message_step2').show();
+                    case '2': {
+                        if (response.status == 0) {
+                            $('#btn_step_finish').prop('disabled', false);
+                        } else {
+                            $('#div_message_step2').html(response.error);
+                            $('#div_message_step2').show();
+                        }
+                        break;
                     }
-                    break;
                 }
-            }
-        });
+            });
+        }
     },
 
     finishAssociateStore: function () {

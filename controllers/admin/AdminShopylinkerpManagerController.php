@@ -489,25 +489,27 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             'urladmin' => $this->getAdminUrl(),
             'useradmin' => $useradmin,
             'passadmin' => $passadmin,
-            'tipotienda' => '',
+            'tipotienda' => 'pre',
         ]);
 
         dump($apiResult);
 
         if (isset($apiResult['success']) && $apiResult['success'])
         {
-            //register store
-            $apiResult = ShopyManager::callShopyApi('addstore', [
-                'idinstancia' => $intance->getIdInstance(),
-                'iduser' => $user->getId(),
-                'pass' => $user->getPass(),
-                'nombre' => $this->getShopName(),
-                'prefijo' => _DB_PREFIX_,
-                'urlfront' => $this->getShopUrl(),
-                'urladmin' => $this->getAdminUrl(),
-                'useradmin' => $useradmin,
-                'passadmin' => $passadmin,
-            ]);
+            //Sino tengo instancia la registro, tengo que ver que devuelve el access
+            if(!$intance->getIdInstance()) {
+                //register store
+                $apiResult = ShopyManager::callShopyApi('addstore', [
+                    'iduser' => $user->getId(),
+                    'pass' => $user->getPass(),
+                    'nombre' => $this->getShopName(),
+                    'prefijo' => _DB_PREFIX_,
+                    'urlfront' => $this->getShopUrl(),
+                    'urladmin' => $this->getAdminUrl(),
+                    'useradmin' => $useradmin,
+                    'passadmin' => $passadmin,
+                ]);
+            }
 
             if (isset($apiResult['success']) && $apiResult['success'])
             {
