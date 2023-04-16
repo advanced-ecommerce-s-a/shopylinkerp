@@ -387,6 +387,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     {
         $user = new ShopyUser();
 
+        $error = '';
         $response = [
             'status' => 1,
             'error' => '',

@@ -1,7 +1,6 @@
 <?php
 /**
  * 2018-2023 Optyum S.A. All Rights Reserved.
- *
  * NOTICE:  All information contained herein is, and remains
  * the property of Optyum S.A. and its suppliers,
  * if any.  The intellectual and technical concepts contained
@@ -10,7 +9,6 @@
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
  * from Optyum S.A.
- *
  * @author    Optyum S.A.
  * @copyright 2018-2023 Optyum S.A.
  * @license  Optyum S.A. All Rights Reserved
@@ -23,12 +21,10 @@ use Configuration;
 
 class ShopyManager
 {
-    //const API_URL = 'https://devp.shopylinker.com/web/app_dev.php/es/api/';
-    //todo tenemos que ver el idioma que pasamos
+    const API_URL = 'https://devp.shopylinker.com/web/app_dev.php/es/api/';
+    //const API_URL = 'https://localhost/sassympresta/web/app_dev.php/es/api/';
 
-    const API_URL = 'https://localhost/sassympresta/web/app_dev.php/es/api/';
-
-    static function init()
+    static public function init()
     {
         $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
 
@@ -66,21 +62,24 @@ class ShopyManager
                 'date_add' => '',
 
             ];
-
             Configuration::updateValue('SHOPYLINKER_UDATA', json_encode($config));
         }
-
         return $config;
     }
 
-    static function getShopyUser()
+    static public function destroyConfig()
+    {
+        Configuration::deleteByName('SHOPYLINKER_UDATA');
+    }
+
+    static public function getShopyUser()
     {
         $userData = ShopyManager::init();
 
         return $userData['user'];
     }
 
-    static function setShopyUser($userData)
+    static public function setShopyUser($userData)
     {
         $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
 
@@ -89,14 +88,14 @@ class ShopyManager
         Configuration::updateValue('SHOPYLINKER_UDATA', json_encode($config));
     }
 
-    static function getShopyInstance()
+    static public function getShopyInstance()
     {
         $instanceData = ShopyManager::init();
 
         return $instanceData['instance'];
     }
 
-    static function setShopyInstance($instanceData)
+    static public function setShopyInstance($instanceData)
     {
         $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
 
@@ -105,7 +104,7 @@ class ShopyManager
         Configuration::updateValue('SHOPYLINKER_UDATA', json_encode($config));
     }
 
-    static function callShopyApi($action, $parameters)
+    static public function callShopyApi($action, $parameters)
     {
         //TODO ver si la url de la api se pone directo
         $url = static::API_URL . $action . "?rand=" . rand(0, 100000);
@@ -142,8 +141,6 @@ class ShopyManager
         if ($apiResult) {
             $result = json_decode($apiResult, true);
         }
-
         return $result;
     }
-
 }
