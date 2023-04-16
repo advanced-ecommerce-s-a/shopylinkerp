@@ -1,3 +1,21 @@
+{**
+* 2018-2023 Optyum S.A. All Rights Reserved.
+*
+* NOTICE:  All information contained herein is, and remains
+* the property of Optyum S.A. and its suppliers,
+* if any.  The intellectual and technical concepts contained
+* herein are proprietary to Optyum S.A.
+* and its suppliers and are protected by trade secret or copyright law.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Optyum S.A.
+*
+* @author    Optyum S.A.
+* @copyright 2018-2023 Optyum S.A.
+* @license  Optyum S.A. All Rights Reserved
+*  International Registered Trademark & Property of Optyum S.A.
+*}
+
 <div class="row">
     <div class="col-md-3"></div>
     <div class="col-lg-6">
@@ -23,10 +41,12 @@
                     <div class="col-md-12">
                         <div class="form-group row">
                             <div class="col-md-3 text-right">
-                                <label for="password" style="margin-top: 5px">{l s='Password' mod='shopylinkerp'}:</label>
+                                <label for="password" style="margin-top: 5px">{l s='Password' mod='shopylinkerp'}
+                                    :</label>
                             </div>
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required="required">
+                                <input id="password" type="password" class="form-control" name="password"
+                                       required="required">
                             </div>
                         </div>
                     </div>
@@ -62,12 +82,14 @@
                     </div>
                     <div class="col-md-12 text-center mt-2">
                         <div class="form-group">
-                            <button type="button" class="btn btn-primary" data-action="processRegister">{l s="Sign up in Shopylinker" mod='shopylinkerp'}</button>
+                            <button type="button" class="btn btn-primary"
+                                    data-action="processRegister">{l s="Sign up in Shopylinker" mod='shopylinkerp'}</button>
                         </div>
                     </div>
                     <div class="col-md-12 text-center mt-2">
                         <div class="form-group">
-                            <a href="javascript:void(0)" data-action="displayLogin">{l s="Go to login" mod='shopylinkerp'}</a>
+                            <a href="javascript:void(0)"
+                               data-action="displayLogin">{l s="Go to login" mod='shopylinkerp'}</a>
                         </div>
                     </div>
                 </div>

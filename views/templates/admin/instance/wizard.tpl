@@ -1,3 +1,21 @@
+{**
+* 2018-2023 Optyum S.A. All Rights Reserved.
+*
+* NOTICE:  All information contained herein is, and remains
+* the property of Optyum S.A. and its suppliers,
+* if any.  The intellectual and technical concepts contained
+* herein are proprietary to Optyum S.A.
+* and its suppliers and are protected by trade secret or copyright law.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Optyum S.A.
+*
+* @author    Optyum S.A.
+* @copyright 2018-2023 Optyum S.A.
+* @license  Optyum S.A. All Rights Reserved
+*  International Registered Trademark & Property of Optyum S.A.
+*}
+
 <div id="modal_instance" class="modal fade" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -95,7 +113,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="container_proxy" class="row" {if $conectionmode == 1} style="display: none" {/if}>
+                                        <div id="container_proxy"
+                                             class="row" {if $conectionmode == 1} style="display: none" {/if}>
                                             <form id="form_instance_proxy" method="post">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
@@ -118,7 +137,10 @@
                                                 </div>
                                             </form>
                                         </div>
-                                        <div id="container_direct" class="row"  {if $conectionmode == 2} style="display: none" {/if}>
+                                        <div id="container_direct"
+                                             class="row" {if $conectionmode == 2} style="display: none" {/if}>
+                                            <input type="hidden" id="checkdb" value="0">
+                                            <input type="hidden" id="checkftp" value="0">
                                             <form id="form_instance_direct_db" method="post">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -130,19 +152,22 @@
                                                         <fieldset>
                                                             <legend>{l s='Database connection data' mod='shopylinkerp'}</legend>
                                                             <div class="row">
-                                                                <div id="divdbmsg" class="alert alert-danger" style="display: none"></div>
+                                                                <div id="divdbmsg" class="alert alert-danger"
+                                                                     style="display: none"></div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <label>{l s='Server' mod='shopylinkerp'}*</label>
+                                                                        <label>{l s='Server' mod='shopylinkerp'}
+                                                                            *</label>
                                                                         <input class="form-control chaneg_associate_store"
                                                                                name="server" required value="{$server}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <label>{l s='Database' mod='shopylinkerp'}*</label>
+                                                                        <label>{l s='Database' mod='shopylinkerp'}
+                                                                            *</label>
                                                                         <input class="form-control chaneg_associate_store"
                                                                                name="name_bd" required
                                                                                value="{$name_bd}">
@@ -179,42 +204,48 @@
                                                         <fieldset>
                                                             <legend>{l s='Ftp connection data' mod='shopylinkerp'}</legend>
                                                             <div class="row">
-                                                                <div id="divftpmsg" class="alert alert-danger" style="display: none"></div>
+                                                                <div id="divftpmsg" class="alert alert-danger"
+                                                                     style="display: none"></div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <label>{l s='User' mod='shopylinkerp'}</label>
+                                                                        <label>{l s='User' mod='shopylinkerp'}*</label>
                                                                         <input class="form-control chaneg_associate_store"
-                                                                               name="ftp_user" required>
+                                                                               name="ftp_user" value="{{$userftp}}"
+                                                                               required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label>{l s='Password' mod='shopylinkerp'}</label>
                                                                         <input class="form-control chaneg_associate_store"
-                                                                               name="ftp_pass" required>
+                                                                               name="ftp_pass" value="{{$passftp}}"
+                                                                               required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label>{l s='Server' mod='shopylinkerp'}</label>
                                                                         <input class="form-control chaneg_associate_store"
-                                                                               name="ftp_server" required>
+                                                                               name="ftp_server" value="{{$ftpserver}}"
+                                                                               required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label>{l s='Port' mod='shopylinkerp'}</label>
                                                                         <input class="form-control chaneg_associate_store"
-                                                                               name="ftp_port" required>
+                                                                               name="ftp_port" value="{{$ftpport}}"
+                                                                               required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-5">
                                                                     <div class="form-group">
                                                                         <label>{l s='Root' mod='shopylinkerp'}</label>
                                                                         <input class="form-control chaneg_associate_store"
-                                                                               name="ftp_root" placeholder="/" required>
+                                                                               name="ftp_root" value="{{$ftproot}}"
+                                                                               placeholder="/" required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-1">
@@ -222,6 +253,7 @@
                                                                         <label>{l s='Ssl' mod='shopylinkerp'}</label>
                                                                         <input type="checkbox"
                                                                                class="chaneg_associate_store"
+                                                                               {if $ftpssl == 1}checked{/if}
                                                                                name="ftp_ssl">
                                                                     </div>
                                                                 </div>
@@ -235,7 +267,7 @@
                                                         <input type="hidden" name="connection_mode" value="1">
                                                         <button type="button" class="btn btn-success"
                                                                 data-action="proccessCheckFTP"
-                                                                >{l s='Validate' mod='shopylinkerp'}</button>
+                                                        >{l s='Validate' mod='shopylinkerp'}</button>
                                                     </div>
                                                 </div>
                                             </form>

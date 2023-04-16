@@ -1,8 +1,27 @@
 <?php
+/**
+ * 2018-2023 Optyum S.A. All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Optyum S.A. and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Optyum S.A.
+ * and its suppliers and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Optyum S.A.
+ *
+ * @author    Optyum S.A.
+ * @copyright 2018-2023 Optyum S.A.
+ * @license  Optyum S.A. All Rights Reserved
+ *  International Registered Trademark & Property of Optyum S.A.
+ */
 
 namespace PrestaShop\Module\shopylinkerp\Classes;
 
+use Configuration;
 use PrestaShop\Module\shopylinkerp\Classes\ShopyManager;
+
 class ShopyInstance
 {
     private $status;
@@ -396,5 +415,7 @@ class ShopyInstance
             'connection_key' => $this->getConnectionKey(),
             'date_add' => $this->getDateAdd(),
         ]);
+
+        Configuration::updateValue('SHOPY_PROXYKEY', $this->getConnectionKey());
     }
 }

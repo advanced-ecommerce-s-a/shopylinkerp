@@ -1,16 +1,34 @@
 <?php
+/**
+ * 2018-2023 Optyum S.A. All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Optyum S.A. and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Optyum S.A.
+ * and its suppliers and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Optyum S.A.
+ *
+ * @author    Optyum S.A.
+ * @copyright 2018-2023 Optyum S.A.
+ * @license  Optyum S.A. All Rights Reserved
+ *  International Registered Trademark & Property of Optyum S.A.
+ */
 
 $autoloadPath = __DIR__ . '/vendor/autoload.php';
 if (file_exists($autoloadPath)) {
     require_once $autoloadPath;
 }
+
 use PrestaShop\Module\shopylinkerp\Classes\ShopyManager;
+
 class Shopylinkerp extends Module
 {
     public function __construct()
     {
         $this->name = 'shopylinkerp';
-        $this->nameExt = 'shopylinkerp';
         $this->version = '1.0.0';
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
@@ -26,7 +44,7 @@ class Shopylinkerp extends Module
 
     public function install()
     {
-        $this->multishop_context = Shop::CONTEXT_ALL;
+        $this->multistoreCompatibility = self::MULTISTORE_COMPATIBILITY_YES;
 
         // Call install parent method
         if (!parent::install()) {
@@ -106,7 +124,8 @@ class Shopylinkerp extends Module
         ShopyManager::init();
     }
 
-    public function removeConfig(){
+    public function removeConfig()
+    {
 
     }
 

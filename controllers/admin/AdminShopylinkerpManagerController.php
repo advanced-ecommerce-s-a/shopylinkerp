@@ -1,4 +1,21 @@
 <?php
+/**
+ * 2018-2023 Optyum S.A. All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Optyum S.A. and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Optyum S.A.
+ * and its suppliers and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Optyum S.A.
+ *
+ * @author    Optyum S.A.
+ * @copyright 2018-2023 Optyum S.A.
+ * @license  Optyum S.A. All Rights Reserved
+ *  International Registered Trademark & Property of Optyum S.A.
+ */
 
 use PrestaShop\Module\shopylinkerp\Classes\ShopyUser;
 use PrestaShop\Module\shopylinkerp\Classes\ShopyInstance;
@@ -13,7 +30,6 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         parent::__construct();
 
         $this->bootstrap = true;
-        //$this->display = 'view';
 
         // Set fields form for form view
         $this->context = Context::getContext();
@@ -40,38 +56,9 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/general.css');
     }
 
-//    public function initContent()
-//    {
-//        parent::initContent();
-//
-//        $link = new Link();
-//
-//        $this->context->smarty->assign('link', $link);
-//
-//        $this->setTemplate('module:shopylinkerp/views/templates/admin/user/login.tpl');
-//    }
 
     public function renderList()
     {
-//        $module_action = Tools::getValue('action');
-//
-//        if (!isset($module_action) || $module_action == '')
-//        {
-//            $module_action = 'displayLogin';
-//
-//            $user = ShopyManager::getShopyUser();
-//            if(isset($user['id']) && $user['id'] != 0){
-//                $module_action = 'displayDashboard';
-//            }
-//        }
-//
-//        $tpl = $this->$module_action();
-//
-//        $link = new Link();
-//
-//        $tpl->assign('link', $link);
-
-
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/index.tpl');
 
         $user = ShopyManager::getShopyUser();
@@ -96,6 +83,13 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     }
 
     #region Dashboard
+    public function ajaxProcessDisplayDashboard()
+    {
+        $tpl = $this->displayDashboard();
+        die($tpl->fetch());
+    }
+
+
     private function displayDashboard()
     {
         $userData = ShopyManager::getShopyUser();
@@ -373,6 +367,12 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $tpl->assign('pass_bd', $pass_bd);
         $tpl->assign('conectionmode', $instancia->getConnectionMode());
         $tpl->assign('conectionKey', $instancia->getConnectionKey());
+        $tpl->assign('userftp', $instancia->getFtpUser());
+        $tpl->assign('passftp', $instancia->getFtpPass());
+        $tpl->assign('ftpserver', $instancia->getFtpServer());
+        $tpl->assign('ftpport', $instancia->getFtpPort());
+        $tpl->assign('ftproot', $instancia->getFtpRoot());
+        $tpl->assign('ftpssl', $instancia->getFtpSsl());
 
         $link = new Link();
 
@@ -383,6 +383,46 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         die($response);
     }
 
+    public function ajaxProcessResendEmailCode()
+    {
+        $user = new ShopyUser();
+
+        $response = [
+            'status' => 1,
+            'error' => '',
+        ];
+
+        $apiResult = ShopyManager::callShopyApi('resendvalidacion', [
+            'iduser' => $user->getId(),
+            'pass' => $user->getPass(),
+        ]);
+
+        if (isset($apiResult['success']) && !$apiResult['success']) {
+            $error = 'There is no connection with the API.';
+            if (isset($apiResult['error'])) {
+                switch ($apiResult['error']) {
+                    case 2:
+                    {
+                        $error = $this->trans('The user its not found.');
+                        break;
+                    }
+                    case 3:
+                    {
+                        $error = $this->trans('The user is already active.');
+                        break;
+                    }
+                }
+            }
+        }
+        if ($error) {
+            $response['status'] = 0;
+            $response['error'] = $error;
+        } else {
+            $response['text'] = $this->trans('The mail have been send!');;
+        }
+
+        die(json_encode($response));
+    }
 
     public function ajaxProcessCheckAndRegisterdb()
     {
@@ -631,29 +671,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                     }
                     case 1://Direct
                     {
-                        //check bd
-                        $server = _DB_SERVER_;
-                        $name_bd = _DB_NAME_;
-                        $user_bd = _DB_USER_;
-                        $pass_bd = _DB_PASSWD_;
-                        $prefix_bd = _DB_PREFIX_;
 
-                        $error = $this->checkBdDataStore($server, $name_bd, $user_bd, $pass_bd, $prefix_bd);
-                        if (!$error) {
-                            $ftp_user = Tools::getValue('ftp_user');
-                            $ftp_pass = Tools::getValue('ftp_pass');
-                            $ftp_server = Tools::getValue('ftp_server');
-                            $ftp_port = Tools::getValue('ftp_port');
-                            $ftp_ssl = Tools::getValue('ftp_ssl');
-                            $ftp_root = Tools::getValue('ftp_root');
-
-                            $error = $this->checkFtpDataStore($ftp_user, $ftp_pass, $ftp_server, $ftp_port, $ftp_ssl, $ftp_root);
-
-                            if (!$error) {
-                                $error = $this->registerDataBdAndFtpStore($server, $name_bd, $user_bd, $pass_bd, $prefix_bd, $ftp_user, $ftp_pass,
-                                    $ftp_server, $ftp_port, $ftp_ssl, $ftp_root, $intance, $user, $connection_mode);
-                            }
-                        }
                         break;
                     }
                 }
@@ -908,88 +926,6 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             }
             $response['error'] = $error;
             $response['status'] = 0;
-        }
-
-        return $response;
-    }
-
-    private function registerDataBdAndFtpStore($server,
-                                               $name_bd,
-                                               $user_bd,
-                                               $pass_bd,
-                                               $prefix_bd,
-                                               $ftp_user,
-                                               $ftp_pass,
-                                               $ftp_server,
-                                               $ftp_port,
-                                               $ftp_ssl,
-                                               $ftp_root,
-                                               $intance,
-                                               $user,
-                                               $connection_mode
-    )
-    {
-        $response = [
-            'status' => '',
-            'error' => '',
-        ];
-
-        $apiResult = ShopyManager::callShopyApi('editstore', [
-            'idinstancia' => $intance->getIdInstance(),
-            'iduser' => $user->getId(),
-            'pass' => $user->getPass(),
-            'connection_mode' => $connection_mode,
-            'server' => $server,
-            'name_bd' => $name_bd,
-            'user_bd' => $user_bd,
-            'pass_bd' => $pass_bd,
-            'ftp_user' => $ftp_user,
-            'ftp_pass' => $ftp_pass,
-            'ftp_server' => $ftp_server,
-            'ftp_port' => $ftp_port,
-            'ftp_ssl' => $ftp_ssl,
-            'ftp_root' => $ftp_root,
-        ]);
-
-        if (isset($apiResult['success']) && $apiResult['success']) {
-            $intance = new ShopyInstance();
-            $intance->setConnectionMode($connection_mode);
-            $intance->setServer($server);
-            $intance->setNameBd($name_bd);
-            $intance->setUserBd($user_bd);
-            $intance->setPassBd($pass_bd);
-            $intance->setFtpUser($ftp_user);
-            $intance->setFtpPass($ftp_pass);
-            $intance->setFtpServer($ftp_server);
-            $intance->setFtpPort($ftp_port);
-            $intance->setFtpSsl($ftp_ssl);
-            $intance->setFtpRoot($ftp_root);
-            $intance->setStatus(3);
-            $intance->update();
-
-        } else {
-            $error = 'There is no connection with the API.';
-            if (isset($apiResult['error'])) {
-                switch ($apiResult['error']) {
-                    case 2:
-                    {
-                        $error = $this->trans('The instance to edit cannot be found.');
-                        break;
-                    }
-                    case 3:
-                    {
-                        $error = $this->trans('The user does not exist or the password is incorrect.');
-                        break;
-                    }
-                    case 4:
-                    {
-                        $error = $this->trans('Data error.');
-                        break;
-                    }
-                }
-            }
-            $response['error'] = $error;
-            $response['status'] = 1;
         }
 
         return $response;

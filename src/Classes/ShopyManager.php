@@ -1,4 +1,21 @@
 <?php
+/**
+ * 2018-2023 Optyum S.A. All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Optyum S.A. and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Optyum S.A.
+ * and its suppliers and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Optyum S.A.
+ *
+ * @author    Optyum S.A.
+ * @copyright 2018-2023 Optyum S.A.
+ * @license  Optyum S.A. All Rights Reserved
+ *  International Registered Trademark & Property of Optyum S.A.
+ */
 
 namespace PrestaShop\Module\shopylinkerp\Classes;
 
@@ -7,14 +24,15 @@ use Configuration;
 class ShopyManager
 {
     //const API_URL = 'https://devp.shopylinker.com/web/app_dev.php/es/api/';
+    //todo tenemos que ver el idioma que pasamos
+
     const API_URL = 'https://localhost/sassympresta/web/app_dev.php/es/api/';
 
     static function init()
     {
         $config = json_decode(Configuration::get('SHOPYLINKER_UDATA'), true);
 
-        if(!isset($config['user']) && !isset($config['instance']))
-        {
+        if (!isset($config['user']) && !isset($config['instance'])) {
             //TODO ver si hay que pregunta si ya existe la configuracion
             $config['user'] = [
                 'id' => 0,
@@ -90,11 +108,11 @@ class ShopyManager
     static function callShopyApi($action, $parameters)
     {
         //TODO ver si la url de la api se pone directo
-        $url = static::API_URL.$action."?rand=".rand(0,100000);
+        $url = static::API_URL . $action . "?rand=" . rand(0, 100000);
 
         $strparams = '';
 
-        $strparams = http_build_query($parameters,'','&');
+        $strparams = http_build_query($parameters, '', '&');
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -106,13 +124,11 @@ class ShopyManager
         //--------------
         $apiResult = curl_exec($ch);
         $info = curl_getinfo($ch);
-        if(curl_exec($ch) === false)
-        {
+        if (curl_exec($ch) === false) {
             echo 'Curl error: ' . curl_error($ch);
             print_r($info);
         }
-        if($info['http_code']!=200)
-        {
+        if ($info['http_code'] != 200) {
             $info = curl_getinfo($ch);
             echo $strparams;
             print_r($info);
@@ -123,7 +139,7 @@ class ShopyManager
 
         curl_close($ch);
         $result = null;
-        if($apiResult){
+        if ($apiResult) {
             $result = json_decode($apiResult, true);
         }
 

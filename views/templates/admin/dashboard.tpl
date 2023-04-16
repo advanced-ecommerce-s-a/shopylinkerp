@@ -1,3 +1,21 @@
+{**
+* 2018-2023 Optyum S.A. All Rights Reserved.
+*
+* NOTICE:  All information contained herein is, and remains
+* the property of Optyum S.A. and its suppliers,
+* if any.  The intellectual and technical concepts contained
+* herein are proprietary to Optyum S.A.
+* and its suppliers and are protected by trade secret or copyright law.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Optyum S.A.
+*
+* @author    Optyum S.A.
+* @copyright 2018-2023 Optyum S.A.
+* @license  Optyum S.A. All Rights Reserved
+*  International Registered Trademark & Property of Optyum S.A.
+*}
+
 <div class="row">
     <div class="col-md-6">
         <div class="panel">
@@ -49,15 +67,20 @@
                                 <div class="row">
                                     <div class="col-md-2"></div>
                                     <div class="col-md-2 text-right">
-                                        <label style="margin-top: 5px">{l s='Code' mod='shopylinkerp'}</label>
+                                        <label class="codevalid">{l s='Code' mod='shopylinkerp'}</label>
                                     </div>
                                     <div class="col-md-4">
                                         <input class="form-control" name="code" required="required">
+                                        <br>
+                                        <a class="linkresend" data-action="linkresend"
+                                           href="javascript:void(0)">{l s='Resend code to your email?' mod='shopylinkerp'}</a>
+
                                     </div>
                                     <div class="col-md-2">
                                         <button type="button" class="btn btn-primary"
                                                 data-action="processValidateUser">{l s='Validate' mod='shopylinkerp'}</button>
                                     </div>
+                                    <div class="codemessage alert" style="display: none"></div>
                                 </div>
                             </form>
                         </div>
@@ -82,7 +105,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>{l s='Linking date' mod='shopylinkerp'}: </label>{$instanceData['date_add']}
+                            <label>{l s='Linking date' mod='shopylinkerp'}: </label> {$instanceData['date_add']}
                         </div>
                     </div>
                     <div class="col-md-12">

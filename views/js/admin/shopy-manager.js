@@ -1,3 +1,21 @@
+/**
+ * 2018-2023 Optyum S.A. All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Optyum S.A. and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Optyum S.A.
+ * and its suppliers and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Optyum S.A.
+ *
+ * @author    Optyum S.A.
+ * @copyright 2018-2023 Optyum S.A.
+ * @license  Optyum S.A. All Rights Reserved
+ *  International Registered Trademark & Property of Optyum S.A.
+ */
+
 var ShopyManager = {
     token: null,
 
@@ -22,7 +40,8 @@ var ShopyManager = {
             contentType: false,
             beforeSend: function () {
                 //TODO poner multilingue el mensaje
-                $.blockUI({ message:'Please wait...',
+                $.blockUI({
+                    message: TEXT_LOADING,
                     css: {
                         border: 'none',
                         padding: '15px',
@@ -31,7 +50,8 @@ var ShopyManager = {
                         '-moz-border-radius': '10px',
                         opacity: .5,
                         color: '#fff'
-                    } });
+                    }
+                });
             },
             success: function (response) {
                 callback(response);
@@ -42,8 +62,7 @@ var ShopyManager = {
         });
     },
 
-    _initWizard: function()
-    {
+    _initWizard: function () {
         $('[data-action="processAssociateStore"]').off('click').on('click', function () {
             var idform = $(this).data('idform')
             ShopyManager.processAssociateStore(idform);
@@ -73,10 +92,10 @@ var ShopyManager = {
 
         //pestañas
         $("#tab_step1").tab("show");
-        $('#btn_next_step_1').on('click', function (){
+        $('#btn_next_step_1').on('click', function () {
             $("#tab_step2").tab("show");
         });
-        $('#btn_back_step_1').on('click', function (){
+        $('#btn_back_step_1').on('click', function () {
             $("#tab_step1").tab("show");
         });
 
@@ -121,10 +140,15 @@ var ShopyManager = {
         });
 
 
-
         $('[data-action="displayAssociateStore"]').off('click').on('click', function () {
             ShopyManager.displayAssociateStore();
         });
+
+        $('[data-action="linkresend"]').off('click').on('click', function () {
+            ShopyManager.resendValidCodeEmail();
+        });
+
+
     },
 
     //endregion
@@ -134,8 +158,7 @@ var ShopyManager = {
     displayLogin: function () {
         var form = new FormData();
 
-        this._ajaxCall(form,'displayLogin',function (response)
-        {
+        this._ajaxCall(form, 'displayLogin', function (response) {
             $('#container_shopylinkerp').html(response);
             ShopyManager._initEvents();
         });
@@ -148,7 +171,7 @@ var ShopyManager = {
             form = document.getElementById('form_login');
             form = new FormData(form);
 
-            this._ajaxCall(form,'login',function (response) {
+            this._ajaxCall(form, 'login', function (response) {
                 var response = JSON.parse(response);
                 console.log(response);
                 switch (response.status) {
@@ -169,8 +192,7 @@ var ShopyManager = {
     processLogout: function () {
         form = new FormData();
 
-        this._ajaxCall(form,'logout',function (response)
-        {
+        this._ajaxCall(form, 'logout', function (response) {
             $('#container_shopylinkerp').html(response);
             ShopyManager._initEvents();
         });
@@ -181,8 +203,7 @@ var ShopyManager = {
     displayRegister: function () {
         var form = new FormData();
 
-        this._ajaxCall(form,'displayRegister',function (response)
-        {
+        this._ajaxCall(form, 'displayRegister', function (response) {
             $('#container_shopylinkerp').html(response);
             ShopyManager._initEvents();
         });
@@ -206,8 +227,7 @@ var ShopyManager = {
             form = document.getElementById('form_register');
             form = new FormData(form);
 
-            this._ajaxCall(form,'register',function (response)
-            {
+            this._ajaxCall(form, 'register', function (response) {
                 var response = JSON.parse(response);
                 switch (response.status) {
                     case 0: {
@@ -230,8 +250,7 @@ var ShopyManager = {
             form = document.getElementById('form_validate_user');
             form = new FormData(form);
 
-            this._ajaxCall(form,'validateUser',function (response)
-            {
+            this._ajaxCall(form, 'validateUser', function (response) {
                 var response = JSON.parse(response);
                 switch (response.status) {
                     case 0: {
@@ -253,8 +272,7 @@ var ShopyManager = {
     //region Instance
     displayAssociateStore: function () {
         var form = new FormData();
-        this._ajaxCall(form,'displayAssociateStore',function (response)
-        {
+        this._ajaxCall(form, 'displayAssociateStore', function (response) {
             $('#modal_container').html(response);
             $('#modal_instance').modal('show');
         });
@@ -264,7 +282,7 @@ var ShopyManager = {
         $('#div_message_step2').hide();
         $('#div_message').hide();
 
-        var formtoValidate = $('#'+idform);
+        var formtoValidate = $('#' + idform);
 
         var form = document.getElementById(idform);
         if (formtoValidate.valid()) {
@@ -302,29 +320,38 @@ var ShopyManager = {
             });
         }
     },
+    _checkDirectConection: function () {
+        var chdb = parseInt($('#checkdb').val());
+        var chftp = parseInt($('#checkftp').val());
 
+        if (chftp != 0 && chdb != 0) {
+            $('#btn_step_finish').prop('disabled', false);
+        } else {
+            $('#btn_step_finish').prop('disabled', true);
+        }
+    }
+    ,
     proccessCheckDb: function () {
         var form = $('#form_instance_direct_db');
         var formdata = document.getElementById('form_instance_direct_db');
         formdata = new FormData(formdata);
-        if(form.valid())
-        {
+        if (form.valid()) {
             this._ajaxCall(formdata, 'checkAndRegisterdb', function (response) {
                 console.log(response);
                 var response = JSON.parse(response);
-                if(response.status)
-                {
+                if (response.status) {
                     //ok con la bd, tengo el mensaje y debo poner el hidden en true
                     $('#divdbmsg').html(response.text);
                     $('#divdbmsg').removeClass('alert-danger').addClass('alert-success');
                     $('#divdbmsg').show();
-
-                } else
-                {
+                    $('#checkdb').val(1);
+                } else {
                     $('#divdbmsg').html(response.error);
                     $('#divdbmsg').removeClass('alert-success').addClass('alert-danger');
                     $('#divdbmsg').show();
+                    $('#checkdb').val(0);
                 }
+                ShopyManager._checkDirectConection();
             });
         }
     },
@@ -333,48 +360,72 @@ var ShopyManager = {
         var form = $('#form_instance_direct_ftp');
         var formdata = document.getElementById('form_instance_direct_ftp');
         formdata = new FormData(formdata);
-        if(form.valid())
-        {
+        if (form.valid()) {
             this._ajaxCall(formdata, 'checkAndRegisterFtp', function (response) {
                 console.log(response);
                 var response = JSON.parse(response);
-                if(response.status)
-                {
+                if (response.status) {
                     //ok con la bd, tengo el mensaje y debo poner el hidden en true
                     $('#divftpmsg').html(response.text);
                     $('#divftpmsg').removeClass('alert-danger').addClass('alert-success');
                     $('#divftpmsg').show();
+                    $('#checkftp').val(1);
 
-                } else
-                {
+                } else {
                     $('#divftpmsg').html(response.error);
                     $('#divftpmsg').removeClass('alert-success').addClass('alert-danger');
                     $('#divftpmsg').show();
+                    $('#checkftp').val(0);
                 }
+                ShopyManager._checkDirectConection();
             });
         }
+
+    },
+
+    displayDasboard: function () {
+        var form = new FormData();
+
+        this._ajaxCall(form, 'DisplayDashboard', function (response) {
+            $('#container_shopylinkerp').html(response);
+            ShopyManager._initEvents();
+        });
     },
 
     finishAssociateStore: function () {
         var form = new FormData();
         this._ajaxCall(form, 'FinishteStore', function (response) {
             var response = JSON.parse(response);
-            if(response.status)
-            {
+            if (response.status) {
                 $('#modal_instance').modal('hide');
                 ShopyManager.displayDasboard();
-            } else
-            {
+            } else {
                 $('#div_message_step2').html('error');
                 $('#div_message_step2').removeClass('alert-success').addClass('alert-danger');
                 $('#div_message_step2').show();
             }
         });
-
-
     },
 
+    resendValidCodeEmail: function () {
+        var form = new FormData();
+        $('.codemessage').hide();
 
+        this._ajaxCall(form, 'ResendEmailCode', function (response) {
+            var response = JSON.parse(response);
+            if (response.status) {
+                //desactivo el link
+                $('.codemessage').removeClass('alert-danger').addClass('alert-success');
+                $('.codemessage').html(response.text);
+                $('.codemessage').show();
+            } else {
+                $('.codemessage').removeClass('alert-success').addClass('alert-danger');
+                $('.codemessage').html(response.error);
+                $('.codemessage').show();
+
+            }
+        });
+    }
     //endregion
 
 };

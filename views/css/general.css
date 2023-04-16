@@ -1,10 +1,26 @@
-#wizardTabs .nav-item a
-{
+/**
+ * 2018-2023 Optyum S.A. All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Optyum S.A. and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Optyum S.A.
+ * and its suppliers and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Optyum S.A.
+ *
+ * @author    Optyum S.A.
+ * @copyright 2018-2023 Optyum S.A.
+ * @license  Optyum S.A. All Rights Reserved
+ *  International Registered Trademark & Property of Optyum S.A.
+ */
+
+#wizardTabs .nav-item a {
     cursor: default;
 }
 
-.bigicon
-{
+.bigicon {
     position: relative;
     padding: 16px 15px 16px 15px;
     font-size: 14px;
@@ -15,14 +31,24 @@
     width: 300px;
     margin: 0 auto;
 }
-.bigicon .icon-check-circle
-{
+
+.bigicon .icon-check-circle {
     font-size: 80px;
     color: green;
     margin-bottom: 10px;
 }
 
-.bigicon .span
-{
+.bigicon .span {
     font-size: 25px;
+}
+
+.codevalid {
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.blockMsg {
+    top: 50% !important;
+    width: 10% !important;
+    left: 45% !important;
 }
