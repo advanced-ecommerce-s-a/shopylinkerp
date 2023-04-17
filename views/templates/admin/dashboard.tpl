@@ -101,55 +101,64 @@
     <div class="col-md-6">
         <div class="panel">
             <div class="panel-heading">{l s='Store asociation' mod='shopylinkerp'}</div>
-            {if $instanceData['status'] == 3}
+            {if $userData['status'] == 0}
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form-group">
-                            <label>{l s='Linking date' mod='shopylinkerp'}: </label> {$instanceData['date_add']}
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>{l s='Connection mode' mod='shopylinkerp'}
-                                : </label>{if $instanceData['connection_mode'] ==2 }
-                                {l s='Proxy' mod='shopylinkerp'}
-                            {else}
-                                {l s='Direct' mod='shopylinkerp'}
-                            {/if}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <div class="bigicon">
-                            <i class="icon-check-circle"></i><br>
-                            <span>{l s='Store associated' mod='shopylinkerp'}</span>
-                        </div>
+                        <div class="alert alert-danger">{l s='You must validate your email first to associate the store.' mod='shopylinkerp'}</div>
                     </div>
                 </div>
             {else}
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    {if $instanceData['status'] == 1}
-                                        <div class="alert alert-danger">{l s='You must link the store to start working with Shopylinker.' mod='shopylinkerp'}</div>
-                                    {else}
-                                        <div class="alert alert-warning">{l s='You must complete the store linking process.' mod='shopylinkerp'}</div>
-                                    {/if}
-                                </div>
+                {if $instanceData['status'] == 3}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>{l s='Linking date' mod='shopylinkerp'}: </label> {$instanceData['date_add']}
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group text-center">
-                                    <button type="button" class="btn btn-primary"
-                                            data-action="displayAssociateStore">{l s='Associate store' mod='shopylinkerp'}</button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>{l s='Connection mode' mod='shopylinkerp'}
+                                    : </label>{if $instanceData['connection_mode'] ==2 }
+                                    {l s='Proxy' mod='shopylinkerp'}
+                                {else}
+                                    {l s='Direct' mod='shopylinkerp'}
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="bigicon">
+                                <i class="icon-check-circle"></i><br>
+                                <span>{l s='Store associated' mod='shopylinkerp'}</span>
+                            </div>
+                        </div>
+                    </div>
+                {else}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {if $instanceData['status'] == 1}
+                                            <div class="alert alert-danger">{l s='You must link the store to start working with Shopylinker.' mod='shopylinkerp'}</div>
+                                        {else}
+                                            <div class="alert alert-warning">{l s='You must complete the store linking process.' mod='shopylinkerp'}</div>
+                                        {/if}
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group text-center">
+                                        <button type="button" class="btn btn-primary"
+                                                data-action="displayAssociateStore">{l s='Associate store' mod='shopylinkerp'}</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                {/if}
             {/if}
+
         </div>
     </div>
 </div>

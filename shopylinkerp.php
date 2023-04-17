@@ -36,11 +36,11 @@ class Shopylinkerp extends Module
         parent::__construct();
 
         //recordar poner el numero del modulo
-
         $this->displayName = $this->trans('Shopylinker – Prestashop');
         $this->ps_versions_compliancy = array('min' => '1.7', 'max' => '1.7.99.99');
 
-        $this->description = $this->trans('Shopylinker – Prestashop');
+        $this->description = $this->trans('Innovative all-in-one system that will allow you to increase sales, 
+        increasing visits and the conversion rate to sales. Increase revenue and reduce costs by integrating your store with Shopylinker.');
     }
 
     public function install()
@@ -121,7 +121,7 @@ class Shopylinkerp extends Module
         $tab = new Tab((int)$id_tab);
         $tab->delete();
 
-       return true;
+        return true;
     }
 
     //todo esto pasarlo a la clase general tuya

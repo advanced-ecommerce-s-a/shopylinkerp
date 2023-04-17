@@ -21,8 +21,8 @@ use Configuration;
 
 class ShopyManager
 {
-    const API_URL = 'https://devp.shopylinker.com/web/app_dev.php/es/api/';
-    //const API_URL = 'https://localhost/sassympresta/web/app_dev.php/es/api/';
+    //const API_URL = 'https://devp.shopylinker.com/web/app_dev.php/es/api/';
+    const API_URL = 'https://localhost/sassympresta/web/app_dev.php/es/api/';
 
     static public function init()
     {
@@ -55,9 +55,9 @@ class ShopyManager
                 'ftp_user' => '',
                 'ftp_pass' => '',
                 'ftp_server' => '',
-                'ftp_port' => '',
+                'ftp_port' => '21',
                 'ftp_ssl' => '',
-                'ftp_root' => '',
+                'ftp_root' => '/',
                 'connection_key' => '',
                 'date_add' => '',
 
