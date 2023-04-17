@@ -26,12 +26,12 @@ class ShopyManager
 
     static public function getApiUrl($lang = 'es')
     {
-        return static::SHOPYLINKER_URL.'/'.$lang.'/api/';
+        return static::SHOPYLINKER_URL.$lang.'/api/';
     }
 
     static public function getExtLoginUrl($lang = 'es')
     {
-        return static::SHOPYLINKER_URL.'/'.$lang.'/externalLogin/';
+        return static::SHOPYLINKER_URL.$lang.'/externalLogin/';
     }
 
     static public function init()
