@@ -111,8 +111,17 @@
                 {if $instanceData['status'] == 3}
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label>{l s='Linking date' mod='shopylinkerp'}: </label> {$instanceData['date_add']}
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>{l s='Linking date' mod='shopylinkerp'}: </label> {$instanceData['date_add']}
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <form action="{$extlogin}" target="_blank" method="post">
+                                        <button type="submit" class="btn btn-success">{l s='Access Shopylinker' mod='shopylinkerp'}</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12">

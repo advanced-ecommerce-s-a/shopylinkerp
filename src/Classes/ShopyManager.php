@@ -31,7 +31,7 @@ class ShopyManager
 
     static public function getExtLoginUrl($lang = 'es')
     {
-        return static::SHOPYLINKER_URL.'/'.$lang.'/extLogin/';
+        return static::SHOPYLINKER_URL.'/'.$lang.'/externalLogin/';
     }
 
     static public function init()

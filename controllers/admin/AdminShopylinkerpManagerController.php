@@ -63,12 +63,15 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         $user = ShopyManager::getShopyUser();
         $include_tpl = 'module:shopylinkerp/views/templates/admin/user/login.tpl';
-        if (isset($user['id']) && $user['id'] != 0) {
+        if (isset($user['id']) && $user['id'] != 0)
+        {
             $userData = ShopyManager::getShopyUser();
             $tpl->assign('userData', $userData);
 
             $instanceData = ShopyManager::getShopyInstance();
             $tpl->assign('instanceData', $instanceData);
+
+            $tpl->assign('extlogin', ShopyManager::getExtLoginUrl());
 
             $include_tpl = 'module:shopylinkerp/views/templates/admin/dashboard.tpl';
         }
@@ -98,6 +101,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/dashboard.tpl');
 
+        $tpl->assign('extlogin', ShopyManager::getExtLoginUrl());
         $tpl->assign('userData', $userData);
         $tpl->assign('instanceData', $instanceData);
 
