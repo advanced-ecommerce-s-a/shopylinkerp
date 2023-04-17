@@ -133,7 +133,7 @@ class ShopyManager
         //--------------
         $apiResult = curl_exec($ch);
         $info = curl_getinfo($ch);
-        if ($apiResult === false) {
+        /*if ($apiResult === false) {
             echo 'Curl error: ' . curl_error($ch);
             print_r($info);
         }
@@ -141,7 +141,7 @@ class ShopyManager
             $info = curl_getinfo($ch);
             echo $strparams;
             print_r($info);
-        }
+        }*/
         /*echo $apiResult;
         echo $strparams;
         print_r($info);*/
