@@ -112,12 +112,12 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>{l s='Linking date' mod='shopylinkerp'}: </label> {$instanceData['date_add']}
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-6 text-right">
                                     <form action="{$extlogin}" target="_blank" method="post">
                                         <input type="hidden" name="user" value="{$userData['username']}">
                                         <input type="hidden" name="pass" value="{$userData['pass']}">

@@ -458,8 +458,6 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             'tipotienda' => 'pre',
         ]);
 
-        dump($apiResult);
-
         if (isset($apiResult['success']) && $apiResult['success']) {
             //mando a editar los datos
             $data = ['modoConection' => 1,
