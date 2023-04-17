@@ -958,11 +958,11 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         $shop = new Shop($context->shop->id);
 
-        $shop_url = $shop->getBaseURL();
+        $url = $shop->getBaseURL(true);
+        if(!$url)
+            $url = $shop->getBaseURL();
 
-        $shop_url = str_replace('http', 'https', $shop_url);
-
-        return $shop_url;
+        return $url;
     }
 
     public function getAdminUrl()
