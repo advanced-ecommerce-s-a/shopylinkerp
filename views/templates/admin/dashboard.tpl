@@ -119,6 +119,9 @@
                                 </div>
                                 <div class="col-md-2">
                                     <form action="{$extlogin}" target="_blank" method="post">
+                                        <input type="hidden" name="user" value="{$userData['username']}">
+                                        <input type="hidden" name="pass" value="{$userData['pass']}">
+                                        <input type="hidden" name="idinstancia" value="{$instanceData['id_instance']}">
                                         <button type="submit" class="btn btn-success">{l s='Access Shopylinker' mod='shopylinkerp'}</button>
                                     </form>
                                 </div>
