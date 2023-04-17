@@ -21,8 +21,18 @@ use Configuration;
 
 class ShopyManager
 {
-    //const API_URL = 'https://devp.shopylinker.com/web/app_dev.php/es/api/';
-    const API_URL = 'https://localhost/sassympresta/web/app_dev.php/es/api/';
+    const SHOPYLINKER_URL = 'https://localhost/sassympresta/web/app_dev.php/';
+    //const SHOPYLINKER_URL = 'https://devp.shopylinker.com/web/app_dev.php/';
+
+    static public function getApiUrl($lang = 'es')
+    {
+        return static::SHOPYLINKER_URL.'/'.$lang.'/api/';
+    }
+
+    static public function getExtLoginUrl($lang = 'es')
+    {
+        return static::SHOPYLINKER_URL.'/'.$lang.'/extLogin/';
+    }
 
     static public function init()
     {
@@ -107,7 +117,7 @@ class ShopyManager
     static public function callShopyApi($action, $parameters)
     {
         //TODO ver si la url de la api se pone directo
-        $url = static::API_URL . $action . "?rand=" . rand(0, 100000);
+        $url = static::getApiUrl() . $action . "?rand=" . rand(0, 100000);
 
         $strparams = '';
 
