@@ -21,17 +21,17 @@ use Configuration;
 
 class ShopyManager
 {
-    const SHOPYLINKER_URL = 'https://localhost/sassympresta/web/app_dev.php/';
-    //const SHOPYLINKER_URL = 'https://devp.shopylinker.com/web/app_dev.php/';
+    //const SHOPYLINKER_URL = 'https://localhost/sassympresta/web/app_dev.php/';
+    const SHOPYLINKER_URL = 'https://devp.shopylinker.com/web/app_dev.php/';
 
     static public function getApiUrl($lang = 'es')
     {
-        return static::SHOPYLINKER_URL.'/'.$lang.'/api/';
+        return static::SHOPYLINKER_URL.$lang.'/api/';
     }
 
     static public function getExtLoginUrl($lang = 'es')
     {
-        return static::SHOPYLINKER_URL.'/'.$lang.'/externalLogin/';
+        return static::SHOPYLINKER_URL.$lang.'/externalLogin/';
     }
 
     static public function init()
@@ -129,11 +129,11 @@ class ShopyManager
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $strparams);
         //solo para localhost
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //--------------
         $apiResult = curl_exec($ch);
         $info = curl_getinfo($ch);
-        if (curl_exec($ch) === false) {
+        /*if (curl_exec($ch) === false) {
             echo 'Curl error: ' . curl_error($ch);
             print_r($info);
         }
@@ -141,7 +141,7 @@ class ShopyManager
             $info = curl_getinfo($ch);
             echo $strparams;
             print_r($info);
-        }
+        }*/
         /*echo $apiResult;
         echo $strparams;
         print_r($info);*/

@@ -458,6 +458,8 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             'tipotienda' => 'pre',
         ]);
 
+        dump($apiResult);
+
         if (isset($apiResult['success']) && $apiResult['success']) {
             //mando a editar los datos
             $data = ['modoConection' => 1,
@@ -773,12 +775,12 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 switch ($apiResult['error']) {
                     case 2:
                     {
-                        $error = $this->trans('No access to the store front.');
+                        $error = $this->trans('No access to the store front ').': '. $this->getShopUrl();
                         break;
                     }
                     case 3:
                     {
-                        $error = $this->trans('No access to the store admin.');
+                        $error = $this->trans('No access to the store admin ').': '. $this->getAdminUrl();
                         break;
                     }
                     case 4:
@@ -959,6 +961,8 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $shop = new Shop($context->shop->id);
 
         $shop_url = $shop->getBaseURL();
+
+        $shop_url = str_replace('http', 'https', $shop_url);
 
         return $shop_url;
     }
