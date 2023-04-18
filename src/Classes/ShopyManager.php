@@ -22,16 +22,16 @@ use Configuration;
 class ShopyManager
 {
     //const SHOPYLINKER_URL = 'https://localhost/sassympresta/web/app_dev.php/';
-    const SHOPYLINKER_URL = 'https://devp.shopylinker.com/web/app_dev.php/';
+    const SHOPYLINKER_URL = 'https://devp.shopylinker.com/';
 
     static public function getApiUrl($lang = 'es')
     {
-        return static::SHOPYLINKER_URL.$lang.'/api/';
+        return static::SHOPYLINKER_URL . $lang . '/api/';
     }
 
     static public function getExtLoginUrl($lang = 'es')
     {
-        return static::SHOPYLINKER_URL.$lang.'/externalLogin';
+        return static::SHOPYLINKER_URL . $lang . '/externalLogin';
     }
 
     static public function init()
@@ -119,8 +119,6 @@ class ShopyManager
         //TODO ver si la url de la api se pone directo
         $url = static::getApiUrl() . $action . "?rand=" . rand(0, 100000);
 
-        $strparams = '';
-
         $strparams = http_build_query($parameters, '', '&');
 
         $ch = curl_init();
@@ -132,19 +130,6 @@ class ShopyManager
         //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //--------------
         $apiResult = curl_exec($ch);
-        $info = curl_getinfo($ch);
-        /*if ($apiResult === false) {
-            echo 'Curl error: ' . curl_error($ch);
-            print_r($info);
-        }
-        if ($info['http_code'] != 200) {
-            $info = curl_getinfo($ch);
-            echo $strparams;
-            print_r($info);
-        }*/
-        /*echo $apiResult;
-        echo $strparams;
-        print_r($info);*/
 
         curl_close($ch);
         $result = null;
