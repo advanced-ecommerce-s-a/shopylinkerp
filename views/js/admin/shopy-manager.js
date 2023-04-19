@@ -63,8 +63,31 @@ var ShopyManager = {
     },
 
     _initWizard: function () {
+        $.validator.addMethod("strong_password", function (value, element) {
+            let password = value;
+
+            if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%])(.{10,20}$)/.test(password))) {
+                return false;
+            }
+            return true;
+        }, function (value, element) {
+            let password = $(element).val();
+            if (!(/^(.{10,20}$)/.test(password))) {
+                return PASS_VALID_MINIMUN;
+            } else if (!(/^(?=.*[A-Z])/.test(password))) {
+                return PASS_VALID_UPPERCASE;
+            } else if (!(/^(?=.*[a-z])/.test(password))) {
+                return PASS_VALID_LOWERCASE;
+            } else if (!(/^(?=.*[0-9])/.test(password))) {
+                return PASS_VALID_NUMBER;
+            } else if (!(/^(?=.*[@#$%&])/.test(password))) {
+                return PASS_VALID_SPECIAL;
+            }
+            return false;
+        });
+
         $('[data-action="processAssociateStore"]').off('click').on('click', function () {
-            var idform = $(this).data('idform')
+            var idform = $(this).data('idform');
             ShopyManager.processAssociateStore(idform);
         });
         $('[data-action="selectConnectionMode"]').off('change').on('change', function () {
@@ -148,7 +171,28 @@ var ShopyManager = {
             ShopyManager.resendValidCodeEmail();
         });
 
+        $('.form-control-icon_pass i').off('click').on('click', function (obj) {
+            inputid = $(this).data('input');
+            var inpu = $('#' + inputid);
 
+            if (inpu.attr('type') == 'password') {
+                inpu.attr('type', 'text');
+                if ($(this).data('inputextra')) {
+                    inpuextra = $('#' + $(this).data('inputextra'));
+                    inpuextra.attr('type', 'text');
+                }
+                $(this).removeClass('icon_Mostrar').addClass('icon_Ocultar');
+
+            } else {
+                $(this).removeClass('icon_Ocultar').addClass('icon_Mostrar');
+
+                inpu.attr('type', 'password');
+                if ($(this).data('inputextra')) {
+                    inpuextra = $('#' + $(this).data('inputextra'));
+                    inpuextra.attr('type', 'password');
+                }
+            }
+        });
     },
 
     //endregion
@@ -284,7 +328,18 @@ var ShopyManager = {
 
         var formtoValidate = $('#' + idform);
 
+        if (idform === 'form_instance_proxy') {
+            $("#" + idform).validate({
+                rules: {
+                    connection_key: {
+                        strong_password: true,
+                        required: true
+                    },
+                },
+            });
+        }
         var form = document.getElementById(idform);
+
         if (formtoValidate.valid()) {
             form = new FormData(form);
             this._ajaxCall(form, 'registerAssociateStore', function (response) {
@@ -428,4 +483,7 @@ var ShopyManager = {
     }
     //endregion
 
+    ,
+
 };
+

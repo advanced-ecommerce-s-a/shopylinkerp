@@ -44,7 +44,10 @@
                                 <label style="margin-top: 5px">{l s='Password' mod='shopylinkerp'}: </label>
                             </div>
                             <div class="col-md-6">
-                                <input type="password" class="form-control" name="password" required="required">
+                                <input type="password" class="form-control" name="password" id="password" required="required">
+                                    <span class="form-control-icon_pass">
+                                        <i data-input="password" class="icon_Mostrar"></i>
+                                    </span>
                             </div>
                         </div>
                     </div>

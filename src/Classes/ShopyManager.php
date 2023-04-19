@@ -21,9 +21,9 @@ use Configuration;
 
 class ShopyManager
 {
-    //const SHOPYLINKER_URL = 'https://localhost/sassympresta/web/app_dev.php/';
+    const SHOPYLINKER_URL = 'https://localhost/sassympresta/web/app_dev.php/';
     //const SHOPYLINKER_URL = 'https://app.shopylinker.com/';
-    const SHOPYLINKER_URL = 'https://app.shopylinker.com/web/app_dev.php/';
+    //const SHOPYLINKER_URL = 'https://app.shopylinker.com/web/app_dev.php/';
 
     static public function getApiUrl($lang = 'es')
     {
@@ -128,7 +128,7 @@ class ShopyManager
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $strparams);
         //solo para localhost
-        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //--------------
         $apiResult = curl_exec($ch);
 

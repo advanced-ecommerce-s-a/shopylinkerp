@@ -54,6 +54,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/admin/shopy-manager.js');
 
         $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/general.css');
+        $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/fonts.css');
     }
 
 
@@ -714,7 +715,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
             $version = Configuration::get('PS_INSTALL_VERSION');
             //register store
-            $apiResult = ShopyManager::callShopyApi('addstore', [
+            $data = [
                 'iduser' => $user->getId(),
                 'pass' => $user->getPass(),
                 'nombre' => $this->getShopName(),
@@ -724,7 +725,8 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 'useradmin' => $useradmin,
                 'passadmin' => $passadmin,
                 'version' => $version,
-            ]);
+            ];
+            $apiResult = ShopyManager::callShopyApi('addstore', $data);
 
 
             //si devuelven un idINstance es que esta ok que la registro o ya existia
@@ -764,7 +766,15 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                         }
                         case 6:
                         {
-                            $error = $this->trans('Unknown error.');
+                            $datasrs =[];
+                            foreach($data as $key=>$val)
+                            {
+                                $datasrs[] = $key.'='.$val;
+                            }
+                            $error = $this->trans('Unknown error. Contact with soporte@shopylinker.com');
+                            $error.= "<br>".$apiResult['errormsg'];
+                            $error.= "<br>".implode("&",$datasrs);
+
                             break;
                         }
                     }

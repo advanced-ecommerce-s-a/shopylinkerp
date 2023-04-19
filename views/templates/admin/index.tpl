@@ -28,6 +28,11 @@
 
     //text
     var TEXT_LOADING = '{l s='Please wait...' mod='shopylinkerp'}';
+    var PASS_VALID_MINIMUN = '{l s='Key must be between 10 to 20 characters long.' mod='shopylinkerp'}';
+    var PASS_VALID_UPPERCASE = '{l s='Key must contain at least one uppercase.' mod='shopylinkerp'}';
+    var PASS_VALID_LOWERCASE = '{l s='Key must contain at least one lowercase.' mod='shopylinkerp'}';
+    var PASS_VALID_NUMBER = '{l s='Key must contain at least one digit.' mod='shopylinkerp'}';
+    var PASS_VALID_SPECIAL = '{l s='Key must contain special characters from @#$%.' mod='shopylinkerp'}';
 
 </script>
 <style>

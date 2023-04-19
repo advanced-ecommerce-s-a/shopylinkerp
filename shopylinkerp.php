@@ -33,6 +33,9 @@ class Shopylinkerp extends Module
         $this->tab = 'administration';
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
+
+        $this->module_key = '17be407b7858ce95e593847a34575c86';
+
         parent::__construct();
 
         //recordar poner el numero del modulo
@@ -85,7 +88,7 @@ class Shopylinkerp extends Module
         $tabShopy->active = 1;
         $tabShopy->name = array();
         //todo crear icono para shopy
-        $tabShopy->icon = 'track_changes';
+        $tabShopy->icon = 'sync';
         $tabShopy->class_name = 'AdminShopylinkerp';
         $tabShopy->module = $this->name;
 
@@ -99,7 +102,7 @@ class Shopylinkerp extends Module
         $tab->id_parent = $tabShopy->id;
         $tab->active = 1;
         $tab->name = array();
-        $tab->icon = 'track_changes';
+        $tab->icon = 'sync';
         $tab->class_name = 'AdminShopylinkerpManager';
         $tab->module = $this->name;
         foreach (Language::getLanguages(true) as $lang) {

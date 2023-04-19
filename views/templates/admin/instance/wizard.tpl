@@ -124,8 +124,9 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label style="margin-top: 5px">{l s='Connection key' mod='shopylinkerp'}</label>
-                                                        <input class="form-control chaneg_associate_store"
+                                                        <input class="form-control chaneg_associate_store stoolt"
                                                                name="connection_key" value="{{$conectionKey}}"
+                                                               title="{l s='Minimum 10 Characters - Must include upper and lower case letters,at least one number and some special character' mod='shopylinkerp'}"
                                                                minlength="10" required>
                                                     </div>
                                                 </div>

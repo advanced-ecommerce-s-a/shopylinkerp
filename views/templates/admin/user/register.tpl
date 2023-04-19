@@ -45,8 +45,11 @@
                                     :</label>
                             </div>
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password"
+                                <input id="password" type="password" class="form-control" id="password" name="password"
                                        required="required">
+                                    <span class="form-control-icon_pass">
+                                        <i data-input="password" data-inputextra="rpassword" class="icon_Mostrar"></i>
+                                    </span>
                             </div>
                         </div>
                     </div>
@@ -56,7 +59,7 @@
                                 <label style="margin-top: 5px">{l s='Confirm Password' mod='shopylinkerp'}:</label>
                             </div>
                             <div class="col-md-6">
-                                <input type="password" class="form-control" name="rpassword" required="required">
+                                <input type="password" class="form-control" id="rpassword" name="rpassword" required="required">
                             </div>
                         </div>
                     </div>
