@@ -22,7 +22,8 @@ use Configuration;
 class ShopyManager
 {
     //const SHOPYLINKER_URL = 'https://localhost/sassympresta/web/app_dev.php/';
-    const SHOPYLINKER_URL = 'https://app.shopylinker.com/';
+    //const SHOPYLINKER_URL = 'https://app.shopylinker.com/';
+    const SHOPYLINKER_URL = 'https://app.shopylinker.com/web/app_dev.php/';
 
     static public function getApiUrl($lang = 'es')
     {

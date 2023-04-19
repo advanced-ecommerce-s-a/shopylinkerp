@@ -711,6 +711,8 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
 
         if (isset($apiResult['success']) && $apiResult['success']) {
+
+            $version = Configuration::get('PS_INSTALL_VERSION');
             //register store
             $apiResult = ShopyManager::callShopyApi('addstore', [
                 'iduser' => $user->getId(),
@@ -721,6 +723,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 'urladmin' => $this->getAdminUrl(),
                 'useradmin' => $useradmin,
                 'passadmin' => $passadmin,
+                'version' => $version,
             ]);
 
 
