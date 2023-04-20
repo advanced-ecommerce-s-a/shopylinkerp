@@ -48,8 +48,7 @@ class Shopylinkerp extends Module
 
     public function install()
     {
-        $this->multistoreCompatibility = self::MULTISTORE_COMPATIBILITY_YES;
-
+        //$this->multistoreCompatibility = self::MULTISTORE_COMPATIBILITY_YES;
         if (Shop::isFeatureActive()) {
             Shop::setContext(Shop::CONTEXT_ALL);
         }
@@ -127,7 +126,6 @@ class Shopylinkerp extends Module
         return true;
     }
 
-    //todo esto pasarlo a la clase general tuya
     public function createConfig()
     {
         ShopyManager::init();

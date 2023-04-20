@@ -60,6 +60,7 @@ $_MODULE['<{shopylinkerp}prestashop>wizard_18f45f8f562eae50f038b72143d744a4'] = 
 $_MODULE['<{shopylinkerp}prestashop>wizard_35e450ad1c493024de999068a889e908'] = 'El puerto de conexión FTP predeterminado es el 21. En caso de utilizar un puerto diferente, especifíquelo en este campo.';
 $_MODULE['<{shopylinkerp}prestashop>wizard_2a23cd24188f4b7844ed6a994987308e'] = 'Carpeta raíz';
 $_MODULE['<{shopylinkerp}prestashop>wizard_29efc1c532964b2a4e4f4cf9dbd36019'] = 'Usar SSL';
+$_MODULE['<{shopylinkerp}prestashop>wizard_5feb519d1b5c21b68694d373657fbf58'] = 'Activar si la conexión FTP es bajo protocolo seguro (SFTP)';
 $_MODULE['<{shopylinkerp}prestashop>wizard_0557fa923dcee4d0f86b1409f5c2167f'] = 'Atrás';
 $_MODULE['<{shopylinkerp}prestashop>wizard_7b36af36c574ef6c09fbcedfb4e6a883'] = 'Debe validar todos los formularios en su configuración de integración para finalizar la asociación';
 $_MODULE['<{shopylinkerp}prestashop>wizard_a20ddccbb6f808ec42cd66323e6c6061'] = 'Finalizar';

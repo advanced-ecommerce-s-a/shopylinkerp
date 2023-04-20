@@ -262,7 +262,7 @@
                                                                     <div class="form-group">
                                                                         <label>{l s='Use SSL' mod='shopylinkerp'}</label><br>
                                                                         <label class="switch stoolt"
-                                                                               title="{l s="Activate if the FTP connection is under secure protocol (SFTP)"}"><input
+                                                                               title="{l s="Activate if the FTP connection is under secure protocol (SFTP)" mod='shopylinkerp'}"><input
                                                                                     type="checkbox"
                                                                                     class="chaneg_associate_store"
                                                                                     {if $ftpssl == 1}checked{/if}
