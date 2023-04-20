@@ -136,21 +136,6 @@ class Shopylinkerp extends Module
         ShopyManager::destroyConfig();
     }
 
-    public function getHookController($hook_name, $params = array())
-    {
-        // Include the controller file
-        require_once(dirname(__FILE__) . '/controllers/hook/' . $hook_name . '.php');
-
-        // Build dynamically the controller name
-        $controller_name = $this->nameExt . $hook_name . 'Controller';
-
-        // Instantiate controller
-        $controller = new $controller_name($this, __FILE__, $this->_path, $params);
-
-        // Return the controller
-        return $controller;
-    }
-
     public function getContent()
     {
         $link = $this->context->link->getAdminLink('AdminShopylinkerpManager');
