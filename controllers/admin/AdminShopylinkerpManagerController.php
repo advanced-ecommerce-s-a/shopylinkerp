@@ -72,7 +72,9 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             $instanceData = ShopyManager::getShopyInstance();
             $tpl->assign('instanceData', $instanceData);
 
-            $tpl->assign('extlogin', ShopyManager::getExtLoginUrl());
+            $lang = $this->context->language->iso_code;
+
+            $tpl->assign('extlogin', ShopyManager::getExtLoginUrl($lang));
 
             $include_tpl = 'module:shopylinkerp/views/templates/admin/dashboard.tpl';
         }
@@ -102,7 +104,9 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/dashboard.tpl');
 
-        $tpl->assign('extlogin', ShopyManager::getExtLoginUrl());
+        $lang = $this->context->language->iso_code;
+
+        $tpl->assign('extlogin', ShopyManager::getExtLoginUrl($lang));
 
         $tpl->assign('userData', $userData);
         $tpl->assign('instanceData', $instanceData);

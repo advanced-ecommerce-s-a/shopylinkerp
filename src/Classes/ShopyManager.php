@@ -18,6 +18,7 @@
 namespace PrestaShop\Module\shopylinkerp\Classes;
 
 use Configuration;
+use PrestaShop\PrestaShop\Adapter\Shop\Context;
 
 class ShopyManager
 {
@@ -115,8 +116,9 @@ class ShopyManager
 
     static public function callShopyApi($action, $parameters)
     {
-        //TODO ver si la url de la api se pone directo
-        $url = static::getApiUrl() . $action . "?rand=" . rand(0, 100000);
+        $lang = \Context::getContext()->language->iso_code;
+
+        $url = static::getApiUrl($lang) . $action . "?rand=" . rand(0, 100000);
 
         $strparams = http_build_query($parameters, '', '&');
 

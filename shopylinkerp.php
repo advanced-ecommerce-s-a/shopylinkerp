@@ -29,7 +29,7 @@ class Shopylinkerp extends Module
     public function __construct()
     {
         $this->name = 'shopylinkerp';
-        $this->version = '1.0.0';
+        $this->version = '1.0.1';
         $this->tab = 'administration';
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
@@ -134,5 +134,26 @@ class Shopylinkerp extends Module
     public function removeConfig()
     {
         ShopyManager::destroyConfig();
+    }
+
+    public function getHookController($hook_name, $params = array())
+    {
+        // Include the controller file
+        require_once(dirname(__FILE__) . '/controllers/hook/' . $hook_name . '.php');
+
+        // Build dynamically the controller name
+        $controller_name = $this->nameExt . $hook_name . 'Controller';
+
+        // Instantiate controller
+        $controller = new $controller_name($this, __FILE__, $this->_path, $params);
+
+        // Return the controller
+        return $controller;
+    }
+
+    public function getContent()
+    {
+        $link = $this->context->link->getAdminLink('AdminShopylinkerpManager');
+        Tools::redirectAdmin($link);
     }
 }
