@@ -22,6 +22,10 @@ class ComposerStaticInita953ae1c078b3d700cce751f6791b71a
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'PrestaShop\\Module\\shopylinkerp\\Classes\\InstanceStatus' => __DIR__ . '/../..' . '/src/Classes/InstanceStatus.php',
+        'PrestaShop\\Module\\shopylinkerp\\Classes\\ShopyInstance' => __DIR__ . '/../..' . '/src/Classes/ShopyInstance.php',
+        'PrestaShop\\Module\\shopylinkerp\\Classes\\ShopyManager' => __DIR__ . '/../..' . '/src/Classes/ShopyManager.php',
+        'PrestaShop\\Module\\shopylinkerp\\Classes\\ShopyUser' => __DIR__ . '/../..' . '/src/Classes/ShopyUser.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -40,7 +40,7 @@ class Shopylinkerp extends Module
 
         //recordar poner el numero del modulo
         $this->displayName = $this->trans('Shopylinker – Prestashop');
-        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => '1.7.99.99');
+        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => '8.0.2');
 
         $this->description = $this->trans('Innovative all-in-one system that will allow you to increase sales, 
         increasing visits and the conversion rate to sales. Increase revenue and reduce costs by integrating your store with Shopylinker.');

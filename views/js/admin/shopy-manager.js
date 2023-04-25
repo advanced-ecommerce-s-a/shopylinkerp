@@ -30,16 +30,17 @@ var ShopyManager = {
         form.append('controller', 'AdminShopylinkerpManager');
         form.append('token', ShopyManager.token);
         form.append('action', action);
+        form.append('ajaxMode', 1);
+        form.append('ajax', 1);
 
         $.ajax({
-            url: 'ajax-tab.php',
+            url: 'index.php',
             data: form,
             method: 'POST',
             processData: false,
             cache: false,
             contentType: false,
             beforeSend: function () {
-                //TODO poner multilingue el mensaje
                 $.blockUI({
                     message: TEXT_LOADING,
                     css: {
@@ -216,6 +217,7 @@ var ShopyManager = {
             form = new FormData(form);
 
             this._ajaxCall(form, 'login', function (response) {
+
                 var response = JSON.parse(response);
                 console.log(response);
                 switch (response.status) {
