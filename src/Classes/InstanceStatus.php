@@ -19,6 +19,10 @@
 
 namespace PrestaShop\Module\shopylinkerp\Classes;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class InstanceStatus
 {
     const UNREGISTER = 1;

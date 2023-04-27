@@ -15,6 +15,9 @@
  * @license  Optyum S.A. All Rights Reserved
  *  International Registered Trademark & Property of Optyum S.A.
  */
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
 $autoloadPath = __DIR__ . '/vendor/autoload.php';
 if (file_exists($autoloadPath)) {

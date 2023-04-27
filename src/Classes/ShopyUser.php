@@ -19,6 +19,10 @@
 
 namespace PrestaShop\Module\shopylinkerp\Classes;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShop\Module\shopylinkerp\Classes\ShopyManager;
 
 class ShopyUser

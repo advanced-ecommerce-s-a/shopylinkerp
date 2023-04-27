@@ -17,6 +17,10 @@
 
 namespace PrestaShop\Module\shopylinkerp\Classes;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Configuration;
 use PrestaShop\PrestaShop\Adapter\Shop\Context;
 

@@ -4,6 +4,10 @@
 
 namespace Composer\Autoload;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ComposerStaticInita953ae1c078b3d700cce751f6791b71a
 {
     public static $prefixLengthsPsr4 = array (

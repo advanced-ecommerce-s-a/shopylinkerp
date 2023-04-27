@@ -17,6 +17,10 @@
  *  International Registered Trademark & Property of Optyum S.A.
  */
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShop\Module\shopylinkerp\Classes\ShopyUser;
 use PrestaShop\Module\shopylinkerp\Classes\ShopyInstance;
 use PrestaShop\Module\shopylinkerp\Classes\ShopyManager;
