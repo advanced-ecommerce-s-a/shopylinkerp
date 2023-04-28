@@ -710,14 +710,15 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $error = null;
 
         //check access store
-        $apiResult = ShopyManager::callShopyApi('checkaccessstore', [
+        $dataaccess = [
             'urlfront' => $this->getShopUrl(),
             'urladmin' => $this->getAdminUrl(),
             'user' => $useradmin,
             'pass' => $passadmin,
             'tipotienda' => 'pre',
-        ]);
+        ];
 
+        $apiResult = ShopyManager::callShopyApi('checkaccessstore',$dataaccess);
 
         if (isset($apiResult['success']) && $apiResult['success']) {
 

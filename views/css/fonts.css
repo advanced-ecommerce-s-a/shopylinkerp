@@ -29,9 +29,9 @@
   font-display: block;
 }
 
-[class^="icon_"], [class*=" icon_"], .mi-extension {
+[class^="icon_"], [class*=" icon_"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'Shplkr_Prestashop_modulo' !important;
+  font-family: 'Shplkr_Prestashop_modulo';
   speak: never;
   font-style: normal;
   font-weight: normal;

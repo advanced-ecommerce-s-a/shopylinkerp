@@ -345,6 +345,7 @@ var ShopyManager = {
         if (formtoValidate.valid()) {
             form = new FormData(form);
             this._ajaxCall(form, 'registerAssociateStore', function (response) {
+                console.log(response);
                 var response = JSON.parse(response);
                 switch (response.step) {
                     case '1': {

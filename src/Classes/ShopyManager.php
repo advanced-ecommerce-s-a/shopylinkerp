@@ -124,13 +124,13 @@ class ShopyManager
 
         $url = static::getApiUrl($lang) . $action . "?rand=" . rand(0, 100000);
 
-        $strparams = http_build_query($parameters, '', '&');
+        //$strparams = http_build_query($parameters, '', '&');
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $strparams);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
         //solo para localhost
         //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //--------------

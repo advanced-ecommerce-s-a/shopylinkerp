@@ -26,13 +26,20 @@
     });
 
 
+    {capture assign="escTEXLOADIN"}{l s='Please wait...' mod='shopylinkerp'}{/capture}
+    {capture assign="escPASS_VALID_MINIMUN"}{l s='Key must be between 10 to 20 characters long.' mod='shopylinkerp'}{/capture}
+    {capture assign="escPASS_VALID_UPPERCASE"}{l s='Key must contain at least one uppercase.' mod='shopylinkerp'}{/capture}
+    {capture assign="escPASS_VALID_LOWERCASE"}{l s='Key must contain at least one lowercase.' mod='shopylinkerp'}{/capture}
+    {capture assign="escPASS_VALID_NUMBER"}{l s='Key must contain at least one digit.' mod='shopylinkerp'}{/capture}
+    {capture assign="escPASS_VALID_SPECIAL"}{l s='Key must contain special characters from @#$%.' mod='shopylinkerp'}{/capture}
+
     //text
-    var TEXT_LOADING = '{l s='Please wait...' mod='shopylinkerp'}';
-    var PASS_VALID_MINIMUN = '{l s='Key must be between 10 to 20 characters long.' mod='shopylinkerp'}';
-    var PASS_VALID_UPPERCASE = '{l s='Key must contain at least one uppercase.' mod='shopylinkerp'}';
-    var PASS_VALID_LOWERCASE = '{l s='Key must contain at least one lowercase.' mod='shopylinkerp'}';
-    var PASS_VALID_NUMBER = '{l s='Key must contain at least one digit.' mod='shopylinkerp'}';
-    var PASS_VALID_SPECIAL = '{l s='Key must contain special characters from @#$%.' mod='shopylinkerp'}';
+    var TEXT_LOADING = '{$escTEXLOADIN|escape:"quotes":'UTF-8'}';
+    var PASS_VALID_MINIMUN = '{$escPASS_VALID_MINIMUN|escape:"quotes":'UTF-8'}';
+    var PASS_VALID_UPPERCASE = '{$escPASS_VALID_UPPERCASE|escape:"quotes":'UTF-8'}';
+    var PASS_VALID_LOWERCASE = '{$escPASS_VALID_LOWERCASE|escape:"quotes":'UTF-8'}';
+    var PASS_VALID_NUMBER = '{$escPASS_VALID_NUMBER|escape:"quotes":'UTF-8'}';
+    var PASS_VALID_SPECIAL = '{$escPASS_VALID_SPECIAL|escape:"quotes":'UTF-8'}';
 
 </script>
 <style>
