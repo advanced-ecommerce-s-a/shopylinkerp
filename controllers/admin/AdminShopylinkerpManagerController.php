@@ -348,6 +348,15 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $instancia->setStatus(InstanceStatus::VALID);
         $instancia->update();
 
+        $user = new ShopyUser();
+
+        //call to the api
+        $apiResult = ShopyManager::callShopyApi('finishstoreasociation', [
+            'iduser' => $user->getId(),
+            'pass' => $user->getPass(),
+            'idinstancia' => $instancia->getIdInstance(),
+        ]);
+
         $response = [];
         $response['status'] = 1;
 

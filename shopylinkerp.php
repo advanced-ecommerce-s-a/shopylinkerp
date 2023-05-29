@@ -32,7 +32,7 @@ class Shopylinkerp extends Module
     public function __construct()
     {
         $this->name = 'shopylinkerp';
-        $this->version = '1.0.1';
+        $this->version = '1.0.2';
         $this->tab = 'administration';
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
