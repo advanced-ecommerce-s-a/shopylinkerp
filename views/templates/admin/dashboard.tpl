@@ -34,7 +34,7 @@
                         <label>{l s='Id' mod='shopylinkerp'}</label>
                     </div>
                     <div class="text-center">
-                        <span>{$userData['id']}</span>
+                        <span>{$userData['id']|escape:"htmlall":'UTF-8'}</span>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -42,7 +42,7 @@
                         <label>{l s='Name' mod='shopylinkerp'}</label>
                     </div>
                     <div class="text-center">
-                        <span>{$userData['name']} {$userData['lastname']}</span>
+                        <span>{$userData['name']|escape:"htmlall":'UTF-8'} {$userData['lastname']|escape:"htmlall":'UTF-8'}</span>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -50,7 +50,7 @@
                         <label>{l s='Email' mod='shopylinkerp'}</label>
                     </div>
                     <div class="text-center">
-                        <span>{$userData['username']}</span>
+                        <span>{$userData['username']|escape:"htmlall":'UTF-8'}</span>
                     </div>
                 </div>
             </div>
@@ -114,14 +114,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>{l s='Linking date' mod='shopylinkerp'}: </label> {$instanceData['date_add']}
+                                        <label>{l s='Linking date' mod='shopylinkerp'}: </label> {$instanceData['date_add']|escape:"htmlall":'UTF-8'}
                                     </div>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <form action="{$extlogin}" target="_blank" method="post">
-                                        <input type="hidden" name="user" value="{$userData['username']}">
-                                        <input type="hidden" name="pass" value="{$userData['pass']}">
-                                        <input type="hidden" name="idinstancia" value="{$instanceData['id_instance']}">
+                                    <form action="{$extlogin|escape:"htmlall":'UTF-8'}" target="_blank" method="post">
+                                        <input type="hidden" name="user" value="{$userData['username']|escape:"javascript":'UTF-8'}">
+                                        <input type="hidden" name="pass" value="{$userData['pass']|escape:"javascript":'UTF-8'}">
+                                        <input type="hidden" name="idinstancia" value="{$instanceData['id_instance']|escape:"javascript":'UTF-8'}">
                                         <button type="submit" class="btn btn-success">{l s='Access Shopylinker' mod='shopylinkerp'}</button>
                                     </form>
                                 </div>

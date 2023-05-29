@@ -54,7 +54,7 @@
                                                 <div class="col-md-6">
                                                     <input title="{l s='Must be a user with administrator privileges' mod='shopylinkerp'}"
                                                            type="text" class="form-control chaneg_associate_user stoolt"
-                                                           name="useradmin" required="required" value="{$useradmin}">
+                                                           name="useradmin" required="required" value="{$useradmin|escape:"javascript":'UTF-8'}">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -64,7 +64,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <input type="password" class="form-control chaneg_associate_user"
-                                                           name="passadmin" required="required" value="{$passadmin}">
+                                                           name="passadmin" required="required" value="{$passadmin|escape:"javascript":'UTF-8'}">
                                                 </div>
                                             </div>
                                             <div class="col-md-12 text-center">
@@ -125,7 +125,7 @@
                                                     <div class="form-group">
                                                         <label style="margin-top: 5px">{l s='Connection key' mod='shopylinkerp'}</label>
                                                         <input class="form-control chaneg_associate_store stoolt"
-                                                               name="connection_key" value="{{$conectionKey}}"
+                                                               name="connection_key" value="{$conectionKey|escape:"javascript":'UTF-8'}"
                                                                title="{l s='Minimum 10 Characters - Must include upper and lower case letters,at least one number and some special character' mod='shopylinkerp'}"
                                                                minlength="10" required>
                                                     </div>
@@ -163,7 +163,7 @@
                                                                         <label>{l s='Server' mod='shopylinkerp'}
                                                                         </label>
                                                                         <input class="form-control chaneg_associate_store"
-                                                                               name="server" required value="{$server}">
+                                                                               name="server" required value="{$server|escape:"javascript":'UTF-8'}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
@@ -172,7 +172,7 @@
                                                                         </label>
                                                                         <input class="form-control chaneg_associate_store"
                                                                                name="name_bd" required
-                                                                               value="{$name_bd}">
+                                                                               value="{$name_bd|escape:"javascript":'UTF-8'}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
@@ -181,7 +181,7 @@
                                                                             *</label>
                                                                         <input class="form-control chaneg_associate_store"
                                                                                name="user_bd" required
-                                                                               value="{$user_bd}">
+                                                                               value="{$user_bd|escape:"javascript":'UTF-8'}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
@@ -189,7 +189,7 @@
                                                                         <label>{l s='DB Password' mod='shopylinkerp'}</label>
                                                                         <input class="form-control chaneg_associate_store"
                                                                                name="pass_bd"
-                                                                               value="{$pass_bd}">
+                                                                               value="{$pass_bd|escape:"javascript":'UTF-8'}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-12 text-center">
@@ -216,7 +216,7 @@
                                                                         <label>{l s='FTP Username' mod='shopylinkerp'} </label>
                                                                         <input class="form-control chaneg_associate_store stoolt"
                                                                                title="{l s='Enter the FTP username' mod='shopylinkerp'}"
-                                                                               name="ftp_user" value="{{$userftp}}"
+                                                                               name="ftp_user" value="{$userftp|escape:"javascript":'UTF-8'}"
                                                                                required>
                                                                     </div>
                                                                 </div>
@@ -225,7 +225,7 @@
                                                                         <label>{l s='FTP Password' mod='shopylinkerp'}</label>
                                                                         <input class="form-control chaneg_associate_store stoolt"
                                                                                title="{l s='Enter the password of the indicated FTP user' mod='shopylinkerp'}"
-                                                                               name="ftp_pass" value="{{$passftp}}"
+                                                                               name="ftp_pass" value="{$passftp|escape:"javascript":'UTF-8'}"
                                                                                required>
                                                                     </div>
                                                                 </div>
@@ -234,7 +234,7 @@
                                                                         <label>{l s='FTP Server' mod='shopylinkerp'}</label>
                                                                         <input class="form-control chaneg_associate_store stoolt"
                                                                                title="{l s='Enter the address of the FTP server. Generally it is the same domain of the store' mod='shopylinkerp'}"
-                                                                               name="ftp_server" value="{{$ftpserver}}"
+                                                                               name="ftp_server" value="{$ftpserver|escape:"javascript":'UTF-8'}"
                                                                                required>
                                                                     </div>
                                                                 </div>
@@ -244,7 +244,7 @@
                                                                         <input class="form-control chaneg_associate_store stoolt"
                                                                                title="{l s='The default FTP connection port is 21. In case of using a different port, specify it in this field.' mod='shopylinkerp'}"
                                                                                name="ftp_port"
-                                                                               placeholder="21" value="{{$ftpport}}"
+                                                                               placeholder="21" value="{$ftpport|escape:"javascript":'UTF-8'}"
                                                                                required>
                                                                     </div>
                                                                 </div>
@@ -254,7 +254,7 @@
                                                                         <input class="form-control chaneg_associate_store stoolt"
                                                                                title="{l s='Represents the store folder on the server.
                                                                                Check with your server administrator if you do not know what it is. Default is /' mod='shopylinkerp'}"
-                                                                               name="ftp_root" value="{{$ftproot}}"
+                                                                               name="ftp_root" value="{$ftproot|escape:"javascript":'UTF-8'}"
                                                                                placeholder="/" required>
                                                                     </div>
                                                                 </div>
