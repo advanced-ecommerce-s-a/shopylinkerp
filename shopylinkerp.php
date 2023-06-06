@@ -32,7 +32,7 @@ class Shopylinkerp extends Module
     public function __construct()
     {
         $this->name = 'shopylinkerp';
-        $this->version = '1.0.2';
+        $this->version = '1.0.3';
         $this->tab = 'administration';
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
@@ -43,7 +43,7 @@ class Shopylinkerp extends Module
 
         //recordar poner el numero del modulo
         $this->displayName = $this->trans('Shopylinker – Prestashop');
-        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => '8.0.2');
+        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => '8.9.9');
 
         $this->description = $this->trans('Innovative all-in-one system that will allow you to increase sales, 
         increasing visits and the conversion rate to sales. Increase revenue and reduce costs by integrating your store with Shopylinker.');
