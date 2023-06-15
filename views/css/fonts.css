@@ -44,6 +44,46 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+.icon_Salir:before {
+  content: "\e90e";
+}
+.icon_Apellidos:before {
+  content: "\e903";
+}
+.icon_confir_Contrasena:before {
+  content: "\e90a";
+}
+.icon_Contrasena:before {
+  content: "\e90b";
+}
+.icon_email_1:before {
+  content: "\e90c";
+}
+.icon_email_2:before {
+  content: "\e90d";
+}
+.icon_Usuario_1:before {
+  content: "\e902";
+}
+.icon_Inscripcion_1:before {
+  content: "\e904";
+}
+.icon_Inscripcion_2:before {
+  content: "\e905";
+}
+.icon_Pre-info_usuario:before {
+  content: "\e906";
+}
+.icon_Salir_usuario_1:before {
+  content: "\e907";
+}
+.icon_Salir_usuario_2:before {
+  content: "\e908";
+}
+.icon_Pre-conex_tienda:before {
+  content: "\e909";
+}
 .icon_Mostrar:before {
   content: "\e900";
 }

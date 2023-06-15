@@ -138,3 +138,64 @@ div.fl
 {
     cursor: default;
 }
+
+.logoshopy
+{
+    text-align: center;
+}
+
+.logoshopy .headertitle
+{
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-size: 23px;
+    color: rgb(29, 113, 184);
+    text-transform: uppercase;
+    line-height: 1.2;
+    text-align: center;
+    font-weight: 15;
+}
+
+.login .title, .register .title, .dashboard .title
+{
+    text-align: center;
+    margin-bottom: 30px;
+}
+.login .subtitle, .register .subtitle, .dashboard .subtitle
+{
+    font-size: 15px;
+}
+
+.login label i, .register label i , .dashboard label i
+{
+    font-size: 25px;
+}
+.dashboard .logoutaction
+{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+.dashboard .logoutaction a
+{
+
+    font-size: 20px;
+    text-decoration: none;
+    color: #a6b3b7 ;
+}
+.dashboard .logoutaction a:hover
+{
+    color: #25b9d7 ;
+    text-decoration: none;
+}
+
+#conectionkeyGenerate
+{
+    float: left;
+    margin-top: 34px;
+    text-decoration: none;
+}
+#conectionkeyGenerate i
+{
+    font-size: 25px;
+}

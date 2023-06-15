@@ -152,4 +152,20 @@ class ShopyUser
             'lastname' => $this->getLastname(),
         ]);
     }
+
+    public function generarPassword() {
+        $caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789*';
+        $longitud = 8; // Longitud de la contraseña
+
+        $password = '';
+
+        // Genera la contraseña aleatoria
+        for ($i = 0; $i < $longitud; $i++) {
+            $randomIndex = mt_rand(0, strlen($caracteres) - 1);
+            $password .= $caracteres[$randomIndex];
+        }
+
+        return $password;
+    }
+
 }

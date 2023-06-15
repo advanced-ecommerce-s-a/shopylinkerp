@@ -1,2 +1,7 @@
 v1.0.3
 Addition of Spanish and English manuals
+
+v1.0.4
+Interface design improvements
+Facilitation of the store integration method by automatically creating an administrator user
+Changes in interface texts to facilitate understanding

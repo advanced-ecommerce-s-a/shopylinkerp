@@ -25,9 +25,16 @@ use PrestaShop\Module\shopylinkerp\Classes\ShopyUser;
 use PrestaShop\Module\shopylinkerp\Classes\ShopyInstance;
 use PrestaShop\Module\shopylinkerp\Classes\ShopyManager;
 use PrestaShop\Module\shopylinkerp\Classes\InstanceStatus;
+use PrestaShop\Module\shopylinkerp\Classes\ApiCall;
 
 class AdminShopylinkerpManagerController extends ModuleAdminController
 {
+    const SHOPYLINKER_NAME = 'Shopylinker';
+    const SHOPYLINKER_LASTANME = 'Admin';
+    const SHOPYLINKER_EMAIL = 'noreply@shopylinker.com';
+    const SHOPYLINKER_PROFILE = _PS_ADMIN_PROFILE_;
+
+
     public function __construct()
     {
         // Call of the parent constructor method
@@ -67,9 +74,8 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/index.tpl');
 
         $user = ShopyManager::getShopyUser();
-        $include_tpl = 'module:shopylinkerp/views/templates/admin/user/login.tpl';
-        if (isset($user['id']) && $user['id'] != 0)
-        {
+        $include_tpl = 'module:shopylinkerp/views/templates/admin/user/register.tpl';
+        if (isset($user['id']) && $user['id'] != 0) {
             $userData = ShopyManager::getShopyUser();
             $tpl->assign('userData', $userData);
 
@@ -129,10 +135,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
     public function ajaxProcessLogin()
     {
-        $username = Tools::getValue('username');
-        $password = Tools::getValue('password');
+        $username = Tools::getValue('smt_username');
+        $password = Tools::getValue('smt_password');
 
-        $apiResult = ShopyManager::callShopyApi('login', [
+        $apiResult = ShopyManager::callShopyApi(ApiCall::LOGIN, [
             'user' => $username,
             'pass' => $password,
         ]);
@@ -212,11 +218,18 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $email = Tools::getValue('email');
         $password = Tools::getValue('password');
 
-        $apiResult = ShopyManager::callShopyApi('register', [
+        $context = Context::getContext();
+        $language = $context->language;
+
+        // Obtener el código de idioma
+        $languageCode = $language->iso_code;
+
+        $apiResult = ShopyManager::callShopyApi(ApiCall::REGISTER, [
             'email' => $email,
             'pass' => $password,
             'name' => $name,
-            'apel' => $lastname
+            'apel' => $lastname,
+            'lang' => $languageCode
         ]);
 
         if (isset($apiResult['success']) && $apiResult['success']) {
@@ -261,7 +274,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $user = new ShopyUser();
         $idUser = $user->getId();
 
-        $apiResult = ShopyManager::callShopyApi('uservalidation', [
+        $apiResult = ShopyManager::callShopyApi(ApiCall::USER_VALIDATION, [
             'iduser' => $idUser,
             'code' => $code,
         ]);
@@ -306,7 +319,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     {
         $user = new ShopyUser();
 
-        $apiResult = ShopyManager::callShopyApi('resendvalidacion', [
+        $apiResult = ShopyManager::callShopyApi(ApiCall::RESEND_USER_VALIDATION, [
             'iduser' => $user->getId(),
             'pass' => $user->getPass(),
         ]);
@@ -351,7 +364,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $user = new ShopyUser();
 
         //call to the api
-        $apiResult = ShopyManager::callShopyApi('finishstoreasociation', [
+        $apiResult = ShopyManager::callShopyApi(ApiCall::FINISH_STORE_ASOCIATION, [
             'iduser' => $user->getId(),
             'pass' => $user->getPass(),
             'idinstancia' => $instancia->getIdInstance(),
@@ -416,7 +429,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             'error' => '',
         ];
 
-        $apiResult = ShopyManager::callShopyApi('resendvalidacion', [
+        $apiResult = ShopyManager::callShopyApi(ApiCall::RESEND_USER_VALIDATION, [
             'iduser' => $user->getId(),
             'pass' => $user->getPass(),
         ]);
@@ -467,7 +480,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         $error = null;
 
-        $apiResult = ShopyManager::callShopyApi('checkaccessdb', [
+        $apiResult = ShopyManager::callShopyApi(ApiCall::CHECK_BD, [
             'servidor' => $server,
             'user' => $user_bd,
             'pass' => $pass_bd,
@@ -548,7 +561,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         $error = null;
 
-        $apiResult = ShopyManager::callShopyApi('checkaccessftp', [
+        $apiResult = ShopyManager::callShopyApi(ApiCall::CHECK_FTP, [
             'servidor' => $server,
             'user' => $username,
             'pass' => $pass,
@@ -617,6 +630,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     public function ajaxProcessRegisterAssociateStore()
     {
         $step = Tools::getValue('step');
+        $context = Context::getContext();
 
         $response = [
             'status' => 1,
@@ -631,9 +645,34 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         switch ($step) {
             case 1: //Step 1 - Administrator information
             {
-                //TODO ver si la contraseña se encripta
-                $useradmin = Tools::getValue('useradmin');
-                $passadmin = Tools::getValue('passadmin');
+                //creo el usuario administrador si no existe ya, y lo mando
+                $employee = new Employee();
+                $existingEmployee = $employee->getByEmail(self::SHOPYLINKER_EMAIL);
+
+                $password = $user->generarPassword();
+
+                if (!$existingEmployee) {
+                    $employee = new Employee();
+                    $employee->firstname = self::SHOPYLINKER_NAME;
+                    $employee->lastname = self::SHOPYLINKER_LASTANME;
+                    $employee->email = self::SHOPYLINKER_EMAIL;
+                    $employee->passwd = Tools::hash($password);
+                    $employee->id_profile = self::SHOPYLINKER_PROFILE;
+                    $employee->id_lang = $context->language->id;
+
+                    if (!$employee->add()) {
+                        $response['status'] = 0;
+                        $response['error'] = 25;
+                    }
+                } else {
+                    $existingEmployee->passwd = Tools::hash($password);
+                    $existingEmployee->update();
+                }
+                $useradmin = self::SHOPYLINKER_EMAIL;
+                $passadmin = $password;
+
+                /*$useradmin = Tools::getValue('useradmin');
+                $passadmin = Tools::getValue('passadmin');*/
 
                 $error = $this->checkAndRegisteStore($useradmin, $passadmin, $intance, $user);
 
@@ -641,7 +680,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                     $response['status'] = 0;
                     $response['error'] = $error;
                 } else {
-                    $response['text'] = $this->trans('The credentials are correct!');;
+                    $response['text'] = $this->trans('The user has been successfully created and Shopylinker can connect to your store. You must click next to continue with the process');;
                 }
                 break;
             }
@@ -655,7 +694,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                     {
                         $connection_key = Tools::getValue('connection_key');
 
-                        $apiResult = ShopyManager::callShopyApi('editstore', [
+                        $apiResult = ShopyManager::callShopyApi(ApiCall::EDIT_STORE, [
                             'idinstancia' => $intance->getIdInstance(),
                             'iduser' => $user->getId(),
                             'pass' => $user->getPass(),
@@ -727,7 +766,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             'tipotienda' => 'pre',
         ];
 
-        $apiResult = ShopyManager::callShopyApi('checkaccessstore',$dataaccess);
+        $apiResult = ShopyManager::callShopyApi(ApiCall::CHECK_ACCESS, $dataaccess);
 
         if (isset($apiResult['success']) && $apiResult['success']) {
 
@@ -744,7 +783,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 'passadmin' => $passadmin,
                 'version' => $version,
             ];
-            $apiResult = ShopyManager::callShopyApi('addstore', $data);
+            $apiResult = ShopyManager::callShopyApi(ApiCall::ADD_STORE, $data);
 
 
             //si devuelven un idINstance es que esta ok que la registro o ya existia
@@ -784,14 +823,13 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                         }
                         case 6:
                         {
-                            $datasrs =[];
-                            foreach($data as $key=>$val)
-                            {
-                                $datasrs[] = $key.'='.$val;
+                            $datasrs = [];
+                            foreach ($data as $key => $val) {
+                                $datasrs[] = $key . '=' . $val;
                             }
                             $error = $this->trans('Unknown error. Contact with soporte@shopylinker.com');
-                            $error.= "<br>".$apiResult['errormsg'];
-                            $error.= "<br>".implode("&",$datasrs);
+                            $error .= "<br>" . $apiResult['errormsg'];
+                            $error .= "<br>" . implode("&", $datasrs);
 
                             break;
                         }
@@ -804,12 +842,12 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 switch ($apiResult['error']) {
                     case 2:
                     {
-                        $error = $this->trans('No access to the store front ').': '. $this->getShopUrl();
+                        $error = $this->trans('No access to the store front ') . ': ' . $this->getShopUrl();
                         break;
                     }
                     case 3:
                     {
-                        $error = $this->trans('No access to the store admin ').': '. $this->getAdminUrl();
+                        $error = $this->trans('No access to the store admin ') . ': ' . $this->getAdminUrl();
                         break;
                     }
                     case 4:
@@ -828,7 +866,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     {
         $error = null;
 
-        $apiResult = ShopyManager::callShopyApi('checkaccessdb', [
+        $apiResult = ShopyManager::callShopyApi(ApiCall::CHECK_BD, [
             'server' => $server,
             'name_bd' => $name_bd,
             'user_bd' => $user_bd,
@@ -867,7 +905,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     {
         $error = null;
 
-        $apiResult = ShopyManager::callShopyApi('checkaccessftp', [
+        $apiResult = ShopyManager::callShopyApi(ApiCall::CHECK_FTP, [
             'ftp_user' => $ftp_user,
             'ftp_pass' => $ftp_pass,
             'ftp_server' => $ftp_server,
@@ -928,7 +966,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $dataSend['iduser'] = $iduser;
         $dataSend['pass'] = $passUser;
 
-        $apiResult = ShopyManager::callShopyApi('editstore', $dataSend);
+        $apiResult = ShopyManager::callShopyApi(ApiCall::EDIT_STORE, $dataSend);
 
         if (isset($apiResult['success']) && $apiResult['success']) {
 
@@ -990,7 +1028,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $shop = new Shop($context->shop->id);
 
         $url = $shop->getBaseURL(true);
-        if(!$url)
+        if (!$url)
             $url = $shop->getBaseURL();
 
         return $url;

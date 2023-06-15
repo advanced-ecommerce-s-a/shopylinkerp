@@ -25,6 +25,7 @@ if (file_exists($autoloadPath)) {
 }
 
 use PrestaShop\Module\shopylinkerp\Classes\ShopyManager;
+use PrestaShop\Module\shopylinkerp\Classes\ApiCall;
 use PrestaShopBundle\Entity\Repository\TabRepository;
 
 class Shopylinkerp extends Module
@@ -32,7 +33,7 @@ class Shopylinkerp extends Module
     public function __construct()
     {
         $this->name = 'shopylinkerp';
-        $this->version = '1.0.3';
+        $this->version = '1.0.4';
         $this->tab = 'administration';
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
@@ -47,6 +48,25 @@ class Shopylinkerp extends Module
 
         $this->description = $this->trans('Innovative all-in-one system that will allow you to increase sales, 
         increasing visits and the conversion rate to sales. Increase revenue and reduce costs by integrating your store with Shopylinker.');
+    }
+
+    protected function informShopy($type = ApiCall::MODULE_INSTALL)
+    {
+        $context = Context::getContext();
+
+        $shop = new Shop($context->shop->id);
+
+        $url = $shop->getBaseURL(true);
+        if (!$url)
+            $url = $shop->getBaseURL();
+
+        //check access store
+        $dataaccess = [
+            'urlfront' => $url,
+            'tipotienda' => 'pre',
+        ];
+
+        ShopyManager::callShopyApi($type, $dataaccess);
     }
 
     public function install()
@@ -65,6 +85,8 @@ class Shopylinkerp extends Module
 
         $this->createConfig();
 
+        $this->informShopy(ApiCall::MODULE_INSTALL);
+
         // All went well!
         return true;
     }
@@ -78,6 +100,7 @@ class Shopylinkerp extends Module
             return false;
         }
 
+        $this->informShopy(ApiCall::MODULE_UNISTALL);
 
         return true;
     }
