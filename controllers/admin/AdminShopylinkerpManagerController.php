@@ -26,6 +26,7 @@ use PrestaShop\Module\shopylinkerp\Classes\ShopyInstance;
 use PrestaShop\Module\shopylinkerp\Classes\ShopyManager;
 use PrestaShop\Module\shopylinkerp\Classes\InstanceStatus;
 use PrestaShop\Module\shopylinkerp\Classes\ApiCall;
+use PrestaShop\Module\shopylinkerp\Classes\HTTPErrorHelper;
 
 class AdminShopylinkerpManagerController extends ModuleAdminController
 {
@@ -837,22 +838,24 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 }
             }
         } else {
+
+
             $error = 'There is no connection with the API';
             if (isset($apiResult['error'])) {
+
+                //debo hacer tratamiento del mensaje segun el codigo de respuesta
+                $httpcode = $apiResult['httpcode'];
+                $textCode = $this->trans(HTTPErrorHelper::getErrorMessage($httpcode));
+
                 switch ($apiResult['error']) {
-                    case 2:
+                    case 1:
                     {
-                        $error = $this->trans('No access to the store front ') . ': ' . $this->getShopUrl();
+                        $error = $this->trans('No access to the store front ') . ': ' . $this->getShopUrl() . '<br>' . $textCode;
                         break;
                     }
                     case 3:
                     {
-                        $error = $this->trans('No access to the store admin ') . ': ' . $this->getAdminUrl();
-                        break;
-                    }
-                    case 4:
-                    {
-                        $error = $this->trans('Cannot log in to the admin.');
+                        $error = $this->trans('No access to the store admin ') . ': ' . $this->getAdminUrl() . '<br>' . $textCode;
                         break;
                     }
                 }

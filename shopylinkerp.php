@@ -33,7 +33,7 @@ class Shopylinkerp extends Module
     public function __construct()
     {
         $this->name = 'shopylinkerp';
-        $this->version = '1.0.4';
+        $this->version = '1.0.5';
         $this->tab = 'administration';
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
@@ -112,7 +112,7 @@ class Shopylinkerp extends Module
         $tabShopy->id_parent = 0;
         $tabShopy->active = 1;
         $tabShopy->name = array();
-        //todo crear icono para shopy
+
         $tabShopy->icon = 'sync';
         $tabShopy->class_name = 'AdminShopylinkerp';
         $tabShopy->module = $this->name;

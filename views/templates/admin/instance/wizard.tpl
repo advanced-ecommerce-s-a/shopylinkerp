@@ -145,7 +145,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <a href="javascript:void()" id="conectionkeyGenerate"><i title="{l s='Generate random connection key' mod='shopylinkerp'}" class="icon_Contrasena stoolt"></i> </a>
+                                                        <a href="javascript:void(0)" id="conectionkeyGenerate"><i title="{l s='Generate random connection key' mod='shopylinkerp'}" class="icon_Contrasena stoolt"></i> </a>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 text-center" style="margin-top: 25px">

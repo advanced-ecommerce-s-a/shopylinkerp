@@ -5,3 +5,7 @@ v1.0.4
 Interface design improvements
 Facilitation of the store integration method by automatically creating an administrator user
 Changes in interface texts to facilitate understanding
+
+v1.0.5
+Messages of store server response codes were added to calls from shopylinker.com to report possible communication
+errors and facilitate their resolution by the store administrator
