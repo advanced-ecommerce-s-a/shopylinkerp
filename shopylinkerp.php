@@ -38,8 +38,6 @@ class Shopylinkerp extends Module
         $this->author = 'Optyum, S.A.';
         $this->bootstrap = true;
 
-        $this->module_key = '17be407b7858ce95e593847a34575c86';
-
         parent::__construct();
 
         //recordar poner el numero del modulo
