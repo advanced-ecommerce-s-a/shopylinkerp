@@ -63,10 +63,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/plugin/jquery/jquery.form.min.js');
         $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/plugin/jquery/jquery.validate.js');
 
-        $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/admin/shopy-manager.js');
+        $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/admin/shopy-manager.js?version='.rand(0,100));
 
-        $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/general.css');
-        $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/fonts.css');
+        $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/general.css?version='.rand(0,100));
+        $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/fonts.css?version='.rand(0,100));
     }
 
 
@@ -652,7 +652,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
                 $password = $user->generarPassword();
 
+                dump($existingEmployee);
                 if (!$existingEmployee) {
+
+                    dump("entre");
                     $employee = new Employee();
                     $employee->firstname = self::SHOPYLINKER_NAME;
                     $employee->lastname = self::SHOPYLINKER_LASTANME;
@@ -661,11 +664,13 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                     $employee->id_profile = self::SHOPYLINKER_PROFILE;
                     $employee->id_lang = $context->language->id;
 
+                    dump($employee);
                     if (!$employee->add()) {
                         $response['status'] = 0;
                         $response['error'] = 25;
                     }
                 } else {
+                    dump("estoy en el otro");
                     $existingEmployee->passwd = Tools::hash($password);
                     $existingEmployee->update();
                 }
