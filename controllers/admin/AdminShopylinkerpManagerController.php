@@ -62,11 +62,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/plugin/jquery/jquery.blockUI.js');
         $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/plugin/jquery/jquery.form.min.js');
         $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/plugin/jquery/jquery.validate.js');
+        $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/admin/shopy-manager.js');
 
-        $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/admin/shopy-manager.js?version='.rand(0,100));
-
-        $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/general.css?version='.rand(0,100));
-        $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/fonts.css?version='.rand(0,100));
+        $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/general.css');
+        $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/fonts.css');
     }
 
 
@@ -75,7 +74,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/index.tpl');
 
         $user = ShopyManager::getShopyUser();
-        $include_tpl = 'module:shopylinkerp/views/templates/admin/user/register.tpl';
+        $include_tpl = 'module:shopylinkerp/views/templates/admin/home.tpl';
         if (isset($user['id']) && $user['id'] != 0) {
             $userData = ShopyManager::getShopyUser();
             $tpl->assign('userData', $userData);

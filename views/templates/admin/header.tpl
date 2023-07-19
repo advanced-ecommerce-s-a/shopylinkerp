@@ -19,8 +19,8 @@
 <div class="col-md-12">
     <div class="row logoshopy">
         <img src="../modules/shopylinkerp/views/img/logoshopy.png">
-        <h2 class="headertitle">
-            {l s='Advanced administration of Prestashop' mod='shopylinkerp'}
-        </h2>
+{*        <h2 class="headertitle">*}
+{*            {l s='Advanced administration of Prestashop' mod='shopylinkerp'}*}
+{*        </h2>*}
     </div>
 </div>

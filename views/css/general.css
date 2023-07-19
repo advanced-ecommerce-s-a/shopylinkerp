@@ -199,3 +199,89 @@ div.fl
 {
     font-size: 25px;
 }
+
+.shopypanel
+{
+    border-radius: 10px;
+    background: #ffffff;
+    background-blend-mode: normal;
+    box-shadow: 0px 0px 16px rgba(100,100,100,0.81);
+    padding-top: 18px;
+    padding-bottom: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: 7px;
+    margin-right: 7px;
+    margin-bottom: 7px;
+    margin-top: 20px;
+    min-height: 230px;
+}
+
+.shopypanel h2
+{
+    color: #0071bb;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+}
+.shopypanel ul
+{
+    margin-top: 30px;
+}
+.shopypanel ul li
+{
+    list-style: none;
+    margin-bottom: 10px;
+}
+.shopypanel ul li a
+{
+    color: #25b9d7;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.shopypanel .imacontainer
+{
+    margin-top: 35px;
+    text-align: center;
+}
+
+.shopypanel a.shbutton
+{
+    padding-left: 35px;
+    padding-right: 35px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 6px;
+    background: #25b9d7;
+    background-blend-mode: normal;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.shopypanel p
+{
+    color: #737472;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.shopypanel a.shbutton:hover
+{
+    background-blend-mode: normal;
+    box-shadow: 0px 0px 14px rgba(100,100,100,0.5);
+}
+
+.shopypanel a.linkextern
+{
+    color: #25b9d7;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 20px;
+    display: inline-block;
+}
