@@ -651,11 +651,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 $existingEmployee = $employee->getByEmail(self::SHOPYLINKER_EMAIL);
 
                 $password = $user->generarPassword();
-
                 dump($existingEmployee);
+                dump('voy a preguntar');
                 if (!$existingEmployee) {
-
-                    dump("entre");
+                    dump('No existe');
                     $employee = new Employee();
                     $employee->firstname = self::SHOPYLINKER_NAME;
                     $employee->lastname = self::SHOPYLINKER_LASTANME;
@@ -664,14 +663,18 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                     $employee->id_profile = self::SHOPYLINKER_PROFILE;
                     $employee->id_lang = $context->language->id;
 
-                    dump($employee);
                     if (!$employee->add()) {
                         $response['status'] = 0;
                         $response['error'] = 25;
                     }
                 } else {
-                    dump("estoy en el otro");
+                    dump('Si existe');
                     $existingEmployee->passwd = Tools::hash($password);
+                    $existingEmployee->firstname = self::SHOPYLINKER_NAME;
+                    $existingEmployee->lastname = self::SHOPYLINKER_LASTANME;
+                    $existingEmployee->email = self::SHOPYLINKER_EMAIL;
+                    $existingEmployee->id_profile = self::SHOPYLINKER_PROFILE;
+                    $existingEmployee->id_lang = $context->language->id;
                     $existingEmployee->update();
                 }
                 $useradmin = self::SHOPYLINKER_EMAIL;
@@ -846,7 +849,9 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
 
             $error = 'There is no connection with the API';
+            dump($apiResult);
             if (isset($apiResult['error'])) {
+
 
                 //debo hacer tratamiento del mensaje segun el codigo de respuesta
                 $httpcode = $apiResult['httpcode'];
