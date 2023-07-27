@@ -45,6 +45,42 @@
 }
 
 
+.icon_Abrir_pagina:before {
+  content: "\e919";
+}
+.icon_Ver_imagen:before {
+  content: "\e91a";
+}
+.icon_Video:before {
+  content: "\e918";
+}
+.icon_Aumento_segur:before {
+  content: "\e90f";
+}
+.icon_Check:before {
+  content: "\e910";
+}
+.icon_Dashboard:before {
+  content: "\e911";
+}
+.icon_Gest_catalogo:before {
+  content: "\e912";
+}
+.icon_Info_usuario:before {
+  content: "\e913";
+}
+.icon_Logist_tiendas:before {
+  content: "\e914";
+}
+.icon_Modulos_marketing:before {
+  content: "\e915";
+}
+.icon_Optim_catalogo:before {
+  content: "\e916";
+}
+.icon_Preg_frecuentes:before {
+  content: "\e917";
+}
 .icon_Salir:before {
   content: "\e90e";
 }

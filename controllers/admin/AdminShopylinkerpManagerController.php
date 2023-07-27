@@ -75,14 +75,23 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
         $user = ShopyManager::getShopyUser();
         $include_tpl = 'module:shopylinkerp/views/templates/admin/home.tpl';
+
+        $lang = $this->context->language->iso_code;
+
+        $urllinkmanual = "readme_es.pdf";
+        if($lang != 'es')
+        {
+            $urllinkmanual = "readme_en.pdf";
+        }
+
+        $tpl->assign('urllinkmanual', Context::getContext()->link->getBaseLink().'modules/shopylinkerp/docs/'.$urllinkmanual);
+
         if (isset($user['id']) && $user['id'] != 0) {
             $userData = ShopyManager::getShopyUser();
             $tpl->assign('userData', $userData);
 
             $instanceData = ShopyManager::getShopyInstance();
             $tpl->assign('instanceData', $instanceData);
-
-            $lang = $this->context->language->iso_code;
 
             $tpl->assign('extlogin', ShopyManager::getExtLoginUrl($lang));
 
@@ -126,12 +135,43 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     #endregion
 
     #region Login
+    public function ajaxProcessDisplayhome()
+    {
+        $userData = ShopyManager::getShopyUser();
+        $lang = $this->context->language->iso_code;
+        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/home.tpl');
+
+        $tpl->assign('userData', $userData);
+
+        $lang = $this->context->language->iso_code;
+
+        $urllinkmanual = "readme_es.pdf";
+        if($lang != 'es')
+        {
+            $urllinkmanual = "readme_en.pdf";
+        }
+
+        $tpl->assign('urllinkmanual', Context::getContext()->link->getBaseLink().'modules/shopylinkerp/docs/'.$urllinkmanual);
+
+        die($tpl->fetch());
+    }
+
     public function ajaxProcessDisplayLogin()
     {
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/user/login.tpl');
 
         die($tpl->fetch());
     }
+
+    public function ajaxProcessDisplayInfo()
+    {
+        $page = Tools::getValue('page');
+        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/info/'.$page.'.tpl');
+
+        die($tpl->fetch());
+    }
+
+
 
     public function ajaxProcessLogin()
     {
@@ -199,13 +239,15 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $user->setId(0);
         $user->update();
 
-        $this->ajaxProcessDisplayLogin();
+        //$this->ajaxProcessDisplayLogin();
+        $this->ajaxProcessDisplayhome();
     }
     #endregion
 
     #region Register
     public function ajaxProcessDisplayRegister()
     {
+
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/user/register.tpl');
 
         die($tpl->fetch());

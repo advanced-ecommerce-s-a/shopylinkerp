@@ -25,17 +25,24 @@
                     <div class="title">
                         <h2>{l s='Discover everything that Shopylinker can do for you:' mod='shopylinkerp'}</h2>
                         <ul>
-                            <li><i class=""></i><a
-                                        href="javascript:void(0)">{l s='Frequent questions' mod='shopylinkerp'}</a></li>
-                            <li><i class=""></i><a
-                                        href="javascript:void(0)">{l s='Catalog Management' mod='shopylinkerp'}</a></li>
-                            <li><i class=""></i><a
-                                        href="javascript:void(0)">{l s='Catalog Optimization' mod='shopylinkerp'}</a>
+                            <li><a href="javascript:void(0)" data-action="displayinfo" data-where="frequentquestion"><i
+                                            class="icon_Preg_frecuentes"></i> {l s='Frequent questions' mod='shopylinkerp'}
+                                </a></li>
+                            <li><a href="javascript:void(0)" data-action="displayinfo" data-where="catalogm"><i
+                                            class="icon_Gest_catalogo"></i> {l s='Catalog Management' mod='shopylinkerp'}</a></li>
+                            <li><a href="javascript:void(0)" data-action="displayinfo" data-where="catalogo"><i
+                                            class="icon_Optim_catalogo"></i> {l s='Catalog Optimization' mod='shopylinkerp'}</a>
                             </li>
-                            <li><i class=""></i><a
-                                        href="javascript:void(0)">{l s='Increased security' mod='shopylinkerp'}</a></li>
-                            <li><i class=""></i><a
-                                        href="javascript:void(0)">{l s='Logistics, physical stores, warehouses' mod='shopylinkerp'}</a>
+                            <li><a
+                                        href="javascript:void(0)" data-action="displayinfo" data-where="marketingm"><i
+                                            class="icon_Modulos_marketing"></i> {l s='Marketing modules' mod='shopylinkerp'}</a></li>
+                            <li><a
+                                        href="javascript:void(0)" data-action="displayinfo" data-where="increase"><i
+                                            class="icon_Aumento_segur"></i> {l s='Increased security' mod='shopylinkerp'}</a></li>
+                            <li><a
+                                        href="javascript:void(0)" data-action="displayinfo" data-where="logistic"> <i
+                                            class="icon_Logist_tiendas"></i> {l s='Logistics, physical stores, warehouses' mod='shopylinkerp'}
+                                </a>
                             </li>
                         </ul>
                         <div class="imacontainer">
@@ -54,7 +61,8 @@
                             <div class="col-md-7 text-center">
                                 <h2>{l s='Advanced eCommerce Management' mod='shopylinkerp'}</h2>
                                 <p style="margin-bottom: 30px">{l s='Optimize, facilitate and enhance your Prestashop' mod='shopylinkerp'}</p>
-                                <a href="javascript:void(0)" data-action="displayLogin" class="shbutton">{l s='Start now' mod='shopylinkerp'}</a>
+                                <a href="javascript:void(0)" data-action="displayLogin"
+                                   class="shbutton">{l s='Start now' mod='shopylinkerp'}</a>
                             </div>
                         </div>
                     </div>
@@ -65,7 +73,8 @@
                         <div class="shopypanel">
                             <div class="row text-center">
                                 <img src="../modules/shopylinkerp/views/img/visitar.png"><br>
-                                <a target="_blank" class="linkextern" href="http://www.shopylinker.com" >{l s='Visit Shopylinker.com' mod='shopylinkerp'}</a>
+                                <a target="_blank" class="linkextern"
+                                   href="http://www.shopylinker.com">{l s='Visit Shopylinker.com' mod='shopylinkerp'}</a>
                             </div>
                         </div>
                     </div>
@@ -73,7 +82,8 @@
                         <div class="shopypanel">
                             <div class="row text-center">
                                 <img src="../modules/shopylinkerp/views/img/manual.png"><br>
-                                <a class="linkextern" href="http://www.shopylinker.com" >{l s='Download manual' mod='shopylinkerp'}</a>
+                                <a class="linkextern" target="_blank"
+                                   href="{$urllinkmanual}">{l s='Download manual' mod='shopylinkerp'}</a>
                             </div>
                         </div>
 

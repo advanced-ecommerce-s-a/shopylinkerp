@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>shopylinkerp</name>
+    <displayName><![CDATA[Shopylinker &ndash; Prestashop]]></displayName>
+    <version><![CDATA[1.0.5]]></version>
+    <description><![CDATA[Innovative all-in-one system that will allow you to increase sales, 
+        increasing visits and the conversion rate to sales. Increase revenue and reduce costs by integrating your store with Shopylinker.]]></description>
+    <author><![CDATA[Optyum, S.A.]]></author>
+    <tab><![CDATA[administration]]></tab>
+    <is_configurable>1</is_configurable>
+    <need_instance>1</need_instance>
+	<limited_countries></limited_countries>
+</module>

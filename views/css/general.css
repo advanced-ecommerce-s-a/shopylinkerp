@@ -116,12 +116,11 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
-div.fr
-{
+div.fr {
     float: right;
 }
-div.fl
-{
+
+div.fl {
     float: left;
 }
 
@@ -134,18 +133,15 @@ div.fl
     font-weight: 600;
 }
 
-.form-control-icon_pass i
-{
+.form-control-icon_pass i {
     cursor: default;
 }
 
-.logoshopy
-{
+.logoshopy {
     text-align: center;
 }
 
-.logoshopy .headertitle
-{
+.logoshopy .headertitle {
     margin-top: 20px;
     margin-bottom: 30px;
     font-size: 23px;
@@ -156,56 +152,52 @@ div.fl
     font-weight: 15;
 }
 
-.login .title, .register .title, .dashboard .title
-{
+.login .title, .register .title, .dashboard .title {
     text-align: center;
     margin-bottom: 30px;
 }
-.login .subtitle, .register .subtitle, .dashboard .subtitle
-{
+
+.login .subtitle, .register .subtitle, .dashboard .subtitle {
     font-size: 15px;
 }
 
-.login label i, .register label i , .dashboard label i
-{
+.login label i, .register label i, .dashboard label i {
     font-size: 25px;
 }
-.dashboard .logoutaction
-{
+
+.dashboard .logoutaction {
     position: absolute;
     right: 10px;
     top: 10px;
 }
-.dashboard .logoutaction a
-{
+
+.dashboard .logoutaction a {
 
     font-size: 20px;
     text-decoration: none;
-    color: #a6b3b7 ;
+    color: #a6b3b7;
 }
-.dashboard .logoutaction a:hover
-{
-    color: #25b9d7 ;
+
+.dashboard .logoutaction a:hover {
+    color: #25b9d7;
     text-decoration: none;
 }
 
-#conectionkeyGenerate
-{
+#conectionkeyGenerate {
     float: left;
     margin-top: 34px;
     text-decoration: none;
 }
-#conectionkeyGenerate i
-{
+
+#conectionkeyGenerate i {
     font-size: 25px;
 }
 
-.shopypanel
-{
+.shopypanel {
     border-radius: 10px;
     background: #ffffff;
     background-blend-mode: normal;
-    box-shadow: 0px 0px 16px rgba(100,100,100,0.81);
+    box-shadow: 0px 0px 16px rgba(100, 100, 100, 0.81);
     padding-top: 18px;
     padding-bottom: 30px;
     padding-left: 15px;
@@ -217,37 +209,45 @@ div.fl
     min-height: 230px;
 }
 
-.shopypanel h2
-{
+.shopypanel h2 {
     color: #0071bb;
     font-size: 18px;
     font-weight: 700;
     text-align: center;
 }
-.shopypanel ul
-{
-    margin-top: 30px;
+
+.shopypanel ul {
+    margin-top: 20px;
+    margin-left: 15px;
+    padding-left: 0px;
 }
-.shopypanel ul li
-{
+
+.shopypanel ul li {
     list-style: none;
     margin-bottom: 10px;
 }
-.shopypanel ul li a
-{
+
+.shopypanel ul li a {
     color: #25b9d7;
     font-size: 14px;
     font-weight: 600;
+
 }
 
-.shopypanel .imacontainer
-{
+.shopypanel ul li a:hover {
+    text-decoration: none;
+}
+
+.shopypanel ul li a i {
+    font-size: 110%;
+}
+
+.shopypanel .imacontainer {
     margin-top: 35px;
     text-align: center;
 }
 
-.shopypanel a.shbutton
-{
+.shopypanel a.shbutton {
     padding-left: 35px;
     padding-right: 35px;
     padding-top: 15px;
@@ -263,25 +263,179 @@ div.fl
     text-decoration: none;
 }
 
-.shopypanel p
-{
+.shopypanel p {
     color: #737472;
     font-size: 14px;
     font-weight: 400;
 }
 
-.shopypanel a.shbutton:hover
-{
+.shopypanel a.shbutton:hover {
     background-blend-mode: normal;
-    box-shadow: 0px 0px 14px rgba(100,100,100,0.5);
+    box-shadow: 0px 0px 14px rgba(100, 100, 100, 0.5);
 }
 
-.shopypanel a.linkextern
-{
+.shopypanel a.linkextern {
     color: #25b9d7;
     font-size: 16px;
     font-weight: 600;
     text-align: center;
     margin-top: 20px;
     display: inline-block;
+}
+
+.shopyheader {
+    padding-bottom: 10px;
+    margin-right: 30px;
+    padding-left: 30px;
+    border-bottom: 1px solid #dcdcdc;
+    margin-left: 30px;
+}
+
+.shopyheader h2 {
+    margin: 0px;
+    color: #363a41;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.smtsidebar ul {
+    margin-top: 20px;
+}
+
+.smtsidebar ul li {
+    text-align: left;
+    list-style: none;
+    margin-bottom: 10px;
+}
+
+.smtsidebar ul li a {
+    font-size: 16px;
+}
+
+.smtsidebar ul li a.active {
+    font-weight: bold;
+}
+
+.smtsidebar ul li a:hover {
+    text-decoration: none;
+}
+
+.shopyinfopanel h2 {
+    color: #0071bb;
+    font-size: 32px;
+    font-weight: 400;
+    margin-left: -55px;
+}
+
+.shopyinfopanel a.question {
+    color: #363a41;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.shopyinfopanel a.question:hover
+{
+    text-decoration: none;
+}
+
+.shopyinfopanel .questbody {
+    background: #ffffff;
+    background-blend-mode: normal;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.shopyinfopanel .questionbox {
+    margin-top: 10px;
+    color: #757575;
+    font-size: 15px;
+
+}
+
+.shopyinfopanel .questionbox ul {
+
+}
+
+.shopyinfopanel .questionbox ul li {
+    margin-top: 5px;
+}
+
+.shopyinfopanel .questionbox ul li::marker {
+    color: #0071BB;
+}
+
+a.linkinfo
+{
+    margin-top: 20px;
+    display: inline-flex;
+    color: #25b9d7;
+    font-size: 12px;
+}
+
+a.linkinfo:hover
+{
+    text-decoration: none;
+}
+
+a.linkinfo i
+{
+    margin-left: 5px;
+    font-size: 150%;
+}
+.supsidebar
+{
+    position: fixed;
+}
+
+/* Estilos generales de la tabla */
+.infotable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/* Estilos para las celdas de la tabla */
+.infotable th, .infotable td:first-child  {
+    text-align: center;
+}
+
+
+.infotable th, .infotable td  {
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+
+/* Estilos para las celdas del encabezado (th) */
+.infotable th {
+    background-color: #f2f2f2;
+}
+
+/* Estilos para las celdas del cuerpo (td) */
+.infotable td {
+    background-color: #ffffff;
+}
+
+
+#imagenModal
+{
+    text-align: center;
+}
+#imagenModal .modal-container
+{
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    margin: 50px;
+    position: relative;
+    max-width: 90%;
+}
+
+#imagenModal .modal-body
+{
+    text-align: center;
+}
+
+#imagenModal .modal-container img
+{
+    max-width: 100%;
+    display: inline;
 }
