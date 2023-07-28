@@ -149,6 +149,10 @@ var ShopyManager = {
                 ShopyManager.displayLogin();
             });
 
+            $('[data-action="displaydashboard"]').off('click').on('click', function () {
+                ShopyManager.displayDasboard();
+            });
+
             $('[data-action="processLogin"]').off('click').on('click', function () {
                 ShopyManager.processLogin();
             });
@@ -252,6 +256,7 @@ var ShopyManager = {
         //endregion
 
         //region User
+
         displayLogin: function () {
             var form = new FormData();
 

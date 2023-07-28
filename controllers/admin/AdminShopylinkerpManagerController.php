@@ -165,8 +165,13 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
     public function ajaxProcessDisplayInfo()
     {
+        $userData = ShopyManager::getShopyUser();
+        $instanceData = ShopyManager::getShopyInstance();
         $page = Tools::getValue('page');
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/info/'.$page.'.tpl');
+        $tpl->assign('userData', $userData);
+        $tpl->assign('instanceData', $instanceData);
+
 
         die($tpl->fetch());
     }

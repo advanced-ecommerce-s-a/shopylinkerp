@@ -25,8 +25,8 @@
                 </div>
                 <div class="col-md-12 smtsidebar">
                     <ul>
-                        {if isset($userData['id'])}
-                        <li><a class="{if $active =='dashboard'}active{/if}" href="javascript:void(0)"><i
+                        {if isset($userData['id']) && $userData['id'] != 0}
+                        <li><a data-action="displaydashboard" class="{if $active =='dashboard'}active{/if}" href="javascript:void(0)"><i
                                         class="icon_Dashboard"></i> {l s='Dashboard' mod='shopylinkerp'}
                             </a></li>
                             {else}
