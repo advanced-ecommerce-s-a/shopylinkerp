@@ -145,7 +145,7 @@
                                         class="icon_Abrir_pagina"></i></a><br>
 
                             <a class="linkinfo" href="https://www.youtube.com/watch?v=xqw1k7jf3SI"
-                               target="_blank">{l s='Creation of physical store'}<i
+                               target="_blank">{l s='Creation of physical store' mod='shopylinkerp'}<i
                                         class="icon_Video"></i></a><br>
 
                         </div>

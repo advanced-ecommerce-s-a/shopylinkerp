@@ -182,7 +182,7 @@
                                         class="icon_Abrir_pagina"></i></a><br>
 
                             <a class="linkinfo" href="https://www.youtube.com/watch?v=wEIb8fcBU5w"
-                               target="_blank">{l s='Introduction Faceted Navigation System'}<i
+                               target="_blank">{l s='Introduction Faceted Navigation System' mod='shopylinkerp'}<i
                                         class="icon_Video"></i></a><br>
 
                         </div>
@@ -223,7 +223,7 @@
                                         class="icon_Abrir_pagina"></i></a><br>
 
                             <a class="linkinfo" href="https://www.youtube.com/watch?v=QYKHHSfvfGE"
-                               target="_blank">{l s='Loyalty and Coupons System'}<i
+                               target="_blank">{l s='Loyalty and Coupons System' mod='shopylinkerp'}<i
                                         class="icon_Video"></i></a><br>
 
                         </div>
@@ -245,7 +245,7 @@
                                         class="icon_Abrir_pagina"></i></a><br>
 
                             <a class="linkinfo" href="https://www.youtube.com/watch?v=VpchePhrfO0"
-                               target="_blank">{l s='Introduction Advanced Comparison'}<i
+                               target="_blank">{l s='Introduction Advanced Comparison' mod='shopylinkerp'}<i
                                         class="icon_Video"></i></a><br>
 
                         </div>

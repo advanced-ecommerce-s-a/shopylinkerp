@@ -83,7 +83,7 @@
                             <div class="row text-center">
                                 <img src="../modules/shopylinkerp/views/img/manual.png"><br>
                                 <a class="linkextern" target="_blank"
-                                   href="{$urllinkmanual}">{l s='Download manual' mod='shopylinkerp'}</a>
+                                   href="{$urllinkmanual|escape}">{l s='Download manual' mod='shopylinkerp'}</a>
                             </div>
                         </div>
 

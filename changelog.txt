@@ -9,3 +9,9 @@ Changes in interface texts to facilitate understanding
 v1.0.5
 Messages of store server response codes were added to calls from shopylinker.com to report possible communication
 errors and facilitate their resolution by the store administrator
+
+v1.0.6
+Added FAQ pages
+New home and interior interface
+Access to external pages of information, videos and images
+Communications between the store and shopylinker were encrypted through the connector

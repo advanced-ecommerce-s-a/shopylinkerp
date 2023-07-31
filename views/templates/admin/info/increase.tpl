@@ -42,7 +42,7 @@
                                         class="icon_Abrir_pagina"></i></a><br>
 
                             <a class="linkinfo" href="https://www.youtube.com/watch?v=CpQuPMvhe2I"
-                               target="_blank">{l s='Cookies Law banner configuration'}<i
+                               target="_blank">{l s='Cookies Law banner configuration' mod='shopylinkerp'}<i
                                         class="icon_Video"></i></a><br>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                                         class="icon_Abrir_pagina"></i></a><br>
 
                             <a class="linkinfo" href="https://www.youtube.com/watch?v=uwg7RDB-vEE"
-                               target="_blank">{l s='Cleaning files with Cleaner'}<i
+                               target="_blank">{l s='Cleaning files with Cleaner' mod='shopylinkerp'}<i
                                         class="icon_Video"></i></a><br>
                         </div>
                     </div>
