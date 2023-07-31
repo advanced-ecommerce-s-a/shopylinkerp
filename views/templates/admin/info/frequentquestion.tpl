@@ -33,8 +33,7 @@
                     </a>
                     <div class="collapse in" id="question1">
                         <div class="card card-body questbody">
-                            {l s='Shopylinker is much more than a module for PrestaShop, Shopylinker is a complementary
-management system that provides a large number of advantages for the store:' mod='shopylinkerp'}
+                            {l s='Shopylinker is much more than a module for PrestaShop, Shopylinker is a complementary management system that provides a large number of advantages for the store:' mod='shopylinkerp'}
                             <ul>
                                 <li>
                                     {l s='Facilitates the management and optimization of the catalog with the aim of improving organic positioning and improving the user experience' mod='shopylinkerp'}
@@ -70,8 +69,7 @@ management system that provides a large number of advantages for the store:' mod
                     <div class="collapse" id="question2">
                         <div class="card card-body questbody">
                             <p>
-                                {l s='Through an innovative visual and intuitive workspace, made up of 5 work environments,
-all of them combined with the massive actions container, the catalog is managed easily and quickly and in a perfectly informed manner.' mod='shopylinkerp'}
+                                {l s='Through an innovative visual and intuitive workspace, made up of 5 work environments, all of them combined with the massive actions container, the catalog is managed easily and quickly and in a perfectly informed manner.' mod='shopylinkerp'}
                             </p>
                         </div>
                     </div>
@@ -84,9 +82,7 @@ all of them combined with the massive actions container, the catalog is managed 
                     <div class="collapse " id="question3">
                         <div class="card card-body questbody">
                             <p>
-                                {l s='Shopylinker provides the necessary tools to optimize the natural content of the store,
-that is, the content of the catalog to improve SEO positioning and the user experience in the store, thereby increasing the number
-of visits to the store and the conversion rate to sales.' mod='shopylinkerp'}
+                                {l s='Shopylinker provides the necessary tools to optimize the natural content of the store, that is, the content of the catalog to improve SEO positioning and the user experience in the store, thereby increasing the number of visits to the store and the conversion rate to sales.' mod='shopylinkerp'}
                             </p>
                         </div>
                     </div>
