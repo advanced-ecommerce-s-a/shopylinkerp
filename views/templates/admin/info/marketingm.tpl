@@ -43,7 +43,7 @@
                             <a class="linkinfo" href="https://www.youtube.com/watch?v=Yj3AzQY3J8w"
                                target="_blank">{l s='Introduction Cross Selling' mod='shopylinkerp'}<i
                                         class="icon_Video"></i></a><br>
-                            <a data-image-url="Selector%20de%20la%20configuraci%C3%B3n%20del%20tipo%20de%20Venta%20Cruzada.png" data-target="#modalimg" class="linkinfo imagelink" href="#"
+                            <a data-image-url="marketing1.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#"
                               >{l s='Cross-Sell type configuration selector' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
                         </div>
@@ -159,7 +159,7 @@
                                 {l s="This feature automatically adds microcodes to your HTML code to make your content easier for search engines to understand, which has a significant impact on organic ranking. It is applied on the product pages, in category and/or brand listings, and in the evaluations of each product or of the store in general." mod='shopylinkerp'}
                             </p>
 
-                            <a class="linkinfo" href="https://shopylinker.com/funciones/textos-enriquecidos/"
+                            <a class="linkinfo" href="https://shopylinker.com/en/all-functions/enriched-texts/"
                                target="_blank">{l s='Visit the explanatory page' mod='shopylinkerp'}<i
                                         class="icon_Abrir_pagina"></i></a><br>
 

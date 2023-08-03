@@ -41,7 +41,7 @@
                                target="_blank">{l s='Visit the Visual Catalog Management page' mod='shopylinkerp'}<i
                                         class="icon_Abrir_pagina"></i></a><br>
 
-                            <a class="linkinfo" href="https://shopylinker.com/funciones/mac/"
+                            <a class="linkinfo" href="https://shopylinker.com/en/all-functions/mac/"
                                target="_blank">{l s='Visit the MAC (Multiple Actions Container) page' mod='shopylinkerp'}
                                 <i
                                         class="icon_Abrir_pagina"></i></a><br>
@@ -78,22 +78,22 @@
                             <p>
                                 {l s="The work environments for catalog management are interfaces specifically designed based on the relationships between the different objects of the catalog, with the purpose of facilitating the performance of specific actions." mod='shopylinkerp'}
                             </p>
-                            <a data-image-url="Entorno_Categ-Productos.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Elements of the environment Categories - Products' mod='shopylinkerp'}
+                            <a data-image-url="catalogm1.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Elements of the environment Categories - Products' mod='shopylinkerp'}
                                 <i
                                         class="icon_Ver_imagen"></i></a><br>
 
-                            <a data-image-url="Entorno_Categ-Subcategorias.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Elements of the environment Category - Subcategory' mod='shopylinkerp'}
+                            <a data-image-url="catalogm2.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Elements of the environment Category - Subcategory' mod='shopylinkerp'}
                                 <i
                                         class="icon_Ver_imagen"></i></a><br>
 
-                            <a data-image-url="Entorno_Facetas-Productos.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Elements of the environment Facets- Products' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogm3.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Elements of the environment Facets- Products' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
-                            <a data-image-url="Entorno_Marcas-Productos.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Elements of the environment Brands - Products' mod='shopylinkerp'}
+                            <a data-image-url="catalogm4.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Elements of the environment Brands - Products' mod='shopylinkerp'}
                                 <i
                                         class="icon_Ver_imagen"></i></a><br>
 
-                            <a data-image-url="Entorno_Proveedores-Products.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Elements of the environment Suppliers- Products' mod='shopylinkerp'}
+                            <a data-image-url="catalogm5.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Elements of the environment Suppliers- Products' mod='shopylinkerp'}
                                 <i
                                         class="icon_Ver_imagen"></i></a><br>
 
@@ -215,19 +215,19 @@
                                 {l s="In Tile mode, objects are presented as cards showing the most relevant properties of the object and have interactive buttons for quick access to editing specific properties. If you prefer to work in a more traditional way, you also have the option of using the List mode, which is similar to how it is displayed in the PrestaShop backoffice but adding the same accessibility options that Shopylinker's Mosaic mode offers." mod='shopylinkerp'}
                             </p>
 
-                            <a data-image-url="Modo_mosaico.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Mosaic mode display' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogm6.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Mosaic mode display' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
-                            <a data-image-url="Modo_listado.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='List mode display' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogm7.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='List mode display' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
-                            <a data-image-url="Ficha_producto_modo_mosaico.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Mosaic mode product card' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogm8.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Mosaic mode product card' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
-                            <a data-image-url="Ficha_producto_modo_mosaico+info.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Product card with additional information activated on hover' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogm9.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Product card with additional information activated on hover' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
-                            <a data-image-url="Fila de producto en visualización modo Listado.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Product row in List mode display' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogm10.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Product row in List mode display' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
                         </div>
@@ -263,10 +263,10 @@
                             <p>
                                 {l s="Quick action buttons are located on the object cards in Tile view mode or in cells within the rows corresponding to the object in List mode. These buttons reflect the state of specific object properties, and you can access editing of the indicated property by simply clicking the corresponding button." mod='shopylinkerp'}
                             </p>
-                            <a data-image-url="Ficha_producto_modo_mosaico+detalles_acc_rapidas.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Quick action buttons Mosaic mode' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogm11.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Quick action buttons Mosaic mode' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
-                            <a data-image-url="Ficha_producto_listado_detalles.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='List Mode Quick Action Buttons' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogm12.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='List Mode Quick Action Buttons' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
                         </div>
@@ -288,10 +288,10 @@
                             <p>
                                 {l s="The groups made can be saved as lists that can be retrieved later to carry out massive actions on the same elements." mod='shopylinkerp'}
                             </p>
-                            <a data-image-url="Selección de productos MAC.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Selection of MAC products' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogm13.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Selection of MAC products' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
-                            <a data-image-url="Opciones del menú MAC.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='MAC Menu Options' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogm14.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='MAC Menu Options' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
                             <a class="linkinfo" href="https://www.youtube.com/watch?v=3265EDwyQ6s"

@@ -37,14 +37,14 @@
                                 {l s="For the optimization of the Shopylinker catalog, it provides the SQI (Score Quality Information) tool that, through an algorithm, determines the level of quality of the information in each category, product and brand, informing of the necessary improvements and providing a quick system for updating the information to improve the level of quality." mod='shopylinkerp'}
                             </p>
 
-                            <a data-image-url="SQI%20accesible%20en%20todos%20los%20entornos%20del%20cat%C3%A1logo.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='SQI accessible in all catalog environments' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogopt1.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='SQI accessible in all catalog environments' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
-                            <a data-image-url="Tarjeta%20de%20producto%20indicando%20el%20Score.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Product card indicating the Score' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogopt2.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Product card indicating the Score' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
-                            <a data-image-url="Indicaci%C3%B3n%20de%20propiedades%20a%20mejorar.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Indication of properties to improve' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogopt3.png" data-lang="{{$lang}}" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Indication of properties to improve' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
-                            <a data-image-url="actualizacioninstantaneascore.png" data-target="#modalimg" class="linkinfo imagelink" href="#">{l s='Instant Score Update' mod='shopylinkerp'}<i
+                            <a data-image-url="catalogopt4.png" data-target="#modalimg" data-lang="{{$lang}}" class="linkinfo imagelink" href="#">{l s='Instant Score Update' mod='shopylinkerp'}<i
                                         class="icon_Ver_imagen"></i></a><br>
 
                             <a class="linkinfo" href="https://www.youtube.com/watch?v=sFoqbHWOl8E"

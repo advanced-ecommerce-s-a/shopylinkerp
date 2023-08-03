@@ -174,9 +174,10 @@ var ShopyManager = {
 
                 // Obtener la URL de la imagen desde el atributo "data-image-url" del enlace
                 var imageUrl = $(this).data("image-url");
+                var lang = $(this).data("lang");
 
                 // Establecer la URL de la imagen en el atributo "src" de la imagen dentro del modal
-                $("#modalImage").attr("src", urlsite+imageUrl);
+                $("#modalImage").attr("src", urlsite+'/'+lang+'/'+imageUrl);
 
                 // Mostrar el modal
                 $("#imagenModal").modal("show");

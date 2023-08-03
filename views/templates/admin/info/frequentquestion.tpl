@@ -107,7 +107,7 @@
                                 {l s='Professional Plan: Add to the Advanced plan a complete logistics management system, points of sale in physical stores and order management' mod='shopylinkerp'}
                             </p>
 
-                            <a class="linkinfo" href="https://shopylinker.com/en/plans/"
+                            <a class="linkinfo" href="https://shopylinker.com/{{$lang}}/plans/"
                                target="_blank">{l s='Visit our plans page' mod='shopylinkerp'}<i
                                         class="icon_Abrir_pagina"></i></a>
                         </div>
@@ -120,8 +120,9 @@
                     </a>
                     <div class="collapse " id="question5">
                         <div class="card card-body questbody">
-                            <a class="linkinfo" href="https://shopylinker.com/en/plans/"
-                               target="_blank">{l s='You can check Shopylinker prices at: https://shopylinker.com/en/plans/' mod='shopylinkerp'}<i
+                            <a class="linkinfo" href="https://shopylinker.com/{{$lang}}/plans/"
+                               target="_blank">{l s='You can check Shopylinker prices at: https://shopylinker.com/en/plans/' mod='shopylinkerp'}
+                                <i
                                         class="icon_Abrir_pagina"></i></a>
                         </div>
                     </div>

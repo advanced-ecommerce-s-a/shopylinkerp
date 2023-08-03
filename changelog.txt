@@ -15,3 +15,6 @@ Added FAQ pages
 New home and interior interface
 Access to external pages of information, videos and images
 Communications between the store and shopylinker were encrypted through the connector
+
+v1.0.7
+Update of frequently asked questions images for Spanish and English

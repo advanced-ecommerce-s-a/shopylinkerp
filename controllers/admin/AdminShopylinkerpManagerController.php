@@ -168,9 +168,19 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $userData = ShopyManager::getShopyUser();
         $instanceData = ShopyManager::getShopyInstance();
         $page = Tools::getValue('page');
+
+
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/info/'.$page.'.tpl');
+
+        $lang = $this->context->language->iso_code;
+        if($lang != 'es')
+        {
+            $lang = 'en';
+        }
+
         $tpl->assign('userData', $userData);
         $tpl->assign('instanceData', $instanceData);
+        $tpl->assign('lang', $lang);
 
 
         die($tpl->fetch());
