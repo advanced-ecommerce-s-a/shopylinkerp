@@ -62,7 +62,6 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/plugin/jquery/jquery.blockUI.js');
         $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/plugin/jquery/jquery.form.min.js');
         $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/plugin/jquery/jquery.validate.js');
-
         $this->addJS(_MODULE_DIR_ . $this->module->name . '/views/js/admin/shopy-manager.js');
 
         $this->addCSS(_MODULE_DIR_ . $this->module->name . '/views/css/general.css');
@@ -75,15 +74,24 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/index.tpl');
 
         $user = ShopyManager::getShopyUser();
-        $include_tpl = 'module:shopylinkerp/views/templates/admin/user/register.tpl';
+        $include_tpl = 'module:shopylinkerp/views/templates/admin/home.tpl';
+
+        $lang = $this->context->language->iso_code;
+
+        $urllinkmanual = "readme_es.pdf";
+        if($lang != 'es')
+        {
+            $urllinkmanual = "readme_en.pdf";
+        }
+
+        $tpl->assign('urllinkmanual', Context::getContext()->link->getBaseLink().'modules/shopylinkerp/docs/'.$urllinkmanual);
+
         if (isset($user['id']) && $user['id'] != 0) {
             $userData = ShopyManager::getShopyUser();
             $tpl->assign('userData', $userData);
 
             $instanceData = ShopyManager::getShopyInstance();
             $tpl->assign('instanceData', $instanceData);
-
-            $lang = $this->context->language->iso_code;
 
             $tpl->assign('extlogin', ShopyManager::getExtLoginUrl($lang));
 
@@ -127,12 +135,58 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
     #endregion
 
     #region Login
+    public function ajaxProcessDisplayhome()
+    {
+        $userData = ShopyManager::getShopyUser();
+        $lang = $this->context->language->iso_code;
+        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/home.tpl');
+
+        $tpl->assign('userData', $userData);
+
+        $lang = $this->context->language->iso_code;
+
+        $urllinkmanual = "readme_es.pdf";
+        if($lang != 'es')
+        {
+            $urllinkmanual = "readme_en.pdf";
+        }
+
+        $tpl->assign('urllinkmanual', Context::getContext()->link->getBaseLink().'modules/shopylinkerp/docs/'.$urllinkmanual);
+
+        die($tpl->fetch());
+    }
+
     public function ajaxProcessDisplayLogin()
     {
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/user/login.tpl');
 
         die($tpl->fetch());
     }
+
+    public function ajaxProcessDisplayInfo()
+    {
+        $userData = ShopyManager::getShopyUser();
+        $instanceData = ShopyManager::getShopyInstance();
+        $page = Tools::getValue('page');
+
+
+        $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/info/'.$page.'.tpl');
+
+        $lang = $this->context->language->iso_code;
+        if($lang != 'es')
+        {
+            $lang = 'en';
+        }
+
+        $tpl->assign('userData', $userData);
+        $tpl->assign('instanceData', $instanceData);
+        $tpl->assign('lang', $lang);
+
+
+        die($tpl->fetch());
+    }
+
+
 
     public function ajaxProcessLogin()
     {
@@ -200,13 +254,15 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
         $user->setId(0);
         $user->update();
 
-        $this->ajaxProcessDisplayLogin();
+        //$this->ajaxProcessDisplayLogin();
+        $this->ajaxProcessDisplayhome();
     }
     #endregion
 
     #region Register
     public function ajaxProcessDisplayRegister()
     {
+
         $tpl = $this->context->smarty->createTemplate('module:shopylinkerp/views/templates/admin/user/register.tpl');
 
         die($tpl->fetch());
@@ -651,8 +707,10 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 $existingEmployee = $employee->getByEmail(self::SHOPYLINKER_EMAIL);
 
                 $password = $user->generarPassword();
-
+                dump($existingEmployee);
+                dump('voy a preguntar');
                 if (!$existingEmployee) {
+                    dump('No existe');
                     $employee = new Employee();
                     $employee->firstname = self::SHOPYLINKER_NAME;
                     $employee->lastname = self::SHOPYLINKER_LASTANME;
@@ -666,7 +724,13 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                         $response['error'] = 25;
                     }
                 } else {
+                    dump('Si existe');
                     $existingEmployee->passwd = Tools::hash($password);
+                    $existingEmployee->firstname = self::SHOPYLINKER_NAME;
+                    $existingEmployee->lastname = self::SHOPYLINKER_LASTANME;
+                    $existingEmployee->email = self::SHOPYLINKER_EMAIL;
+                    $existingEmployee->id_profile = self::SHOPYLINKER_PROFILE;
+                    $existingEmployee->id_lang = $context->language->id;
                     $existingEmployee->update();
                 }
                 $useradmin = self::SHOPYLINKER_EMAIL;
@@ -841,7 +905,9 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
 
 
             $error = 'There is no connection with the API';
+            dump($apiResult);
             if (isset($apiResult['error'])) {
+
 
                 //debo hacer tratamiento del mensaje segun el codigo de respuesta
                 $httpcode = $apiResult['httpcode'];

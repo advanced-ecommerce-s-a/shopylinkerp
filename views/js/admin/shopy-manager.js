@@ -144,15 +144,50 @@ var ShopyManager = {
         _initEvents: function () {
 
             $('.smttooltip').tooltip();
-            console.log('asdasd');
 
             $('[data-action="displayLogin"]').off('click').on('click', function () {
                 ShopyManager.displayLogin();
             });
 
+            $('[data-action="displaydashboard"]').off('click').on('click', function () {
+                ShopyManager.displayDasboard();
+            });
+
             $('[data-action="processLogin"]').off('click').on('click', function () {
                 ShopyManager.processLogin();
             });
+
+            $('[data-action="displayinfo"]').off('click').on('click', function () {
+                var where = $(this).data('where');
+                ShopyManager.displayInfo(where);
+            });
+
+            $('.collapse').on('show.bs.collapse', function () {
+                console.log($('.collapse.in'));
+                $('.collapse.in').not(this).collapse('hide');
+            })
+
+            $(document).on("click", ".imagelink", function(e) {
+                e.preventDefault(); // Prevenir comportamiento predeterminado del enlace
+
+                urlsite = 'https://shopylinker.com/imgmodule/';
+
+                // Obtener la URL de la imagen desde el atributo "data-image-url" del enlace
+                var imageUrl = $(this).data("image-url");
+                var lang = $(this).data("lang");
+
+                // Establecer la URL de la imagen en el atributo "src" de la imagen dentro del modal
+                $("#modalImage").attr("src", urlsite+'/'+lang+'/'+imageUrl);
+
+                // Mostrar el modal
+                $("#imagenModal").modal("show");
+            });
+
+            // Limpiar la imagen del modal cuando este se oculte
+            $("#imagenModal").on("hidden.bs.modal", function() {
+                $("#modalImage").attr("src", "");
+            });
+
 
             $('[data-action="processLogout"]').off('click').on('click', function () {
                 ShopyManager.processLogout();
@@ -207,7 +242,22 @@ var ShopyManager = {
         //endregion
 
 
+        //region Info
+        displayInfo: function (info)
+        {
+            var form = new FormData();
+            form.append('page', info);
+
+            this._ajaxCall(form, 'displayInfo', function (response) {
+                $('#container_shopylinkerp').html(response);
+                ShopyManager._initEvents();
+            });
+        },
+
+        //endregion
+
         //region User
+
         displayLogin: function () {
             var form = new FormData();
 
