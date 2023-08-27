@@ -707,10 +707,7 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                 $existingEmployee = $employee->getByEmail(self::SHOPYLINKER_EMAIL);
 
                 $password = $user->generarPassword();
-                dump($existingEmployee);
-                dump('voy a preguntar');
                 if (!$existingEmployee) {
-                    dump('No existe');
                     $employee = new Employee();
                     $employee->firstname = self::SHOPYLINKER_NAME;
                     $employee->lastname = self::SHOPYLINKER_LASTANME;
@@ -724,7 +721,6 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
                         $response['error'] = 25;
                     }
                 } else {
-                    dump('Si existe');
                     $existingEmployee->passwd = Tools::hash($password);
                     $existingEmployee->firstname = self::SHOPYLINKER_NAME;
                     $existingEmployee->lastname = self::SHOPYLINKER_LASTANME;
@@ -903,12 +899,9 @@ class AdminShopylinkerpManagerController extends ModuleAdminController
             }
         } else {
 
-
             $error = 'There is no connection with the API';
-            dump($apiResult);
+
             if (isset($apiResult['error'])) {
-
-
                 //debo hacer tratamiento del mensaje segun el codigo de respuesta
                 $httpcode = $apiResult['httpcode'];
                 $textCode = $this->trans(HTTPErrorHelper::getErrorMessage($httpcode));
